@@ -7,8 +7,6 @@ export default function monthview(){
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const dayNames = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-
-
     //Calculate weeknumber
     // eslint-disable-next-line
     Date.prototype.getWeek = function() {
@@ -18,8 +16,7 @@ export default function monthview(){
     //Calculate number of days in month
     let getDaysInMonth = function(month,year) {
        return new Date(year, month, 0).getDate();
-      };
-      
+    }; 
   
     let currentWeek = (date).getWeek();
     let currentYear = date.getFullYear()
@@ -32,9 +29,6 @@ export default function monthview(){
         dateOfMonth.push(startDate)
         console.log(dateOfMonth.length)
     }
-    //let nameOfDay = dayNames[date.getDay()]
-    //const birthday = new Date(monthNames[date.getMonth()]+ date.getDate() + ','+currentYear).getDay();
-    //console.log(dayNames[birthday])
 
     return (
         <div className="container">
@@ -48,7 +42,7 @@ export default function monthview(){
         <div className="row mb-5">
             {dateOfMonth.map(dateOfMonth => 
             (
-            <div className="col-2 border p-4" key={dateOfMonth}>{dateOfMonth} {dayNames[new Date((monthNames[date.getMonth()])+ dateOfMonth + ', '+currentYear).getDay()]}</div>
+            <div className="col-2 border p-4" key={dateOfMonth}>{dateOfMonth} {dayNames[new Date((monthNames[currentMonth])+ dateOfMonth + ', '+currentYear).getDay()]}</div>
             ))}
         </div>
         </div>
