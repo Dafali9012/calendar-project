@@ -1,13 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import './App.css';
+
+import Header from "./components/Header";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   return (
-    <div className="container">
-      <h1 className="h1 text-center">React Calendar</h1>
-     
+    <Router>
+    <div className="app">
+
+      <Header />
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+
+
+      </Switch>
     </div>
+  </Router>
   );
 }
 
