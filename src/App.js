@@ -4,6 +4,8 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Calendar from "./components/Calendar";
+
 
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
       <Switch>
         <Route path="/Login" component={Login} />
         <Route path="/Register" component={Register} />
+        <Route path="/Calendar" component={Calendar} />
       </Switch>
     </div>
   </Router>
