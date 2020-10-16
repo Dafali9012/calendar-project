@@ -10,7 +10,7 @@ export default function CreateEvent() {
         // change date values to the date we navigated from
         let date = new Date();
         let yearNow = date.getFullYear().toString();
-        let monthNow = date.getMonth().toString();
+        let monthNow = (date.getMonth()+1).toString();
         let dayNow = date.getDate().toString();
         let hourNow = date.getHours().toString();
         let minuteNow = date.getMinutes().toString();
