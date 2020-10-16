@@ -1,10 +1,20 @@
 import React, {useState} from "react";
+//import {useAlert} from "react-alert";
+
 export default function Register(){
 
     const [state, setState] = useState({email: '', password: ''})
     const handleChange = (e) => {
         const{id, value} = e.target 
         setState(prevState => ({...prevState, [id]: value}))
+    }
+
+    const submitClick = (e) => {
+
+        if(state.password === state.confirmPassword){//skickaSkitTillServer()
+        } 
+        else{//error message
+        }
     }
 
     return (
@@ -43,6 +53,7 @@ export default function Register(){
         </div>
 
         <button 
+            onClick={submitClick}
             type="submit" 
             className="btn btn-primary mt-5">
             Register
