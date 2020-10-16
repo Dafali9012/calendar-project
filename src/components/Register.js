@@ -1,5 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 export default function Register(){
+
+    const [state, setState] = useState({email: '', password: ''})
+    const handleChange = (e) => {
+        const{id, value} = e.target 
+        setState(prevState => ({...prevState, [id]: value}))
+    }
 
     return (
     <div className="registerCard d-flex justify-content-center">
@@ -11,6 +17,8 @@ export default function Register(){
                className="form-control" 
                id="email"  
                placeholder="Enter email"
+               value={state.email}
+               onChange={handleChange}
             />
         </div>
 
@@ -20,11 +28,13 @@ export default function Register(){
                 className="form-control" 
                 id="password" 
                 placeholder="Your password"
+                value={state.password}
+                onChange={handleChange}
             />
         </div>
 
         <div className="text-left mt-4">
-            <label htmlFor="exampleInputPassword1">Confirm Password</label>
+            <label htmlFor="passwordInput">Confirm Password</label>
             <input type="password" 
                 className="form-control" 
                 id="confirmPassword" 
