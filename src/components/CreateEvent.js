@@ -3,22 +3,52 @@ import { Redirect } from 'react-router-dom';
 
 export default function CreateEvent() {
 
-    const [formData, setFormData] = useState({})
-    
+    const [formData, setFormData] = useState({});
+
     useEffect(()=>{
         console.log("create event mounted")
         // change date values to the date we navigated from
+        let date = new Date();
+        let yearNow = date.getFullYear().toString();
+        let monthNow = date.getMonth().toString();
+        let dayNow = date.getDate().toString();
+        let hourNow = date.getHours().toString();
+        let minuteNow = date.getMinutes().toString();
+
         setFormData({title:'', description:'',
-                    fromYear:'2020', fromMonth:'10', fromDay:'20', fromHour:'19', fromMinute:'0',
-                    toYear:'2020', toMonth:'10', toDay:'20', toHour:'19', toMinute:'10'})
+                    fromYear:yearNow, fromMonth:monthNow, fromDay:dayNow, fromHour:hourNow, fromMinute:Math.ceil(minuteNow/5)*5,
+                    toYear:yearNow, toMonth:monthNow, toDay:dayNow, toHour:hourNow, toMinute:Math.ceil(minuteNow/5)*5});
     },[])
 
     if(formData.title===undefined) return null;
 
-    async function createEvent(e) {
+    // change to previous date adress
+    if(formData.error || formData.done) return <Redirect to='/' />
+
+    async function saveEvent(e) {
         e.preventDefault();
-        // build event object and post to database
-        
+
+        let eventObject = {
+            title:formData.title,
+            description:formData.description,
+            from:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
+            to:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'-'+formData.toHour+'-'+formData.toMinute
+        }
+
+        /* disabled for testing
+        let result = await(await fetch('/api/event', {
+            method:'POST',
+            body:JSON.stringify(eventObject),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })).json();
+
+        console.log(result);
+        */
+        console.log(eventObject);
+
+        setFormData({done:true});
     }
 
     /*
@@ -27,21 +57,20 @@ export default function CreateEvent() {
     }
     */
 
-    // change to previous date adress
-    const cancel = () => { return <Redirect to='/'/> }
+    const cancel = () => setFormData({done:true});
 
     const handleInputChange = e => setFormData({
         ...formData,
         [e.currentTarget.name]:e.currentTarget.value
-    })
+    });
     
     return (
         <div className="row justify-content-center">
-            <form className="col-6" onSubmit={createEvent}>
+            <form className="col-6" onSubmit={saveEvent}>
                 <h3 className="my-4">Create Event</h3>
                 <div className="form-group">
                     <label className="w-100"><strong>Title:</strong>
-                        <input className="form-control" name="title" type="text" onChange={handleInputChange} />
+                        <input className="form-control" name="title" type="text" onChange={handleInputChange} required />
                     </label>
                 </div>
                 <div className="form-group">
@@ -57,16 +86,18 @@ export default function CreateEvent() {
                             <div className="col padl-0">Day<input className="form-control text-center" name="fromDay" type="number" value={formData.fromDay} disabled /></div>
                             <div className="col padr-0">Hour
                                 <select className="form-control" name="fromHour" defaultValue={formData.fromHour} onChange={handleInputChange}>
-                                    {[...Array(24).keys()].map(num => 
-                                        <option key={num+1} value={num+1}>{num+1}</option>    
-                                    )}
+                                    {[...Array(24).keys()].map(num => {
+                                        let number = num.toString().length===1?'0'+num:num;
+                                        return <option key={number} value={number}>{number}</option>
+                                    })}
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
                                 <select className="form-control" name="fromMinute" defaultValue={formData.fromMinute} onChange={handleInputChange}>
-                                    {[...Array(12).keys()].map(num =>
-                                        <option key={(num)*5} value={(num)*5}>{(num)*5}</option>
-                                    )}
+                                    {[...Array(12).keys()].map(num => {
+                                        let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
+                                        return <option key={number} value={number}>{number}</option>
+                                    })}
                                 </select>
                             </div>
                         </div>
@@ -80,16 +111,18 @@ export default function CreateEvent() {
                             <div className="col padl-0">Day<input className="form-control text-center" name="toDay" type="number" value={formData.fromDay} disabled /></div>
                             <div className="col padr-0">Hour
                                 <select className="form-control" name="toHour" defaultValue={formData.toHour} onChange={handleInputChange}>
-                                    {[...Array(24).keys()].map(num => 
-                                        <option key={num+1}>{num+1}</option>    
-                                    )}
+                                    {[...Array(24).keys()].map(num => {
+                                        let number = num.toString().length===1?'0'+num:num;
+                                        return <option key={number} value={number}>{number}</option>  
+                                    })}
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
                                 <select className="form-control" name="toMinute" defaultValue={formData.toMinute} onChange={handleInputChange}>
-                                    {[...Array(12).keys()].map(num =>
-                                        <option key={(num)*5} value={(num)*5}>{(num)*5}</option>
-                                    )}
+                                    {[...Array(12).keys()].map(num => {
+                                        let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
+                                        return <option key={number} value={number}>{number}</option>
+                                    })}
                                 </select>
                             </div>
                         </div>
@@ -97,12 +130,12 @@ export default function CreateEvent() {
                 </div>
                 <div className="float-right">
                     <button className="btn btn-primary" type="button">Select End Date</button>
-                    <button className="btn btn-primary ml-2" type="submit">Create</button>
+                    <button className="btn btn-primary ml-2" type="submit">Save</button>
                 </div>
                 <div className="float-left">
                     <button className="btn btn-danger" type="button" onClick={cancel}>Cancel</button>
                 </div>
             </form>
         </div>
-    )
+    );
 }
