@@ -1,12 +1,32 @@
-.header{
+.header-of-page{
     display: flex;
-    height: 10%;
-    width: 100%;
     justify-content: space-between;
-    background: rgb(180, 220, 226);
+    background: rgba(100, 61, 64, 0.699);
+    color: #ffffff;
+    height: 10vh;
+  }
+
+  .link{
+    color: #ffffff;
   }
   
-  .path{
+  .header-user, .nav-menu{
     display:flex;
     align-items: center;
+    justify-content: space-around;
   }
+  .user-btn{
+    background-color: #b97763;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    opacity: 0.6;
+    transition: 0.3s;
+    border-radius: 20px;
+    width: 120px;
+    line-height: 34px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .user-btn:hover {opacity: 1;}
