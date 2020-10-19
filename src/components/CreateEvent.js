@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 
 export default function CreateEvent() {
 
     const [formData, setFormData] = useState({});
     const [hidden, setHidden] = useState(true);
+
+    const selectFromHourRef = useRef();
+    const selectFromMinuteRef = useRef();
+    const selectToHourRef = useRef();
+    const selectToMinuteRef = useRef();
 
     useEffect(()=>{
         console.log("create event mounted")
@@ -28,6 +33,74 @@ export default function CreateEvent() {
     async function saveEvent(e) {
         e.preventDefault();
 
+        let currentDate = new Date();
+        let fromDate = new Date(formData.fromYear, formData.fromMonth-1, formData.fromDay, formData.fromHour, formData.fromMinute);
+        let toDate = new Date(formData.toYear, formData.toMonth-1, formData.toDay, formData.toHour, formData.toMinute);
+        let lastDate = new Date(fromDate);
+        lastDate.setDate(fromDate.getDate()+7);
+
+        // if startdate is equal to todays date
+        if(fromDate.getFullYear()===currentDate.getFullYear() &&
+        fromDate.getMonth()===currentDate.getMonth() &&
+        fromDate.getDate()===currentDate.getDate())
+        {
+            // if fromHour is before now
+            if(fromDate.getHours() < currentDate.getHours()) {
+                selectFromHourRef.current.setCustomValidity("Event cannot start in the past!");
+                selectFromHourRef.current.reportValidity();
+                return false;
+            }
+            // if fromHour is now and fromMinute is before now
+            if(fromDate.getHours() === currentDate.getHours() && fromDate.getMinutes() < currentDate.getMinutes()) {
+                selectFromMinuteRef.current.setCustomValidity("Event cannot start in the past!");
+                selectFromMinuteRef.current.reportValidity();
+                return false;
+            }
+        }
+
+        // if enddate is equal to final possible date
+        if(toDate.getFullYear()===lastDate.getFullYear() &&
+        toDate.getMonth()===lastDate.getMonth() &&
+        toDate.getDate()===lastDate.getDate())
+        {
+            // if toHour is after fromhour
+            if(toDate.getHours() > fromDate.getHours()) {
+                selectToHourRef.current.setCustomValidity("Event limit is 7 days!");
+                selectToHourRef.current.reportValidity();
+                return false;
+            }
+            // if toHour is now and if toMinute is after fromMinute
+            if(toDate.getHours() === currentDate.getHours() && toDate.getMinutes() > fromDate.getMinutes()) {
+                selectToMinuteRef.current.setCustomValidity("Event limit is 7 days!");
+                selectToMinuteRef.current.reportValidity();
+                return false;
+            }
+        }
+
+        // if enddate is equal to startdate
+        if(toDate.getFullYear() === fromDate.getFullYear() &&
+        toDate.getMonth() === fromDate.getMonth() &&
+        toDate.getDate() === fromDate.getDate()) {
+            // if toHour is before fromHour
+            if(toDate.getHours() < fromDate.getHours()) {
+                selectToHourRef.current.setCustomValidity("Event cannot end before it starts!");
+                selectToHourRef.current.reportValidity();
+                return false;
+            }
+            // if toHour is fromHour and toMinute is before fromMinute
+            if(toDate.getHours() === fromDate.getHours() && toDate.getMinutes() < fromDate.getMinutes()) {
+                selectToMinuteRef.current.setCustomValidity("Event cannot end before it starts!");
+                selectToMinuteRef.current.reportValidity();
+                return false;
+            }
+            // if the event is less than 15 minutes long
+            if(toDate.valueOf() < new Date(fromDate.getTime() + 15 *60000).valueOf()) {
+                selectToMinuteRef.current.setCustomValidity("Event cannot be less than 15 minutes!");
+                selectToMinuteRef.current.reportValidity();
+                return false;
+            }
+        } 
+
         let eventObject = {
             title:formData.title,
             description:formData.description,
@@ -49,6 +122,8 @@ export default function CreateEvent() {
         console.log(eventObject);
 
         //setFormData({done:true});
+
+        return true;
     }
 
     function selectEndDate(e) {
@@ -68,10 +143,15 @@ export default function CreateEvent() {
 
     const cancel = () => setFormData({done:true});
 
-    const handleInputChange = e => setFormData({
+    const handleInputChange = e => { setFormData({
         ...formData,
         [e.currentTarget.name]:e.currentTarget.value
     });
+        selectFromHourRef.current.setCustomValidity('');
+        selectFromMinuteRef.current.setCustomValidity('');
+        selectToHourRef.current.setCustomValidity('');
+        selectToMinuteRef.current.setCustomValidity('');
+    };
 
     return (
         <div className="row justify-content-center">
@@ -80,7 +160,7 @@ export default function CreateEvent() {
                     <div className="col-7 mod-date-content">
                         <h4 className="row text-light unselectable" >Select End Date</h4>
                         <div className="row h-100 justify-content-center align-items-center">
-                            {[...Array(7).keys()].map(num => {
+                            {[...Array(8).keys()].map(num => {
                                 let fromDate = new Date(formData.fromYear+'-'+(formData.fromMonth)+'-'+formData.fromDay);
                                 let toDate = new Date(fromDate);
                                 toDate.setDate(fromDate.getDate()+num);
@@ -99,7 +179,7 @@ export default function CreateEvent() {
                     </label>
                 </div>
                 <div className="form-group">
-                    <label className="w-100"><strong>Description:</strong>
+                    <label className="w-100"><strong>Description (optional):</strong>
                         <textarea className="form-control" name="description" rows="6" type="text" onChange={handleInputChange} />
                     </label>
                 </div>
@@ -110,7 +190,7 @@ export default function CreateEvent() {
                             <div className="col padx-0">Month<input className="form-control text-center" name="fromMonth" type="number" value={formData.fromMonth} disabled /></div>
                             <div className="col padl-0">Day<input className="form-control text-center" name="fromDay" type="number" value={formData.fromDay} disabled /></div>
                             <div className="col padr-0">Hour
-                                <select className="form-control" name="fromHour" defaultValue={formData.fromHour} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectFromHourRef} name="fromHour" defaultValue={formData.fromHour} onChange={handleInputChange}>
                                     {[...Array(24).keys()].map(num => {
                                         let number = num.toString().length===1?'0'+num:num;
                                         return <option key={number} value={num}>{number}</option>
@@ -118,7 +198,7 @@ export default function CreateEvent() {
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
-                                <select className="form-control" name="fromMinute" defaultValue={formData.fromMinute} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectFromMinuteRef} name="fromMinute" defaultValue={formData.fromMinute} onChange={handleInputChange}>
                                     {[...Array(12).keys()].map(num => {
                                         let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
                                         return <option key={number} value={num*5}>{number}</option>
@@ -135,7 +215,7 @@ export default function CreateEvent() {
                             <div className="col padx-0">Month<input className="form-control text-center" name="toMonth" type="number" value={formData.toMonth} disabled /></div>
                             <div className="col padl-0">Day<input className="form-control text-center" name="toDay" type="number" value={formData.toDay} disabled /></div>
                             <div className="col padr-0">Hour
-                                <select className="form-control" name="toHour" defaultValue={formData.toHour} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectToHourRef} name="toHour" defaultValue={formData.toHour} onChange={handleInputChange}>
                                     {[...Array(24).keys()].map(num => {
                                         let number = num.toString().length===1?'0'+num:num;
                                         return <option key={number} value={num}>{number}</option>  
@@ -143,7 +223,7 @@ export default function CreateEvent() {
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
-                                <select className="form-control" name="toMinute" defaultValue={formData.toMinute} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectToMinuteRef} name="toMinute" defaultValue={formData.toMinute} onChange={handleInputChange}>
                                     {[...Array(12).keys()].map(num => {
                                         let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
                                         return <option key={number} value={num*5}>{number}</option>
