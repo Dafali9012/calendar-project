@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 
 export default function Header(){
+
   return(
     <header className="header-of-page">
         <div className="col-3 nav-menu">
@@ -11,8 +12,8 @@ export default function Header(){
         <div className="header-user col-3">
             <Link to="/login"><h4 className="link">Login</h4></Link>
             <Link to="/register"><h4 className="user-btn">Register</h4></Link>
+            <Link to="/createevent" >Create Event</Link>
         </div>
     </header>
-
-  )
+  );
 }
