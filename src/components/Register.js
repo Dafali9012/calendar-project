@@ -38,37 +38,52 @@ export default function Register(){
 }
 
     return (
-    <div className="registerCard d-flex justify-content-center">
+    <div className="registerCard d-flex justify-content-center user-select-none">
     <form>
 
-        <div className = "text-left mt-4">
-            <label htmlFor = "email">Email address</label>
-            <input type = "email" 
-               className = "form-control" 
-               id = "email"  
-               placeholder = "Enter email"
-               value = {state.email}
-               onChange = {updateValues}
+        <div className = "form-group text-left mt-4">
+            <label 
+                className="form-label" 
+                htmlFor = "email">
+                Email adress
+            </label>
+            <input 
+                type = "email" 
+                className = "form-input" 
+                id = "email"  
+                placeholder = "dan@domain.com"
+                value = {state.email}
+                onChange = {updateValues}
             />
         </div>
 
-        <div className = "text-left mt-4">
-            <label htmlFor = "password">Password</label>
-            <input type = "password" 
-                className = "form-control" 
+        <div className = "form-group text-left mt-4">
+            <label 
+                className="form-label" 
+                htmlFor = "password">
+                Password
+            </label>
+            <input 
+                type = "password" 
+                className = "form-input" 
                 id = "password" 
-                placeholder = "Your password"
+                placeholder = "•••••"
                 value = {state.password}
                 onChange = {updateValues}
             />
         </div>
 
-        <div className = "text-left mt-4">
-            <label htmlFor = "passwordConfirm">Confirm Password</label>
-            <input type = "password" 
-                className = "form-control" 
+        <div className = "form-group text-left mt-4">
+            <label 
+                className="form-label" 
+                htmlFor = "passwordConfirm">
+                Confirm password
+            </label>
+            <input 
+                type = "password" 
+                className = "form-input" 
                 id = "passwordConfirm" 
-                placeholder = "Confirm Password"
+                placeholder = "•••••"
                 value = {state.passwordConfirm}
                 onChange = {updateValues}
             />
@@ -77,7 +92,7 @@ export default function Register(){
         <button 
             onClick={submitClick}
             type="submit" 
-            className="btn btn-primary mt-5">
+            className="btn btn-primary submit mt-5">
             Register
         </button>
     </form>
