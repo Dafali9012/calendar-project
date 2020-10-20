@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-export default function monthview(){
+export default function Monthview(){
 
-    let date = new Date()
+    let today = new Date()
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+    
 
     //Calculate weeknumber
     // eslint-disable-next-line
@@ -17,10 +19,17 @@ export default function monthview(){
        return new Date(year, month, 0).getDate();
     }; 
   
-    let currentWeek = date.getWeek();
-    let currentYear = date.getFullYear()
-    let currentMonth = date.getMonth()+1
+    let currentWeek = today.getWeek();
+    let currentYear = today.getFullYear()
+    let currentMonth = today.getMonth()
     let numberOfcurrentMonth = (currentMonth+1) //Returns the month represented as a number
+    const [month, setMonth] = useState(currentMonth);
+
+   /* function nextMonth(){
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        currentMonth = (currentMonth + 1) % 12;
+        console.log(currentMonth + ' ' +monthNames[currentMonth])
+    }*/
 
     let daysInMonth = getNumberOfDaysInMonth(numberOfcurrentMonth,currentYear) //Calculate number of days in current month
     let dateOfMonth = []
@@ -29,7 +38,7 @@ export default function monthview(){
     }
     let dateAndDay = []                                                //Create an array with a date and matching dayname
     dateOfMonth.forEach(element => {
-        element = element + ' ' + dayNames[new Date((monthNames[currentMonth])+ element + ', '+currentYear).getDay()]
+        element = element + ' ' + dayNames[new Date((monthNames[month])+ element + ', '+currentYear).getDay()]
         dateAndDay.push(element)
     });
 
@@ -68,10 +77,12 @@ export default function monthview(){
     }
 
     return (
-        <div className="container">
+         <div className="container">
             <div className="row mb-5">
             <div className="h5 text-center col my-auto">{currentYear}</div>
-            <div className="h1 text-center col">{monthNames[currentMonth]}</div>
+            <button onClick={() => setMonth(month -1)} type="button" className="btn btn-primary btn-sm">Prev</button>
+            <div className="h1 text-center col">{monthNames[month]}</div>
+            <button onClick={() => setMonth(month +1)} type="button" className="btn btn-primary btn-sm">Next</button>
             <div className="h5 text-center col my-auto">{currentWeek}</div>
             </div>
         <div className="row float-right w-100">
