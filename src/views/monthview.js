@@ -24,12 +24,19 @@ export default function Monthview(){
     let currentMonth = today.getMonth()
     let numberOfcurrentMonth = (currentMonth+1) //Returns the month represented as a number
     const [month, setMonth] = useState(currentMonth);
+    //const [year, setYear] = useState(currentYear);
 
-   /* function nextMonth(){
-        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-        currentMonth = (currentMonth + 1) % 12;
-        console.log(currentMonth + ' ' +monthNames[currentMonth])
+   /* function decrementYear(){
+        setYear(year-1)
     }*/
+    function nextMonth(){
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        setMonth((month + 1) % 12) 
+    }
+    function prevMonth(){
+        currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+        setMonth((month === 0) ? 11 : month - 1)
+    }
 
     let daysInMonth = getNumberOfDaysInMonth(numberOfcurrentMonth,currentYear) //Calculate number of days in current month
     let dateOfMonth = []
@@ -80,9 +87,9 @@ export default function Monthview(){
          <div className="container">
             <div className="row mb-5">
             <div className="h5 text-center col my-auto">{currentYear}</div>
-            <button onClick={() => setMonth(month -1)} type="button" className="btn btn-primary btn-sm">Prev</button>
+            <button onClick={() => prevMonth()} type="button" className="btn btn-primary btn-sm">Prev</button>
             <div className="h1 text-center col">{monthNames[month]}</div>
-            <button onClick={() => setMonth(month +1)} type="button" className="btn btn-primary btn-sm">Next</button>
+            <button onClick={() => nextMonth()} type="button" className="btn btn-primary btn-sm">Next</button>
             <div className="h5 text-center col my-auto">{currentWeek}</div>
             </div>
         <div className="row float-right w-100">
