@@ -13,7 +13,7 @@ export default function Register(){
     //when clicking button
     const submitClick = () => {
         //if passwords match -> registerUser();
-        if(state.password === state.confirmPassword){registerUser();
+        if(state.password === state.passwordConfirm){registerUser();
         } 
         else{
             //error message -> password doesn't match
@@ -42,7 +42,7 @@ export default function Register(){
     <form>
 
         <div className = "text-left mt-4">
-            <label htmlFor = "emailInput">Email address</label>
+            <label htmlFor = "email">Email address</label>
             <input type = "email" 
                className = "form-control" 
                id = "email"  
@@ -53,7 +53,7 @@ export default function Register(){
         </div>
 
         <div className = "text-left mt-4">
-            <label htmlFor = "passwordInput">Password</label>
+            <label htmlFor = "password">Password</label>
             <input type = "password" 
                 className = "form-control" 
                 id = "password" 
@@ -64,10 +64,10 @@ export default function Register(){
         </div>
 
         <div className = "text-left mt-4">
-            <label htmlFor = "passwordInput">Confirm Password</label>
+            <label htmlFor = "passwordConfirm">Confirm Password</label>
             <input type = "password" 
                 className = "form-control" 
-                id = "confirmPassword" 
+                id = "passwordConfirm" 
                 placeholder = "Confirm Password"
                 value = {state.passwordConfirm}
                 onChange = {updateValues}
