@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Calendar from "./components/Calendar";
 import CreateEvent from "./components/CreateEvent";
+import dayView from './components/DayView';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route exact path="/" component={Calendar} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/dayview" component={dayView} />
           <Route path="/createevent"><CreateEvent/></Route>
         </div>
       </div>
