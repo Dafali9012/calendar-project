@@ -3,9 +3,8 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
-//import Calendar from "./components/Calendar";
 import CreateEvent from "./components/CreateEvent";
-import MonthView from "./components/MonthView"
+import Calendar from './components/Calendar';
 
 
 export default function App() {
@@ -15,11 +14,10 @@ export default function App() {
         <Header />
         <div className="container">
           <Switch>
-            <Route exact path="/" component={MonthView} />
+            <Route exact path="/" component={Calendar} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/createevent" component={CreateEvent} />
-            <Route path="/month" component={MonthView} />
           </Switch>
         </div>
       </div>
