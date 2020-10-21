@@ -15,7 +15,6 @@ export default function CreateEvent() {
     const selectToMinuteRef = useRef();
 
     useEffect(()=>{
-        console.log("create event mounted")
         // change date values to the date we navigated from
         let date = new Date();
         let dateMinute = Math.ceil(date.getMinutes()/5)*5;
@@ -30,8 +29,6 @@ export default function CreateEvent() {
             toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute
         });
         },[]);
-
-    console.log(formData.fromHour, formData.fromMinute);
 
     // change to previous date adress
     if(formData.done) { return <Redirect to="/" />; }

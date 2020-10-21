@@ -12,7 +12,6 @@ export default function Header(){
         <div className="header-user col-3">
             <Link to="/login"><h4 className="link">Login</h4></Link>
             <Link to="/register"><h4 className="user-btn">Register</h4></Link>
-            <Link to="/createevent" >Create Event</Link>
         </div>
     </header>
   );
