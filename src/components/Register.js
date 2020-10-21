@@ -4,7 +4,7 @@ export default function Register(){
     //this.app = app;
 
     //create state & update values after entering in input
-    const [state, setState] = useState({email: '', password: '', passwordConfirm: ''})
+    const [state, setState] = useState({email: '', password: '', passwordConfirm: '',name:''})
     const updateValues = (e) => {
         const{id, value} = e.target 
         setState(prevState => ({...prevState, [id]: value}))
