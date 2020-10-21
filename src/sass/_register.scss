@@ -1,0 +1,58 @@
+.registerCard {
+    max-width: 40%;
+    min-width: 300px;
+    padding: 50px 30px 50px 30px;
+    margin: 50px auto;   
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+  }
+  
+  .form-group {
+    position:relative;  
+  
+    & + .form-group {
+      margin-top: 30px;
+    }
+  }
+  .form-label {
+    transform: translateY(-125%);
+    font-size: .90em;
+  }
+  .form-label {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: #999;
+    z-index: 10;
+  }
+  
+  .form-input {
+    position: relative;
+    padding: 12px 0px 5px 0;
+    width: 100%;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 1px 0 0 #e5e5e5;
+    
+    &:focus {
+      box-shadow: 0 2px 0 0 rgba(100, 61, 64, 0.699);
+    }
+    &:hover {
+        box-shadow: 0 2px 0 0 rgba(100, 61, 64, 0.699);
+      }
+    &::placeholder {
+        color: rgba(39, 39, 39, 0.062);
+      }
+  }
+  
+  .submit{
+    background-color:  #b97763;
+    border: none;
+    width: 100%;
+
+    &:hover {
+        background-color:  #b97763c0;
+    }
+  }
+  

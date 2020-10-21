@@ -9,8 +9,8 @@ export default function Header(){
             <Link to="/"><h3 className="link">Calendar</h3></Link>
         </div>
         <div className="header-user col-3">
-            <Link to="/Login"><h4 className="link">Login</h4></Link>
-            <Link to="/Register"><h4 className="user-btn">Register</h4></Link>
+            <Link to="/login"><h4 className="link">Login</h4></Link>
+            <Link to="/register"><h4 className="user-btn">Register</h4></Link>
         </div>
     </header>
 

@@ -28,27 +28,35 @@ export default function Login() {
     }
 
   return (
-    <div className="loginCard d-flex justify-content-center">
+    <div className="loginCard d-flex justify-content-center user-select-none">
       <form>
-        <div className="text-left mt-4">
-          <label htmlFor="emailInput">Email address</label>
+        <div className="form-group text-left mt-4">
+          <label 
+            className="form-label" 
+            htmlFor="email">
+            Email adress
+          </label>
           <input
             type="email"
-            className="form-control"
+            className="form-input"
             id="email"
-            placeholder="Enter email"
+            placeholder="dan@domain.com"
             value={state.email}
             onChange={updateValues}
           />
         </div>
 
-        <div className="text-left mt-4">
-          <label htmlFor="passwordInput">Password</label>
+        <div className="form-group text-left mt-4">
+          <label 
+            className="form-label" 
+            htmlFor="password">
+            Password
+          </label>
           <input
             type="password"
-            className="form-control"
+            className="form-input"
             id="password"
-            placeholder="Your password"
+            placeholder="•••••"
             value={state.password}
             onChange={updateValues}
           />
@@ -57,8 +65,8 @@ export default function Login() {
         <button 
             onClick={submitClick}
             type="submit" 
-            className="btn btn-primary mt-5">
-          Login
+            className="btn btn-primary submit mt-5">
+            Login
         </button>
 
         <div className="redirect mt-2">
