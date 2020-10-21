@@ -3,7 +3,10 @@ import { Redirect } from 'react-router-dom';
 
 export default function CreateEvent() {
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        title:'', description:'',
+        fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
+        toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
     const [hidden, setHidden] = useState(true);
 
     const selectFromHourRef = useRef();
@@ -12,7 +15,6 @@ export default function CreateEvent() {
     const selectToMinuteRef = useRef();
 
     useEffect(()=>{
-        console.log("create event mounted")
         // change date values to the date we navigated from
         let date = new Date();
         let dateMinute = Math.ceil(date.getMinutes()/5)*5;
@@ -20,15 +22,16 @@ export default function CreateEvent() {
         dateHour = dateMinute===60?dateHour+1:dateHour
         dateMinute = dateMinute===60?0:dateMinute;
 
-        setFormData({title:'', description:'',
-                    fromYear:date.getFullYear(), fromMonth:date.getMonth()+1, fromDay:date.getDate(), fromHour:dateHour, fromMinute:dateMinute,
-                    toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute});
+        setFormData(
+        {
+            title:'', description:'',
+            fromYear:date.getFullYear(), fromMonth:date.getMonth()+1, fromDay:date.getDate(), fromHour:dateHour, fromMinute:dateMinute,
+            toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute
+        });
         },[]);
 
-    if(formData.title===undefined) return null;
-
     // change to previous date adress
-    if(formData.error || formData.done) return <Redirect to='/' />
+    if(formData.done) { return <Redirect to="/" />; }
 
     async function saveEvent(e) {
         e.preventDefault();
@@ -109,19 +112,17 @@ export default function CreateEvent() {
         }
 
         /* disabled for testing
-        let result = await(await fetch('/api/event', {
+        await(await fetch('/api/event', {
             method:'POST',
             body:JSON.stringify(eventObject),
             headers:{
                 'Content-Type':'application/json'
             }
         })).json();
-
-        console.log(result);
         */
         console.log(eventObject);
 
-        //setFormData({done:true});
+        setFormData({done:true});
 
         return true;
     }
@@ -141,7 +142,7 @@ export default function CreateEvent() {
     const hideModal = (e) => { if(e.target===e.currentTarget) setHidden(true); }
     const showModal = () => setHidden(false);
 
-    const cancel = () => setFormData({done:true});
+    const cancel = () => setFormData({done:"yes"});
 
     const handleInputChange = e => { setFormData({
         ...formData,
@@ -190,7 +191,7 @@ export default function CreateEvent() {
                             <div className="col padx-0">Month<input className="form-control text-center" name="fromMonth" type="number" value={formData.fromMonth} disabled /></div>
                             <div className="col padl-0">Day<input className="form-control text-center" name="fromDay" type="number" value={formData.fromDay} disabled /></div>
                             <div className="col padr-0">Hour
-                                <select className="form-control" ref={selectFromHourRef} name="fromHour" defaultValue={formData.fromHour} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectFromHourRef} name="fromHour" value={formData.fromHour} onChange={handleInputChange}>
                                     {[...Array(24).keys()].map(num => {
                                         let number = num.toString().length===1?'0'+num:num;
                                         return <option key={number} value={num}>{number}</option>
@@ -198,7 +199,7 @@ export default function CreateEvent() {
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
-                                <select className="form-control" ref={selectFromMinuteRef} name="fromMinute" defaultValue={formData.fromMinute} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectFromMinuteRef} name="fromMinute" value={formData.fromMinute} onChange={handleInputChange}>
                                     {[...Array(12).keys()].map(num => {
                                         let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
                                         return <option key={number} value={num*5}>{number}</option>
@@ -215,7 +216,7 @@ export default function CreateEvent() {
                             <div className="col padx-0">Month<input className="form-control text-center" name="toMonth" type="number" value={formData.toMonth} disabled /></div>
                             <div className="col padl-0">Day<input className="form-control text-center" name="toDay" type="number" value={formData.toDay} disabled /></div>
                             <div className="col padr-0">Hour
-                                <select className="form-control" ref={selectToHourRef} name="toHour" defaultValue={formData.toHour} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectToHourRef} name="toHour" value={formData.toHour} onChange={handleInputChange}>
                                     {[...Array(24).keys()].map(num => {
                                         let number = num.toString().length===1?'0'+num:num;
                                         return <option key={number} value={num}>{number}</option>  
@@ -223,7 +224,7 @@ export default function CreateEvent() {
                                 </select>
                             </div>
                             <div className="col padl-0">Minute
-                                <select className="form-control" ref={selectToMinuteRef} name="toMinute" defaultValue={formData.toMinute} onChange={handleInputChange}>
+                                <select className="form-control" ref={selectToMinuteRef} name="toMinute" value={formData.toMinute} onChange={handleInputChange}>
                                     {[...Array(12).keys()].map(num => {
                                         let number = (num*5).toString().length===1?'0'+(num*5):(num*5);
                                         return <option key={number} value={num*5}>{number}</option>

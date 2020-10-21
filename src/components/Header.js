@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 
 export default function Header(){
+
   return(
     <header className="header-of-page">
         <div className="col-3 nav-menu">
@@ -13,6 +14,5 @@ export default function Header(){
             <Link to="/register"><h4 className="user-btn">Register</h4></Link>
         </div>
     </header>
-
-  )
+  );
 }
