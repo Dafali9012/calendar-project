@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Calendar from "./components/Calendar";
 import CreateEvent from "./components/CreateEvent";
+import MonthView from "./components/MonthView"
+
 
 export default function App() {
   return (
@@ -17,6 +19,7 @@ export default function App() {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/createevent" component={CreateEvent} />
+            <Route path="/" component={MonthView} />
           </Switch>
         </div>
       </div>
