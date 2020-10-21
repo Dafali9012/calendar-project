@@ -18,9 +18,9 @@ export default function MonthView(){
     }; 
   
     let currentWeek = today.getWeek();
-    let currentYear = today.getFullYear()
-    let currentMonth = today.getMonth()
-    let numberOfcurrentMonth = (currentMonth+1) //Returns the month represented as a number
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    let numberOfcurrentMonth = (currentMonth+1); //Returns the month represented as a number
     const [month, setMonth] = useState(currentMonth);
     //const [year, setYear] = useState(currentYear);
 
@@ -29,7 +29,7 @@ export default function MonthView(){
     }*/
     function nextMonth(){
         currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-        setMonth((month + 1) % 12) 
+        setMonth((month + 1) % 12)
     }
     function prevMonth(){
         currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
@@ -80,36 +80,90 @@ export default function MonthView(){
             break;
         }
     }
-
+    
     return (
-         <div className="container">
-            <div className="row mb-5">
-            <div className="h5 text-center col my-auto">{currentYear}</div>
-            <button onClick={() => prevMonth()} type="button" className="btn btn-primary btn-sm">Prev</button>
-            <div className="h1 text-center col">{monthNames[month]}</div>
-            <button onClick={() => nextMonth()} type="button" className="btn btn-primary btn-sm">Next</button>
-            <div className="h5 text-center col my-auto">{currentWeek}</div>
+        <div className="pt-4">
+            <h3 className="row justify-content-center align-items-center">{currentYear}</h3>
+            <h5 className="row justify-content-center align-items-center">{"v."+currentWeek}</h5>
+            
+            <div className="row justify-content-center align-items-center">
+                <button className="col-2 btn btn-primary" onClick={prevMonth}>Previous Month</button>
+                <h4 className="col-4 text-center">{monthNames[month]}</h4>
+                <button className="col-2 btn btn-primary" onClick={nextMonth}>Next Month</button>
             </div>
-        <div className="row float-right w-100">
-            {firstWeek.map(firstWeek => 
-            (<div className="col border p-4" key={firstWeek}>{firstWeek}</div>))}
+            <div className="row my-4">
+                <h5 className="col text-center">Monday</h5>
+                <h5 className="col text-center">Tuesday</h5>
+                <h5 className="col text-center">Wednesday</h5>
+                <h5 className="col text-center">Thursday</h5>
+                <h5 className="col text-center">Friday</h5>
+                <h5 className="col text-center">Saturday</h5>
+                <h5 className="col text-center">Sunday</h5>
+            </div>
+            <div className="row mb-5 h-100">
+                {[...Array(7-firstWeek.length).keys()].map((x,i)=>{
+                    return <div className="col mx-1" key={i} />
+                })}
+
+                {firstWeek.map((x,i)=>{
+                    return <div className="col bg-dark form-control text-white mx-1 h-100" key={i}>{x}</div>
+                })}
+            </div>
+            <div className="row my-5">
+                {secondWeek.map((x,i)=>{
+                    return <div className="col bg-dark form-control text-white mx-1" key={i}>{x}</div>
+                })}
+            </div>
+            <div className="row my-5">
+                {thirdWeek.map((x,i)=>{
+                    return <div className="col bg-dark form-control text-white mx-1" key={i}>{x}</div>
+                })}
+            </div>
+            <div className="row my-5">
+                {fourthWeek.map((x,i)=>{
+                    return <div className="col bg-dark form-control text-white mx-1" key={i}>{x}</div>
+                })}
+            </div>
+            <div className="row mt-5">
+                {fifthWeek.map((x,i)=>{
+                    console.log(fifthWeek.length);
+                    return <div className="col bg-dark form-control text-white mx-1" key={i}>{x}</div>
+                })}
+
+                {[...Array(7-fifthWeek.length).keys()].map((x,i)=>{
+                    return <div className="col mx-1" key={i} />
+                })}
+            </div>
         </div>
-        <div className="row float-right w-100">
-            {secondWeek.map(secondWeek => 
-            (<div className="col border p-4" key={secondWeek}>{secondWeek}</div>))}
-        </div>
-        <div className="row float-right w-100">
-            {thirdWeek.map(thirdWeek => 
-            (<div className="col border p-4" key={thirdWeek}>{thirdWeek}</div>))}
-        </div>
-        <div className="row float-right w-100">
-            {fourthWeek.map(fourthWeek => 
-            (<div className="col border p-4" key={fourthWeek}>{fourthWeek}</div>))}
-        </div>
-        <div className="row float-right w-100">
-            {fifthWeek.map(fifthWeek => 
-            (<div className="col border p-4" key={fifthWeek}>{fifthWeek}</div>))}
-        </div>
-        </div>
+    );
+    
+
+    /*
+    return (
+        <>
+            <div className="row mb-5">
+                <div className="h5 text-center col my-auto">{currentYear}</div>
+                <button onClick={() => prevMonth()} type="button" className="btn btn-primary btn-sm">Prev</button>
+                <div className="h1 text-center col">{monthNames[month]}</div>
+                <button onClick={() => nextMonth()} type="button" className="btn btn-primary btn-sm">Next</button>
+                <div className="h5 text-center col my-auto">{currentWeek}</div>
+            </div>
+            <div className="row float-right w-100">
+                {firstWeek.map(firstWeek => (<div className="col border p-4" key={firstWeek}>{firstWeek}</div>))}
+            </div>
+            <div className="row float-right w-100">
+                {secondWeek.map(secondWeek => (<div className="col border p-4" key={secondWeek}>{secondWeek}</div>))}
+            </div>
+            <div className="row float-right w-100">
+                {thirdWeek.map(thirdWeek => (<div className="col border p-4" key={thirdWeek}>{thirdWeek}</div>))}
+            </div>
+            <div className="row float-right w-100">
+                {fourthWeek.map(fourthWeek => (<div className="col border p-4" key={fourthWeek}>{fourthWeek}</div>))}
+            </div>
+            <div className="row float-right w-100">
+                {fifthWeek.map(fifthWeek => (<div className="col border p-4" key={fifthWeek}>{fifthWeek}</div>))}
+            </div>
+        </>
       );
+      */
 }

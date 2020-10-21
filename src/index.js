@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import App from './App';
-import Months from './views/monthview.js'
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import './sass/style.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Months />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
