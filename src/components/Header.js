@@ -10,6 +10,7 @@ export default function Header(){
             <Link to="/"><h3 className="link">Calendar</h3></Link>
         </div>
         <div className="header-user col-3">
+            <Link to="/dayview"><h4 className="link">Today</h4></Link>
             <Link to="/login"><h4 className="link">Login</h4></Link>
             <Link to="/register"><h4 className="user-btn">Register</h4></Link>
             <Link to="/createevent" >Create Event</Link>
