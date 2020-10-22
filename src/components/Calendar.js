@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Calendar(){
 
     const [view, setView] = useState("Month");
+    const [funFact, setFunFact] = useState();
+
+    useEffect(()=>{
+        fetchFunFact()
+    },[])
+
     const [date, setDate] = useState(new Date());
     let dateNow = new Date();
     let days = "";
+
+    const fetchFunFact = async () =>{
+        const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en'); //'random' = new fact each request, 'today' = Updates every 24 hours
+        const data = await resp.json();
+        setFunFact(data.text);
+    }
 
     function monthLength(month){
         return new Date(date.getFullYear(), month+1, 0).getDate();
@@ -177,6 +189,8 @@ export default function Calendar(){
                     return <div className="col m-1" key={i}></div>
                 }):null}
             </div>
+            <div className="row justify-content-center align-items-center mt-5" style={{fontWeight: "bold"}}>Fun fact of the day:</div>
+            <div className="row justify-content-center align-items-center">{funFact}</div>
         </div>
     );
 }
