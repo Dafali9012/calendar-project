@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-//import { Alert } from "reactstrap";
+import { Alert } from "reactstrap";
 
 export default function Register(props) {
   //this.app = app;
-
   //create state & update values after entering in input
   const [state, setState] = useState({
     email: "",
@@ -15,6 +14,7 @@ export default function Register(props) {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
+  const [showAlert, setShowAlert] = useState(false);
 
   const submitClick = (e) => {
     e.preventDefault();
@@ -23,10 +23,10 @@ export default function Register(props) {
       if (state.name.length && state.email.length && state.passwordConfirm.length) {
         registerNewUser();
       } else {
-        //setShowAlert("Please enter full details");
+        setShowAlert('Please enter full details');
       }
     } else {
-        //setShowAlert("Your password must match");
+        setShowAlert('Your password must match');
     }
   };
 
@@ -47,7 +47,6 @@ export default function Register(props) {
   const redirectHome = () => {
     props.history.push("/");
   };
-  //const [showAlert, setShowAlert] = useState(false);
 
   return (
     <div className="pt-4">
@@ -118,14 +117,13 @@ export default function Register(props) {
           </button>
         </form>
       </div>
-      {/*<Alert
+      <Alert
         color="danger"
-        className=""
+        className="my-5"
         isOpen={showAlert}
-        toggle={() => setShowAlert(false)}
-      >
+        toggle={() => setShowAlert(false)}>
         {showAlert}
-      </Alert>*/}
+      </Alert>
     </div>
   );
 }
