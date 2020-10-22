@@ -47,12 +47,15 @@
   }
   
   .submit{
-    background-color:  #b97763;
+    background-color:  #b97763!important;
     border: none;
     width: 100%;
 
     &:hover {
-        background-color:  #b97763c0;
+        background-color:  #b97763c0!important;
+    }
+    &:focus {
+      background-color:  #b97763!important;
     }
   }
   
