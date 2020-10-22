@@ -20,7 +20,4 @@ module.exports = class DbHandler {
   }
 };
 
-const db = sqlite3('./backend/database/calendarDB.db');
-
-
-
+//const db = sqlite3('./backend/database/calendarDB.db');

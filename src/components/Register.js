@@ -27,7 +27,7 @@ export default function Register() {
   async function registerNewUser(e) {
     e.preventDefault();
     delete state.passwordConfirm;
-    let result = await (
+    await (
       await fetch("/api/users/", {
         method: "POST",
         body: JSON.stringify(state),

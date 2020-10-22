@@ -5,7 +5,7 @@ module.exports = class Server {
   constructor(port = 3000) {
     this.port = port;
     this.startServer();
-    new RestApi(this.app, './backend/database/calendarDB.db');
+    new RestApi(this.app, './src/backend/database/calendarDB.db');
   }
 
   startServer() {
