@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert } from "reactstrap";
+//import { Alert } from "reactstrap";
 
 export default function Register(props) {
   //this.app = app;
@@ -23,10 +23,10 @@ export default function Register(props) {
       if (state.name.length && state.email.length && state.passwordConfirm.length) {
         registerNewUser();
       } else {
-        setShowAlert("Please enter full details");
+        //setShowAlert("Please enter full details");
       }
     } else {
-        setShowAlert("Your password must match");
+        //setShowAlert("Your password must match");
     }
   };
 
@@ -47,7 +47,7 @@ export default function Register(props) {
   const redirectHome = () => {
     props.history.push("/");
   };
-  const [showAlert, setShowAlert] = useState(false);
+  //const [showAlert, setShowAlert] = useState(false);
 
   return (
     <div className="pt-4">
@@ -118,14 +118,14 @@ export default function Register(props) {
           </button>
         </form>
       </div>
-      <Alert
+      {/*<Alert
         color="danger"
         className=""
         isOpen={showAlert}
         toggle={() => setShowAlert(false)}
       >
         {showAlert}
-      </Alert>
+      </Alert>*/}
     </div>
   );
 }

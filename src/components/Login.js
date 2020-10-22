@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
-import { Alert } from "reactstrap";
+//import { Alert } from "reactstrap";
 
 
 export default function Login(props) {
@@ -8,7 +8,7 @@ export default function Login(props) {
 
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
-  const [showAlert, setShowAlert] = useState(false);
+  //const [showAlert, setShowAlert] = useState(false);
   const updateValues = (e) => {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
@@ -79,14 +79,14 @@ export default function Login(props) {
           </div>
         </form>
       </div>
-      <Alert
+      {/*<Alert
         color="danger"
         className=""
         isOpen={showAlert}
         toggle={() => setShowAlert(false)}
       >
         {showAlert}
-      </Alert>
+      </Alert>*/}
     </div>
   );
 }
