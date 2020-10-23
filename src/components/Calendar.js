@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 export default function Calendar(){
 
-    const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
-
+    
     useEffect(()=>{
         fetchFunFact()
     },[])
-
-    const [date, setDate] = useState(new Date());
+    
+    const [view, setView] = useState("Month");
+    const [viewDate, setViewDate] = useState(new Date());
     let dateNow = new Date();
     let days = "";
 
@@ -20,41 +20,41 @@ export default function Calendar(){
     }
 
     function monthLength(month){
-        return new Date(date.getFullYear(), month+1, 0).getDate();
+        return new Date(viewDate.getFullYear(), month+1, 0).getDate();
     }
 
-    function dayName(dayDate) {
-        return new Date(date.getFullYear(), date.getMonth(), dayDate).toLocaleDateString("en-US", { weekday: 'long' });
+    function dayName(date) {
+        return new Date(viewDate.getFullYear(), viewDate.getMonth(), date).toLocaleDateString("en-US", { weekday: 'long' });
     }
 
-    function monthName(dateOfMonth) {
-        let weekDate = dateOfMonth;
+    function monthName(fullDate) {
+        let viewDateCopy = new Date(fullDate);
         let firstMonth;
         let secondMonth;
-        while(dayName(weekDate.getDate())!=="Monday") {
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()-1));
+        while(viewDateCopy.getDay()!==1) {
+            viewDateCopy.setDate(viewDateCopy.getDate()-1);
         }
-        firstMonth = weekDate.toLocaleDateString("en-US", { month: 'long' });
+        firstMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
         if(view==="Week") {
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()+6));
-            secondMonth = weekDate.toLocaleDateString("en-US", { month: 'long' });
+            viewDateCopy.setDate(viewDateCopy.getDate()+6);
+            secondMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
             if(secondMonth===firstMonth) return firstMonth;
             return firstMonth+" - "+secondMonth;
         }
         return firstMonth;
     }
 
-    function year(dateOfYear) {
-        let weekDate = dateOfYear;
+    function year(fullDate) {
+        let viewDateCopy = new Date(fullDate);
         let firstYear;
         let secondYear;
-        while(dayName(weekDate.getDate())!=="Monday") {
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()-1));
+        while(viewDateCopy.getDay()!==1) {
+            viewDateCopy.setDate(viewDateCopy.getDate()-1);
         }
-        firstYear = weekDate.getFullYear();
+        firstYear = viewDateCopy.getFullYear();
         if(view==="Week") {
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()+6));
-            secondYear = weekDate.getFullYear();
+            viewDateCopy.setDate(viewDateCopy.getDate()+6);
+            secondYear = viewDateCopy.getFullYear();
             if(secondYear===firstYear) return firstYear;
             return firstYear+" - "+secondYear;
         }
@@ -62,7 +62,7 @@ export default function Calendar(){
     }
 
     function buildMonth() {
-        for(let x of Array(monthLength(date.getMonth())).keys()) {
+        for(let x of Array(monthLength(viewDate.getMonth())).keys()) {
             days = days.concat((x+1)+".");
             days = dayName(x+1)==="Sunday"?days.concat("?"):days.concat("-");
         }
@@ -70,39 +70,40 @@ export default function Calendar(){
     }
 
     function buildWeek() {
-        let weekDate = date;
-        while(dayName(weekDate.getDate())!=="Monday") {
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()-1));
+        let viewDateCopy = new Date(viewDate);
+        while(viewDateCopy.getDay()!==1) {
+            viewDateCopy.setDate(viewDateCopy.getDate()-1);
+            console.log(viewDateCopy);
         }
         for(let x = 0; x < 7; x++) {
-            days = days.concat(weekDate.getDate()+".-");
-            weekDate = new Date(weekDate.setDate(weekDate.getDate()+1));
+            days = days.concat(viewDateCopy.getDate()+".-");
+            viewDateCopy.setDate(viewDateCopy.getDate()+1);
         }
         days = days.substring(0,days.length-1);
     }
 
     function next() {
+        let viewDateCopy = new Date(viewDate);
         if(view==="Month") {
-            let newDate = new Date(date.setMonth(date.getMonth()+1));
-            setDate(newDate);
+            viewDateCopy.setMonth(viewDateCopy.getMonth()+1);
         } else if(view==="Week") {
-            let newDate = new Date(date.setDate(date.getDate()+7));
-            setDate(newDate);
+            viewDateCopy.setDate(viewDateCopy.getDate()+7);
         }
+        setViewDate(new Date(viewDateCopy));
     }
 
     function prev() {
+        let viewDateCopy = new Date(viewDate);
         if(view==="Month") {
-            let newDate = new Date(date.setMonth(date.getMonth()-1));
-            setDate(newDate);
+            viewDateCopy.setMonth(viewDateCopy.getMonth()-1);
         } else if(view==="Week") {
-            let newDate = new Date(date.setDate(date.getDate()-7));
-            setDate(newDate);
+            viewDateCopy.setDate(viewDateCopy.getDate()-7);
         }
+        setViewDate(new Date(viewDateCopy));
     }
 
     function setToday() {
-        setDate(dateNow);
+        setViewDate(dateNow);
     }
 
     function changeView() {
@@ -127,17 +128,19 @@ export default function Calendar(){
     if(view==="Month") buildMonth();
     else if(view==="Week") buildWeek();
 
+    console.log(days);
+
     return (
         <div className="h-100">
-            <h3 className="row justify-content-center align-items-center py-4">{year(date)}</h3>
-            {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(date)}</h4>:null}
+            <h3 className="row justify-content-center align-items-center py-4">{year(viewDate)}</h3>
+            {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(viewDate)}</h4>:null}
 
             <div className="row align-items-center">
                 <button className="col-1 btn-sm btn-light" onClick={changeView}>{"view:"+view}</button>
                 <button className="col-1 btn-sm btn-light" onClick={setToday}>Today</button>
                 <div className="col-2"/>
                 <button className="col-1 btn-sm btn-light" onClick={prev}>{"<-"}</button>
-                <h4 className="col-2 text-center">{view==="Month"?monthName(date):"Week "+getWeekNumber(date)[1]}</h4>
+                <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
                 <button className="col-1 btn-sm btn-light" onClick={next}>{"->"}</button>
             </div>
             <div className="row my-4 border">
@@ -158,38 +161,41 @@ export default function Calendar(){
                     return <div className="col bg-light m-1" key={i}>{x}</div>
                 })}
             </div>
-            <div className="row h-10">
-                {days.split("?")[1]?days.split("?")[1].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
-                }):null}
-            </div>
-            <div className="row h-10">
-                {days.split("?")[2]?days.split("?")[2].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
-                }):null}
-            </div>
-            <div className="row h-10">
-                {days.split("?")[3]?days.split("?")[3].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
-                }):null}
-            </div>
-            <div className="row h-10">
-                {days.split("?")[4]?days.split("?")[4].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
-                }):null}
-                {days.split("?")[4]?[...Array(7-days.split("?")[4].split("-").length).keys()].map((x,i)=>{
-                    return <div className="col m-1" key={i}></div>
-                }):null}
-            </div>
-            <div className="row h-10">
-                {days.split("?")[5]?days.split("?")[5].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
-                }):null}
-                {days.split("?")[5]?[...Array(7-days.split("?")[5].split("-").length).keys()].map((x,i)=>{
-                    return <div className="col m-1" key={i}></div>
-                }):null}
-            </div>
-            <div className="row justify-content-center align-items-center mt-5" style={{fontWeight: "bold"}}>Fun fact of the day:</div>
+            {view==="Month"?
+            <>
+                <div className="row h-10">
+                    {days.split("?")[1].split("-").map((x,i)=>{
+                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                    })}
+                </div>
+                <div className="row h-10">
+                    {days.split("?")[2].split("-").map((x,i)=>{
+                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                    })}
+                </div>
+                <div className="row h-10">
+                    {days.split("?")[3].split("-").map((x,i)=>{
+                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                    })}
+                </div>
+                {days.split("?")[4]?<div className="row h-10">
+                    {days.split("?")[4].split("-").map((x,i)=>{
+                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                    })}
+                    {[...Array(7-days.split("?")[4].split("-").length).keys()].map((x,i)=>{
+                        return <div className="col m-1" key={i}></div>
+                    })}
+                </div>:null}
+                {days.split("?")[5]?<div className="row h-10">
+                    {days.split("?")[5].split("-").map((x,i)=>{
+                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                    })}
+                    {[...Array(7-days.split("?")[5].split("-").length).keys()].map((x,i)=>{
+                        return <div className="col m-1" key={i}></div>
+                    })}
+                </div>:null}
+            </>:null}
+            <div className="row justify-content-center align-items-center mt-5"><strong>Fun fact of the day:</strong></div>
             <div className="row justify-content-center align-items-center">{funFact}</div>
         </div>
     );

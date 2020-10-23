@@ -6,7 +6,6 @@ import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
 import Calendar from './components/Calendar';
 
-
 export default function App() {
   return (
     <Router>
