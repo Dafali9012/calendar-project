@@ -89,7 +89,6 @@ export default function Calendar(){
         } else if(view==="Week") {
             viewDateCopy.setDate(viewDateCopy.getDate()+7);
         }
-        console.log(viewDateCopy);
         setViewDate(new Date(viewDateCopy));
     }
 
@@ -101,7 +100,6 @@ export default function Calendar(){
         } else if(view==="Week") {
             viewDateCopy.setDate(viewDateCopy.getDate()-7);
         }
-        console.log(viewDateCopy);
         setViewDate(new Date(viewDateCopy));
     }
 
