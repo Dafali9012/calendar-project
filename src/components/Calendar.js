@@ -111,6 +111,9 @@ export default function Calendar(){
         if(view==="Month") setView("Week");
         else if(view==="Week") setView("Month");
     }
+   function getThisDate(date, month, year){
+        console.log(date + month + year)
+    }
 
     function getWeekNumber(d) {
         // Copy date so don't modify original
@@ -157,29 +160,29 @@ export default function Calendar(){
                     return <div className="col mx-1" key={i}></div>
                 })}
                 {days.split("?")[0].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" key={i}>{x}</div>
+                    return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                 })}
             </div>
             {view==="Month"?
             <>
                 <div className="row h-10">
                     {days.split("?")[1].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                     })}
                 </div>
                 <div className="row h-10">
                     {days.split("?")[2].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                     })}
                 </div>
                 <div className="row h-10">
                     {days.split("?")[3].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                     })}
                 </div>
                 {days.split("?")[4]?<div className="row h-10">
                     {days.split("?")[4].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                     })}
                     {[...Array(7-days.split("?")[4].split("-").length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
@@ -187,7 +190,7 @@ export default function Calendar(){
                 </div>:null}
                 {days.split("?")[5]?<div className="row h-10">
                     {days.split("?")[5].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" key={i}>{x}</div>
+                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
                     })}
                     {[...Array(7-days.split("?")[5].split("-").length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
