@@ -121,6 +121,13 @@ export default function Calendar(){
         else if(view==="Week") setView("Month");
     }
 
+    function compareDates(x, y) {
+        x.setHours(0,0,0,0);
+        y.setHours(0,0,0,0);
+        if(x.valueOf()===y.valueOf())return true;
+        return false;
+    }
+
     function printThis(x) {
         console.log(x);
     }
@@ -170,29 +177,39 @@ export default function Calendar(){
                     return <div className="col mx-1" key={i}></div>
                 })}
                 {days[0].map((x,i)=>{
-                    return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                    let classes = "col m-1";
+                    classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                    return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                 })}
             </div>
             {view==="Month"?
             <>
                 <div className="row h-10">
                     {days[1].map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                        let classes = "col m-1";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
                 <div className="row h-10">
                     {days[2].map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                        let classes = "col m-1";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
                 <div className="row h-10">
                     {days[3].map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                        let classes = "col m-1";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
                 {days[4]?<div className="row h-10">
                     {days[4].map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                        let classes = "col m-1";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                     {[...Array(7-days[4].length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
@@ -200,7 +217,9 @@ export default function Calendar(){
                 </div>:null}
                 {days[5]?<div className="row h-10">
                     {days[5].map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                        let classes = "col m-1";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                     {[...Array(7-days[5].length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
