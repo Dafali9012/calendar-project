@@ -31,34 +31,34 @@ export default function Calendar(){
         let viewDateCopy = new Date(fullDate);
         let firstMonth;
         let secondMonth;
-        while(viewDateCopy.getDay()!==1) {
-            viewDateCopy.setDate(viewDateCopy.getDate()-1);
-        }
-        firstMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
         if(view==="Week") {
+            while(viewDateCopy.getDay()!==1) {
+                viewDateCopy.setDate(viewDateCopy.getDate()-1);
+            }
+            firstMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
             viewDateCopy.setDate(viewDateCopy.getDate()+6);
             secondMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
             if(secondMonth===firstMonth) return firstMonth;
             return firstMonth+" - "+secondMonth;
         }
-        return firstMonth;
+        return viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
     }
 
     function year(fullDate) {
         let viewDateCopy = new Date(fullDate);
         let firstYear;
         let secondYear;
-        while(viewDateCopy.getDay()!==1) {
-            viewDateCopy.setDate(viewDateCopy.getDate()-1);
-        }
-        firstYear = viewDateCopy.getFullYear();
         if(view==="Week") {
+            while(viewDateCopy.getDay()!==1) {
+                viewDateCopy.setDate(viewDateCopy.getDate()-1);
+            }
+            firstYear = viewDateCopy.getFullYear();
             viewDateCopy.setDate(viewDateCopy.getDate()+6);
             secondYear = viewDateCopy.getFullYear();
             if(secondYear===firstYear) return firstYear;
             return firstYear+" - "+secondYear;
         }
-        return firstYear;
+        return viewDateCopy.getFullYear();;
     }
 
     function buildMonth() {
@@ -73,7 +73,6 @@ export default function Calendar(){
         let viewDateCopy = new Date(viewDate);
         while(viewDateCopy.getDay()!==1) {
             viewDateCopy.setDate(viewDateCopy.getDate()-1);
-            console.log(viewDateCopy);
         }
         for(let x = 0; x < 7; x++) {
             days = days.concat(viewDateCopy.getDate()+".-");
@@ -86,9 +85,11 @@ export default function Calendar(){
         let viewDateCopy = new Date(viewDate);
         if(view==="Month") {
             viewDateCopy.setMonth(viewDateCopy.getMonth()+1);
+            viewDateCopy.setDate(1);
         } else if(view==="Week") {
             viewDateCopy.setDate(viewDateCopy.getDate()+7);
         }
+        console.log(viewDateCopy);
         setViewDate(new Date(viewDateCopy));
     }
 
@@ -96,9 +97,11 @@ export default function Calendar(){
         let viewDateCopy = new Date(viewDate);
         if(view==="Month") {
             viewDateCopy.setMonth(viewDateCopy.getMonth()-1);
+            viewDateCopy.setDate(1);
         } else if(view==="Week") {
             viewDateCopy.setDate(viewDateCopy.getDate()-7);
         }
+        console.log(viewDateCopy);
         setViewDate(new Date(viewDateCopy));
     }
 
@@ -127,8 +130,6 @@ export default function Calendar(){
 
     if(view==="Month") buildMonth();
     else if(view==="Week") buildWeek();
-
-    console.log(days);
 
     return (
         <div className="h-100">
