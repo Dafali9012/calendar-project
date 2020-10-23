@@ -11,7 +11,7 @@ export default function Calendar(){
     const [view, setView] = useState("Month");
     const [viewDate, setViewDate] = useState(new Date());
     let dateNow = new Date();
-    let days = "";
+    let days = [];
 
     const fetchFunFact = async () =>{
         const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en'); //'random' = new fact each request, 'today' = Updates every 24 hours
@@ -24,7 +24,7 @@ export default function Calendar(){
     }
 
     function dayName(date) {
-        return new Date(viewDate.getFullYear(), viewDate.getMonth(), date).toLocaleDateString("en-US", { weekday: 'long' });
+        return date.toLocaleDateString("en-US", { weekday: 'long' });
     }
 
     function monthName(fullDate) {
@@ -44,7 +44,7 @@ export default function Calendar(){
         return viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
     }
 
-    function year(fullDate) {
+    function yearName(fullDate) {
         let viewDateCopy = new Date(fullDate);
         let firstYear;
         let secondYear;
@@ -62,23 +62,32 @@ export default function Calendar(){
     }
 
     function buildMonth() {
-        for(let x of Array(monthLength(viewDate.getMonth())).keys()) {
-            days = days.concat((x+1)+".");
-            days = dayName(x+1)==="Sunday"?days.concat("?"):days.concat("-");
+        let index = 1;
+        while(index<=monthLength(viewDate.getMonth())) {
+            let newWeek = [];
+            for(let x = index; x <= monthLength(viewDate.getMonth()); x++) {
+                let newDate = new Date(viewDate.getFullYear(),viewDate.getMonth(), x)
+                newWeek.push(newDate);
+                index = x + 1;
+                if(newDate.getDay()===0) {
+                    break;
+                }
+            }
+            days.push(newWeek);
         }
-        days = days.substring(0,days.length-1);
     }
 
     function buildWeek() {
+        let newWeek = [];
         let viewDateCopy = new Date(viewDate);
         while(viewDateCopy.getDay()!==1) {
             viewDateCopy.setDate(viewDateCopy.getDate()-1);
         }
         for(let x = 0; x < 7; x++) {
-            days = days.concat(viewDateCopy.getDate()+".-");
+            newWeek.push(new Date(viewDateCopy));
             viewDateCopy.setDate(viewDateCopy.getDate()+1);
         }
-        days = days.substring(0,days.length-1);
+        days.push(newWeek);
     }
 
     function next() {
@@ -111,8 +120,9 @@ export default function Calendar(){
         if(view==="Month") setView("Week");
         else if(view==="Week") setView("Month");
     }
-   function getThisDate(date, month, year){
-        console.log(date + month + year)
+
+    function printThis(x) {
+        console.log(x);
     }
 
     function getWeekNumber(d) {
@@ -134,7 +144,7 @@ export default function Calendar(){
 
     return (
         <div className="h-100">
-            <h3 className="row justify-content-center align-items-center py-4">{year(viewDate)}</h3>
+            <h3 className="row justify-content-center align-items-center py-4">{yearName(viewDate)}</h3>
             {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(viewDate)}</h4>:null}
 
             <div className="row align-items-center">
@@ -156,43 +166,43 @@ export default function Calendar(){
             </div>
 
             <div className="row h-10">
-                {[...Array(7-days.split("?")[0].split("-").length).keys()].map((x,i)=>{
+                {[...Array(7-days[0].length).keys()].map((x,i)=>{
                     return <div className="col mx-1" key={i}></div>
                 })}
-                {days.split("?")[0].split("-").map((x,i)=>{
-                    return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                {days[0].map((x,i)=>{
+                    return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                 })}
             </div>
             {view==="Month"?
             <>
                 <div className="row h-10">
-                    {days.split("?")[1].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                    {days[1].map((x,i)=>{
+                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
                 <div className="row h-10">
-                    {days.split("?")[2].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                    {days[2].map((x,i)=>{
+                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
                 <div className="row h-10">
-                    {days.split("?")[3].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                    {days[3].map((x,i)=>{
+                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
                 </div>
-                {days.split("?")[4]?<div className="row h-10">
-                    {days.split("?")[4].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                {days[4]?<div className="row h-10">
+                    {days[4].map((x,i)=>{
+                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
-                    {[...Array(7-days.split("?")[4].split("-").length).keys()].map((x,i)=>{
+                    {[...Array(7-days[4].length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
                     })}
                 </div>:null}
-                {days.split("?")[5]?<div className="row h-10">
-                    {days.split("?")[5].split("-").map((x,i)=>{
-                        return <div className="col bg-light m-1" onClick={e => getThisDate(x, monthName(viewDate), year(viewDate))} key={i}>{x}</div>
+                {days[5]?<div className="row h-10">
+                    {days[5].map((x,i)=>{
+                        return <div className="col bg-light m-1" onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
                     })}
-                    {[...Array(7-days.split("?")[5].split("-").length).keys()].map((x,i)=>{
+                    {[...Array(7-days[5].length).keys()].map((x,i)=>{
                         return <div className="col m-1" key={i}></div>
                     })}
                 </div>:null}
