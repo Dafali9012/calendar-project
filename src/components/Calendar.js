@@ -152,84 +152,46 @@ export default function Calendar(){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="h-100">
-            <h3 className="row justify-content-center align-items-center py-4">{yearName(viewDate)}</h3>
-            {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(viewDate)}</h4>:null}
+        <div className="d-flex flex-column h-100">
+            <div className="flex-shrink-0">
+                <h3 className="row justify-content-center align-items-center py-4">{yearName(viewDate)}</h3>
+                {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(viewDate)}</h4>:null}
 
-            <div className="row align-items-center">
-                <button className="col-1 btn-sm btn-light" onClick={changeView}>{"view:"+view}</button>
-                <button className="col-1 btn-sm btn-light" onClick={setToday}>Today</button>
-                <div className="col-2"/>
-                <button className="col-1 btn-sm btn-light" onClick={prev}>{"<-"}</button>
-                <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                <button className="col-1 btn-sm btn-light" onClick={next}>{"->"}</button>
+                <div className="row align-items-center">
+                    <button className="col-1 btn-sm btn-light" onClick={changeView}>{"view:"+view}</button>
+                    <button className="col-1 btn-sm btn-light" onClick={setToday}>Today</button>
+                    <div className="col-2"/>
+                    <button className="col-1 btn-sm btn-light" onClick={prev}>{"<-"}</button>
+                    <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
+                    <button className="col-1 btn-sm btn-light" onClick={next}>{"->"}</button>
+                </div>
+                <div className="row my-4 border">
+                    <h5 className="col text-center">Monday</h5>
+                    <h5 className="col text-center">Tuesday</h5>
+                    <h5 className="col text-center">Wednesday</h5>
+                    <h5 className="col text-center">Thursday</h5>
+                    <h5 className="col text-center">Friday</h5>
+                    <h5 className="col text-center">Saturday</h5>
+                    <h5 className="col text-center">Sunday</h5>
+                </div>
             </div>
-            <div className="row my-4 border">
-                <h5 className="col text-center">Monday</h5>
-                <h5 className="col text-center">Tuesday</h5>
-                <h5 className="col text-center">Wednesday</h5>
-                <h5 className="col text-center">Thursday</h5>
-                <h5 className="col text-center">Friday</h5>
-                <h5 className="col text-center">Saturday</h5>
-                <h5 className="col text-center">Sunday</h5>
-            </div>
-
-            <div className="row h-10">
+            <div className="row">
                 {[...Array(7-days[0].length).keys()].map((x,i)=>{
-                    return <div className="col m-1" key={i}></div>
+                    return <div className="col-grid-7" key={i}></div>
                 })}
-                {days[0].map((x,i)=>{
-                    let classes = "col m-1";
-                    classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                    return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                
+                {days.map((x)=>{
+                    return x.map((x,i)=>{
+                        let classes = "col-grid-7";
+                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
+                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
+                    })
                 })}
             </div>
-            {view==="Month"?
-            <>
-                <div className="row h-10">
-                    {days[1].map((x,i)=>{
-                        let classes = "col m-1";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })}
-                </div>
-                <div className="row h-10">
-                    {days[2].map((x,i)=>{
-                        let classes = "col m-1";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })}
-                </div>
-                <div className="row h-10">
-                    {days[3].map((x,i)=>{
-                        let classes = "col m-1";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })}
-                </div>
-                {days[4]?<div className="row h-10">
-                    {days[4].map((x,i)=>{
-                        let classes = "col m-1";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })}
-                    {[...Array(7-days[4].length).keys()].map((x,i)=>{
-                        return <div className="col m-1" key={i}></div>
-                    })}
-                </div>:null}
-                {days[5]?<div className="row h-10">
-                    {days[5].map((x,i)=>{
-                        let classes = "col m-1";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })}
-                    {[...Array(7-days[5].length).keys()].map((x,i)=>{
-                        return <div className="col m-1" key={i}></div>
-                    })}
-                </div>:null}
-            </>:null}
-            <div className="row justify-content-center align-items-center mt-5"><strong>Fun fact of the day:</strong></div>
-            <div className="row justify-content-center align-items-center">{funFact}</div>
+            <div className="flex-shrink-0 my-5">
+                <div className="row justify-content-center align-items-center"><strong>Fun fact of the day:</strong></div>
+                <div className="row justify-content-center align-items-center">{funFact}</div>
+            </div>
         </div>
     );
 }

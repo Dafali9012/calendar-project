@@ -19,6 +19,13 @@ body, #root, .App {
     padding-right: 0;
 }
 
+.col-grid-7 {
+    margin: .25rem .25rem;
+    width: calc(14.2857142857% - 0.5rem);
+    height: 5rem;
+    padding: .25rem .25rem;
+}
+
 .unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
