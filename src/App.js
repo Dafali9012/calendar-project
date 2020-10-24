@@ -9,9 +9,9 @@ import Calendar from './components/Calendar';
 export default function App() {
   return (
     <Router>
-      <div className="App h-100">
-        <Header />
-        <div className="container h-100">
+      <div className="App d-flex flex-column">
+        <Header className="header flex-shrink-0" />
+        <div className="container flex-grow-1">
           <Switch>
             <Route exact path="/" component={Calendar} />
             <Route path="/login" component={Login} />

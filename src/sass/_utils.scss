@@ -1,0 +1,41 @@
+body, #root, .App {
+    height: 100vh;
+}
+
+.h-10 {
+    height: 10%;
+}
+
+.padx-0 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.padl-0 {
+    padding-left: 0;
+}
+
+.padr-0 {
+    padding-right: 0;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

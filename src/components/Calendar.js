@@ -23,9 +23,11 @@ export default function Calendar(){
         return new Date(viewDate.getFullYear(), month+1, 0).getDate();
     }
 
+    /*
     function dayName(date) {
         return date.toLocaleDateString("en-US", { weekday: 'long' });
     }
+    */
 
     function monthName(fullDate) {
         let viewDateCopy = new Date(fullDate);
@@ -174,7 +176,7 @@ export default function Calendar(){
 
             <div className="row h-10">
                 {[...Array(7-days[0].length).keys()].map((x,i)=>{
-                    return <div className="col mx-1" key={i}></div>
+                    return <div className="col m-1" key={i}></div>
                 })}
                 {days[0].map((x,i)=>{
                     let classes = "col m-1";
