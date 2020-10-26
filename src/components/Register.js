@@ -20,28 +20,36 @@ export default function Register(props) {
     e.preventDefault();
     //if passwords match -> registerUser();
     if (state.password === state.passwordConfirm) {
-      if (state.name.length && state.email.length && state.passwordConfirm.length) {
+      if (
+        state.name.length &&
+        state.email.length &&
+        state.passwordConfirm.length
+      ) {
         registerNewUser();
       } else {
-        setShowAlert('Please enter full details');
+        setShowAlert(true);
       }
     } else {
-        setShowAlert('Your password must match');
+      setShowAlert(true);
     }
   };
 
   async function registerNewUser(e) {
     e.preventDefault();
     delete state.passwordConfirm;
-    await (
+    let add = await (
       await fetch("/api/users/", {
         method: "POST",
         body: JSON.stringify(state),
         headers: { "Content-Type": "application/json" },
       })
     ).json();
-    setState({ email: "", password: "", passwordConfirm: "", name: "" });
-    redirectHome();
+    if (add.error) {
+      setShowAlert(true);
+    } else {
+      setState({ email: "", password: "", passwordConfirm: "", name: "" });
+      redirectHome();
+    }
   }
 
   const redirectHome = () => {
@@ -119,10 +127,15 @@ export default function Register(props) {
       </div>
       <Alert
         color="danger"
-        className="my-5"
+        className="my-5 text-center"
         isOpen={showAlert}
-        toggle={() => setShowAlert(false)}>
-        {showAlert}
+        toggle={() => setShowAlert(false)}
+      >
+        <p>Something went wrong while registering your profile</p>
+        <hr />
+        <p className="mb-0">
+          Make sure to enter matching passwords/unused email
+        </p>
       </Alert>
     </div>
   );
