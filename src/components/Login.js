@@ -1,36 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
+import { UserContext } from "../Store";
+import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-  //this.app = app;
-
+  const [user, setUser] = useContext(UserContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
+  let [redirect, setRedirect] = useState(false);
   const updateValues = (e) => {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
 
-  //when clicking button
-  const submitClick = (e) => {
+  async function login(e) {
     e.preventDefault();
-    //if email/password entered -> post these
+
     if ((state.email && state.password) !== null) {
       const details = { email: state.email, password: state.password };
-      this.app.post("/api/login", details);
-      // ---> help <---
 
-      //redirect to home
-      redirectHome();
-    } else {
-      setShowAlert(true);
+      let result = await (
+        await fetch("/api/login", {
+          method: "POST",
+          body: JSON.stringify(details),
+          headers: { "Content-Type": "application/json" },
+        })
+      ).json();
+
+      if (result.error) {
+        setUser(null);
+        setShowAlert(true);
+        return;
+      }
+
+      setUser(result);
+      setRedirect(true);
     }
-  };
-  const redirectHome = () => {
-    props.history.push("/");
-  };
+  }
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="pt-4">
@@ -65,7 +77,7 @@ export default function Login(props) {
           </div>
 
           <button
-            onClick={submitClick}
+            onClick={login}
             type="submit"
             className="btn btn-primary mt-5"
           >

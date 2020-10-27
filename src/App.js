@@ -1,5 +1,6 @@
-import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UserContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -8,6 +9,8 @@ import Calendar from './components/Calendar';
 import Event from './components/Event';
 
 export default function App() {
+  const [user, setUser] = useContext(UserContext);
+  fetchUser();
   return (
     <Router>
       <div className="App d-flex flex-column">
@@ -24,4 +27,17 @@ export default function App() {
       </div>
     </Router>
   );
+
+  async function fetchUser() {
+    let result = await (
+      await fetch("/api/login", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setUser(result);
+    }
+  }
 }
