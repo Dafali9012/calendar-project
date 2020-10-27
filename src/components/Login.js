@@ -1,21 +1,21 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//import { Alert } from "reactstrap";
-
+import { Alert } from "reactstrap";
 
 export default function Login(props) {
   //this.app = app;
 
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
-  //const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const updateValues = (e) => {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
 
   //when clicking button
-  const submitClick = () => {
+  const submitClick = (e) => {
+    e.preventDefault();
     //if email/password entered -> post these
     if ((state.email && state.password) !== null) {
       const details = { email: state.email, password: state.password };
@@ -25,7 +25,7 @@ export default function Login(props) {
       //redirect to home
       redirectHome();
     } else {
-      //error message -> enter valid username/password
+      setShowAlert(true);
     }
   };
   const redirectHome = () => {
@@ -79,14 +79,14 @@ export default function Login(props) {
           </div>
         </form>
       </div>
-      {/*<Alert
+      <Alert
         color="danger"
         className=""
         isOpen={showAlert}
         toggle={() => setShowAlert(false)}
       >
-        {showAlert}
-      </Alert>*/}
+        <p>Make sure to enter correct details. User does not exist</p>
+      </Alert>
     </div>
   );
 }

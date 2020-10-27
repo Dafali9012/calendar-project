@@ -2,120 +2,106 @@ import React, { useState, useEffect } from 'react';
 
 export default function Calendar(){
 
+    const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
+    const [viewDate, setViewDate] = useState(new Date());
+    let dateNow = new Date();
+    let calendarData = [];
+
+    viewDate.setHours(0,0,0,0);
+    dateNow.setHours(0,0,0,0);
     
     useEffect(()=>{
         fetchFunFact()
     },[])
-    
-    const [view, setView] = useState("Month");
-    const [viewDate, setViewDate] = useState(new Date());
-    let dateNow = new Date();
-    let days = [];
 
     const fetchFunFact = async () =>{
-        const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en'); //'random' = new fact each request, 'today' = Updates every 24 hours
+        //'random' = new fact each request, 'today' = Updates every 24 hours
+        const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
         const data = await resp.json();
         setFunFact(data.text);
     }
 
-    function monthLength(month){
-        return new Date(viewDate.getFullYear(), month+1, 0).getDate();
-    }
-
-    /*
-    function dayName(date) {
-        return date.toLocaleDateString("en-US", { weekday: 'long' });
-    }
-    */
-
-    function monthName(fullDate) {
-        let viewDateCopy = new Date(fullDate);
+    function monthName(date) {
+        let a = new Date(date.getTime());
         let firstMonth;
         let secondMonth;
         if(view==="Week") {
-            while(viewDateCopy.getDay()!==1) {
-                viewDateCopy.setDate(viewDateCopy.getDate()-1);
+            while(a.getDay()!==1) {
+                a.setDate(a.getDate()-1);
             }
-            firstMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
-            viewDateCopy.setDate(viewDateCopy.getDate()+6);
-            secondMonth = viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
+            firstMonth = a.toLocaleDateString("en-US", { month: 'long' });
+            a.setDate(a.getDate()+6);
+            secondMonth = a.toLocaleDateString("en-US", { month: 'long' });
             if(secondMonth===firstMonth) return firstMonth;
             return firstMonth+" - "+secondMonth;
         }
-        return viewDateCopy.toLocaleDateString("en-US", { month: 'long' });
+        return a.toLocaleDateString("en-US", { month: 'long' });
     }
 
-    function yearName(fullDate) {
-        let viewDateCopy = new Date(fullDate);
+    function yearName(date) {
+        let a = new Date(date.getTime());
         let firstYear;
         let secondYear;
         if(view==="Week") {
-            while(viewDateCopy.getDay()!==1) {
-                viewDateCopy.setDate(viewDateCopy.getDate()-1);
+            while(a.getDay()!==1) {
+                a.setDate(a.getDate()-1);
             }
-            firstYear = viewDateCopy.getFullYear();
-            viewDateCopy.setDate(viewDateCopy.getDate()+6);
-            secondYear = viewDateCopy.getFullYear();
+            firstYear = a.getFullYear();
+            a.setDate(a.getDate()+6);
+            secondYear = a.getFullYear();
             if(secondYear===firstYear) return firstYear;
             return firstYear+" - "+secondYear;
         }
-        return viewDateCopy.getFullYear();;
+        return a.getFullYear();;
     }
 
     function buildMonth() {
-        let index = 1;
-        while(index<=monthLength(viewDate.getMonth())) {
-            let newWeek = [];
-            for(let x = index; x <= monthLength(viewDate.getMonth()); x++) {
-                let newDate = new Date(viewDate.getFullYear(),viewDate.getMonth(), x)
-                newWeek.push(newDate);
-                index = x + 1;
-                if(newDate.getDay()===0) {
-                    break;
-                }
-            }
-            days.push(newWeek);
+        let a = new Date(viewDate.getTime());
+        a.setDate(1);
+        let b = new Date(a.getTime());
+        b.setMonth(a.getMonth()+1);
+        a.setDate(a.getDate() - (a.getDay()+6)%7);
+        b.setDate(b.getDate() + 7 - (b.getDay()+6)%7);
+        while(a.valueOf() < b.valueOf()) {
+            calendarData.push(new Date(a.getTime()));
+            a.setDate(a.getDate()+1);
         }
     }
 
     function buildWeek() {
-        let newWeek = [];
-        let viewDateCopy = new Date(viewDate);
-        while(viewDateCopy.getDay()!==1) {
-            viewDateCopy.setDate(viewDateCopy.getDate()-1);
-        }
+        let a = new Date(viewDate.getTime());
+        a.setDate(a.getDate() - (a.getDay()+6)%7);
         for(let x = 0; x < 7; x++) {
-            newWeek.push(new Date(viewDateCopy));
-            viewDateCopy.setDate(viewDateCopy.getDate()+1);
+            calendarData.push(new Date(a.getTime()));
+            a.setDate(a.getDate()+1);
         }
-        days.push(newWeek);
     }
 
     function next() {
-        let viewDateCopy = new Date(viewDate);
+        let a = new Date(viewDate.getTime());
         if(view==="Month") {
-            viewDateCopy.setMonth(viewDateCopy.getMonth()+1);
-            viewDateCopy.setDate(1);
+            a.setMonth(a.getMonth()+1);
+            a.setDate(1);
         } else if(view==="Week") {
-            viewDateCopy.setDate(viewDateCopy.getDate()+7);
+            a.setDate(a.getDate()+7);
         }
-        setViewDate(new Date(viewDateCopy));
+        setViewDate(new Date(a.getTime()));
     }
 
     function prev() {
-        let viewDateCopy = new Date(viewDate);
+        let a = new Date(viewDate.getTime());
         if(view==="Month") {
-            viewDateCopy.setMonth(viewDateCopy.getMonth()-1);
-            viewDateCopy.setDate(1);
+            a.setMonth(a.getMonth()-1);
+            a.setDate(1);
         } else if(view==="Week") {
-            viewDateCopy.setDate(viewDateCopy.getDate()-7);
+            a.setDate(a.getDate()-7);
         }
-        setViewDate(new Date(viewDateCopy));
+        setViewDate(new Date(a.getTime()));
     }
 
     function setToday() {
-        setViewDate(dateNow);
+        setViewDate(dateNow.getTime());
     }
 
     function changeView() {
@@ -123,15 +109,13 @@ export default function Calendar(){
         else if(view==="Week") setView("Month");
     }
 
-    function compareDates(x, y) {
-        x.setHours(0,0,0,0);
-        y.setHours(0,0,0,0);
-        if(x.valueOf()===y.valueOf())return true;
-        return false;
-    }
-
-    function printThis(x) {
-        console.log(x);
+    function joinClasses(classes) {
+        let result = "";
+        for(let key in classes) {
+            result = result.concat(classes[key]+" ");
+        }
+        result = result.substring(0,result.length-1);
+        return result;
     }
 
     function getWeekNumber(d) {
@@ -152,12 +136,12 @@ export default function Calendar(){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="d-flex flex-column h-100">
+        <div className="d-flex flex-column mt-4">
             <div className="flex-shrink-0">
-                <h3 className="row justify-content-center align-items-center py-4">{yearName(viewDate)}</h3>
-                {view==="Week"?<h4 className="row justify-content-center align-items-center mb-4">{monthName(viewDate)}</h4>:null}
+                <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
+                {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
 
-                <div className="row align-items-center">
+                <div className="row align-items-center mt-4">
                     <button className="col-1 btn-sm btn-light" onClick={changeView}>{"view:"+view}</button>
                     <button className="col-1 btn-sm btn-light" onClick={setToday}>Today</button>
                     <div className="col-2"/>
@@ -175,17 +159,12 @@ export default function Calendar(){
                     <h5 className="col text-center">Sunday</h5>
                 </div>
             </div>
-            <div className="row">
-                {[...Array(7-days[0].length).keys()].map((x,i)=>{
-                    return <div className="col-grid-7" key={i}></div>
-                })}
-                
-                {days.map((x)=>{
-                    return x.map((x,i)=>{
-                        let classes = "col-grid-7";
-                        classes = compareDates(x,dateNow)?classes.concat(" bg-secondary text-white"):classes.concat(" bg-light");
-                        return <div className={classes} onClick={()=>printThis(x)} key={i}>{x.getDate()}</div>
-                    })
+            <div className="row">    
+                {calendarData.map((x,i)=>{
+                    let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light"};
+                    if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
+                    if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
+                    return <div className={joinClasses(classes)} key={i}>{x.getDate()}</div>
                 })}
             </div>
             <div className="flex-shrink-0 my-5">
