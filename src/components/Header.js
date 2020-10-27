@@ -4,7 +4,6 @@ import { UserContext } from "../Store";
 
 export default function Header() {
   const [user, setUser] = useContext(UserContext);
-  console.log(user);
   return (
     <header className="header-of-page">
       <div className="col-3 nav-menu">
