@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Header(){
 
   return(
-    <header className="header-of-page">
+    <header className="header-of-page bg-primary">
         <div className="col-3 nav-menu">
             <Link to="/"><h3 className="link">Calendar</h3></Link>
         </div>

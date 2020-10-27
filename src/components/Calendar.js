@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function Calendar(){
 
@@ -145,9 +148,9 @@ export default function Calendar(){
                     <button className="col-1 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
                     <button className="col-1 btn-sm btn-info" onClick={setToday}>Today</button>
                     <div className="col-2"/>
-                    <button className="col-1 btn-sm btn-info" onClick={prev}>{"<-"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="col-1 btn-sm btn-info" onClick={next}>{"->"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
                 <div className="row my-4 border">
                     <h5 className="col text-center">Monday</h5>

@@ -107,8 +107,8 @@ export default function CreateEvent() {
         let eventObject = {
             title:formData.title,
             description:formData.description,
-            from:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
-            to:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'-'+formData.toHour+'-'+formData.toMinute
+            from:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'?'+formData.fromHour+':'+formData.fromMinute,
+            to:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'?'+formData.toHour+':'+formData.toMinute
         }
 
         /* disabled for testing
