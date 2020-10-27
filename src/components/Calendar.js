@@ -101,7 +101,7 @@ export default function Calendar(){
     }
 
     function setToday() {
-        setViewDate(dateNow.getTime());
+        setViewDate(new Date(dateNow.getTime()));
     }
 
     function changeView() {
@@ -136,7 +136,7 @@ export default function Calendar(){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="d-flex flex-column mt-4">
+        <div className="d-flex flex-column pt-4">
             <div className="flex-shrink-0">
                 <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}

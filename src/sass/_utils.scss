@@ -19,6 +19,14 @@ body, #root, .App {
     padding-right: 0;
 }
 
+.pad-0 {
+    padding: 0;
+}
+
+.mar-0 {
+    margin: 0;
+}
+
 .col-grid-7 {
     margin: .25rem .25rem;
     width: calc(14.285714285714285714285714285714285714285714285714285714285714285% - 0.5rem);
