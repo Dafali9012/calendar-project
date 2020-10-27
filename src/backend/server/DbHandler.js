@@ -14,10 +14,13 @@ module.exports = class DbHandler {
   }
 
   run(sql, parameters) {
-    let hashedPassword = this.passwordHandler.hashPassword(
-      parameters.password.toString()
-    );
-    parameters.password = hashedPassword;
+    if(parameters.password != null){
+      let hashedPassword = this.passwordHandler.hashPassword(
+        parameters.password.toString()
+      );
+      parameters.password = hashedPassword;
+    }
+    
     let statement = this.db.prepare(sql);
     return parameters ? statement.run(parameters) : statement.run();
   }
