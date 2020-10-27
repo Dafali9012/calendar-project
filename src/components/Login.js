@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
+import {UserContext} from "../Store"
 
 export default function Login(props) {
   //this.app = app;
-
+  const[user, setUser] = useContext(UserContext)
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
@@ -19,7 +20,7 @@ export default function Login(props) {
     //if email/password entered -> post these
     if ((state.email && state.password) !== null) {
       const details = { email: state.email, password: state.password };
-      this.app.post("/api/login", details);
+      this.app.post("/api/login", details)
       // ---> help <---
 
       //redirect to home
