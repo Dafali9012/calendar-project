@@ -67,7 +67,7 @@ export default function Login(props) {
           <button
             onClick={submitClick}
             type="submit"
-            className="btn btn-primary submit mt-5"
+            className="btn btn-primary mt-5"
           >
             Login
           </button>
