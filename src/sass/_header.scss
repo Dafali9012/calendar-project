@@ -1,7 +1,7 @@
 .header-of-page{
     display: flex;
     justify-content: space-between;
-    background: rgba(100, 61, 64, 0.699);
+    background: $primary;
     color: #ffffff;
     height: 10vh;
   }
@@ -16,11 +16,10 @@
     justify-content: space-around;
   }
   .user-btn{
-    background-color: #b97763;
+    //background-color: #b97763;
     border: none;
     color: #ffffff;
     text-align: center;
-    opacity: 0.6;
     transition: 0.3s;
     border-radius: 20px;
     width: 120px;
@@ -28,5 +27,3 @@
     text-align: center;
     text-decoration: none;
   }
-
-  .user-btn:hover {opacity: 1;}
