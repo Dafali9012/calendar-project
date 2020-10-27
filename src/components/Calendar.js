@@ -142,12 +142,12 @@ export default function Calendar(){
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
 
                 <div className="row align-items-center mt-4">
-                    <button className="col-1 btn-sm btn-light" onClick={changeView}>{"view:"+view}</button>
-                    <button className="col-1 btn-sm btn-light" onClick={setToday}>Today</button>
+                    <button className="col-1 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={setToday}>Today</button>
                     <div className="col-2"/>
-                    <button className="col-1 btn-sm btn-light" onClick={prev}>{"<-"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={prev}>{"<-"}</button>
                     <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="col-1 btn-sm btn-light" onClick={next}>{"->"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={next}>{"->"}</button>
                 </div>
                 <div className="row my-4 border">
                     <h5 className="col text-center">Monday</h5>
