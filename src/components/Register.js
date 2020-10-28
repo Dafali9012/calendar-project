@@ -36,8 +36,7 @@ export default function Register(props) {
     }
   };
 
-  async function registerNewUser(e) {
-    e.preventDefault();
+  async function registerNewUser() {
     delete state.passwordConfirm;
     let add = await (
       await fetch("/api/users/", {
