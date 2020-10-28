@@ -31,7 +31,7 @@ export default function CreateEvent() {
         },[]);
 
     // change to previous date adress
-    if(formData.done) { return <Redirect to="/" />; }
+    if(formData.done) { return <Redirect push to={{pathname:"/"}} />; }
 
     async function saveEvent(e) {
         e.preventDefault();

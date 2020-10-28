@@ -24,7 +24,7 @@ export default function App() {
             <Route path="/register" component={Register} />
             <Route path="/date" component={DateView} />
             <Route path="/create-event" component={CreateEvent} />
-            <Route path="/event" component={Event} />
+            <Route path="/event" render={(props)=> <Event {...props}/>} />
           </Switch>
         </div>
       </div>

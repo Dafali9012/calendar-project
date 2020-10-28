@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Event() {
+export default function Event(props) {
     
     const [event, setEvent] = useState({});
-    let { id } = useParams();
     let dateFrom = [];
     let dateTo = [];
 
     useEffect(()=>{
-        fetchEvent();
+        if(props.location.state.eventId===1)fetchEvent();
         // eslint-disable-next-line
     },[])
 
     async function fetchEvent() {
-        setEvent(await(await fetch(`/api/event/${id}`)).json());
+        setEvent(await(await fetch(`/api/event/`+props.location.state.eventId)).json());
     }
 
     function isObjectEmpty(obj) {
