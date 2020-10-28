@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
 import Calendar from "./components/Calendar";
+import DateView from "./components/DateView";
 import { UserContext } from "./Store";
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
             <Route exact path="/" component={Calendar} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/date" component={DateView} />
             <Route path="/createevent" component={CreateEvent} />
           </Switch>
         </div>

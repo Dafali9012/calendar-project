@@ -25,12 +25,14 @@ export default function Register(props) {
         state.email.length &&
         state.passwordConfirm.length
       ) {
-        registerNewUser();
+        registerNewUser(e);
       } else {
         setShowAlert(true);
+        setState({ name: "", email: "", password: "", passwordConfirm: ""});
       }
     } else {
       setShowAlert(true);
+      setState({password: "", passwordConfirm: ""});
     }
   };
 
@@ -46,11 +48,19 @@ export default function Register(props) {
     if (add.error) {
       setShowAlert(true);
     } else {
-      setState({ email: "", password: "", passwordConfirm: "", name: "" });
+      setState({ name: "", email: "", password: "", passwordConfirm: ""});
       redirectHome();
     }
   }
 
+  const clearFields = () => {
+    setState({ name: "", email: "", password: "", passwordConfirm: ""});
+  }
+
+  const redirectLogin = () => {
+    props.history.push("/login");
+  }
+  
   const redirectHome = () => {
     props.history.push("/");
   };
@@ -118,9 +128,24 @@ export default function Register(props) {
           <button
             onClick={submitClick}
             type="submit"
-            className="btn btn-primary submit mt-5"
+            className="btn btn-primary w-100 mt-5"
           >
             Register
+          </button>
+
+          <button
+            onClick={redirectLogin}
+            type="login"
+            className="col-5 btn btn-primary btn-sm mt-3"
+          >
+            <small>Login</small>
+          </button>
+
+          <button
+            onClick={clearFields}
+            type="clear"
+            className="col-5 btn btn-primary btn-sm mt-3 float-right">
+              <small>CLEAR</small>
           </button>
         </form>
       </div>
