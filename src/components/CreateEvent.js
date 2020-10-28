@@ -6,7 +6,7 @@ export default function CreateEvent() {
     const [formData, setFormData] = useState({
         title:'', description:'',
         fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
-        toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
+        toYear:'', toMonth:'', mainDate:'', toHour:'', toMinute:''});
     const [hidden, setHidden] = useState(true);
 
     const selectFromHourRef = useRef();
@@ -27,7 +27,7 @@ export default function CreateEvent() {
         {
             title:'', description:'',
             fromYear:date.getFullYear(), fromMonth:date.getMonth()+1, fromDay:date.getDate(), fromHour:dateHour, fromMinute:dateMinute,
-            toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute
+            toYear:date.getFullYear(), toMonth:date.getMonth()+1, mainDate:date.getDate(), toHour:dateHour, toMinute:dateMinute
         });
         },[]);
 
@@ -41,11 +41,11 @@ export default function CreateEvent() {
 
         let currentDate = new Date();
         let fromDate = new Date(formData.fromYear, formData.fromMonth-1, formData.fromDay, formData.fromHour, formData.fromMinute);
-        let toDate = new Date(formData.toYear, formData.toMonth-1, formData.toDay, formData.toHour, formData.toMinute);
+        let toDate = new Date(formData.toYear, formData.toMonth-1, formData.mainDate, formData.toHour, formData.toMinute);
         let lastDate = new Date(fromDate);
         lastDate.setDate(fromDate.getDate()+7);
 
-        // if startdate is equal to todays date
+        // if startdate is equal to mainDates date
         if(fromDate.getFullYear()===currentDate.getFullYear() &&
         fromDate.getMonth()===currentDate.getMonth() &&
         fromDate.getDate()===currentDate.getDate())
@@ -111,7 +111,7 @@ export default function CreateEvent() {
             title:formData.title,
             description:formData.description,
             from:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
-            to:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'-'+formData.toHour+'-'+formData.toMinute
+            to:formData.toYear+'-'+formData.toMonth+'-'+formData.mainDate+'-'+formData.toHour+'-'+formData.toMinute
         }
 
         /* disabled for testing
@@ -136,7 +136,7 @@ export default function CreateEvent() {
             ...formData,
             toYear:parseInt(splitDate[0]),
             toMonth:parseInt(splitDate[1]),
-            toDay:parseInt(splitDate[2])
+            mainDate:parseInt(splitDate[2])
         });
 
         hideModal(e);
@@ -217,7 +217,7 @@ export default function CreateEvent() {
                         <div className="row">
                             <div className="col padr-0">Year<input className="form-control text-center" name="toYear" type="number" value={formData.toYear} disabled /></div>
                             <div className="col padx-0">Month<input className="form-control text-center" name="toMonth" type="number" value={formData.toMonth} disabled /></div>
-                            <div className="col padl-0">Day<input className="form-control text-center" name="toDay" type="number" value={formData.toDay} disabled /></div>
+                            <div className="col padl-0">Day<input className="form-control text-center" name="mainDate" type="number" value={formData.mainDate} disabled /></div>
                             <div className="col padr-0">Hour
                                 <select className="form-control" ref={selectToHourRef} name="toHour" value={formData.toHour} onChange={handleInputChange}>
                                     {[...Array(24).keys()].map(num => {

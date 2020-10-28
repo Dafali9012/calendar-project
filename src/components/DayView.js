@@ -1,26 +1,39 @@
 import React, {useState} from 'react';
 
+
 export default function dayView(){
 
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
-    let tomorrowDate = String(today.getDate() + 1).padStart(2, '0');
-    let yesterdayDate = String(today.getDate() + 1).padStart(2, '0');
-    let tomorrow = new Date();
-    let yesterday = new Date();
+    let mainDate = new Date();
+    let nextDate = new Date();
+    let previousDate = new Date();
+    let dd = String(mainDate.getDate()).padStart(2, '0');
+    let mm = String(mainDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = mainDate.getFullYear();
+    let nextDateDate = String(mainDate.getDate() + 1).padStart(2, '0');
+    let previousDateDate = String(mainDate.getDate() -1).padStart(2, '0');
 
-    today = yyyy + '-' + dd + '-' + mm;
-    tomorrow = tomorrowDate;
-    yesterday = yesterdayDate;
+    mainDate = yyyy + '-' + dd + '-' + mm;
+    nextDate = yyyy + '-' + nextDateDate + '-' + mm;
+    previousDate = yyyy + '-' + previousDateDate + '-' + mm;
 
+    //Replace nextDate(date) to mainDate(date)
+    function editmainDateFromPreviousDate(){
+        mainDate = previousDateDate;
+        return mainDate;
+    }
     return (
         <div className="container justify-content-center mt-4">
             <section className="row d-flex justify-content-around">
-                <h4>{yesterday}</h4>
-                <h1>{today}</h1>
-                <h4>{tomorrow}</h4>
+                {/* Knappen finns endast som test så länge datumen inte är klickbara */}
+                <button className="btn-primary w-80 h-50"
+                onClick={() => editmainDateFromPreviousDate()}>Previous</button>
+
+                <h5 class="col-2 side-date"> {previousDate} </h5>
+                <h1 className="col-4 text-center"> {mainDate} </h1>
+                <h5 className="col-2 side-date"> {nextDate} </h5>
+
+                {/* Knappen finns endast som test så länge datumen inte är klickbara */}
+                <button className="btn-primary w-80 h-50">Next</button>
             </section>
                 <h3 className="mt-3 mb-3">Your Events</h3>
                 <p className="underLine" />
