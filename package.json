@@ -9,15 +9,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "bcrypt": "^5.0.0",
     "better-sqlite3": "^7.1.1",
     "bootstrap": "^4.5.3",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "node-sass": "^4.14.1",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-amazing-proxy": "^1.0.63",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.4"
+    "react-scripts": "^3.4.4",
+    "reactstrap": "^8.6.0"
   },
   "scripts": {
     "start": "node node_modules/react-amazing-proxy/start",

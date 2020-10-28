@@ -15,7 +15,6 @@ export default function CreateEvent() {
     const selectToMinuteRef = useRef();
 
     useEffect(()=>{
-        console.log("create event mounted")
         // change date values to the date we navigated from
         let date = new Date();
         let dateMinute = Math.ceil(date.getMinutes()/5)*5;
@@ -30,8 +29,6 @@ export default function CreateEvent() {
             toYear:date.getFullYear(), toMonth:date.getMonth()+1, mainDate:date.getDate(), toHour:dateHour, toMinute:dateMinute
         });
         },[]);
-
-    console.log(formData.fromHour, formData.fromMinute);
 
     // change to previous date adress
     if(formData.done) { return <Redirect to="/" />; }
@@ -158,7 +155,7 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="row justify-content-center">
+        <div className="row pt-4 justify-content-center">
             <div hidden={hidden} className="col mod-date h-100 w-100">
                 <div className="row h-100 justify-content-center align-items-center" onClick={hideModal}>
                     <div className="col-7 mod-date-content">
@@ -176,7 +173,7 @@ export default function CreateEvent() {
                 </div>
             </div>
             <form className="col-6" onSubmit={saveEvent}>
-                <h3 className="my-4">Create Event</h3>
+                <h3 className="mb-4">Create Event</h3>
                 <div className="form-group">
                     <label className="w-100"><strong>Title:</strong>
                         <input className="form-control" name="title" type="text" onChange={handleInputChange} required />
