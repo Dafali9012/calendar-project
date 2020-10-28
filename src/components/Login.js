@@ -21,7 +21,7 @@ export default function Login(props) {
     if ((state.email && state.password) !== null) {
       const details = { email: state.email, password: state.password };
 
-      let result = await (
+      let login = await (
         await fetch("/api/login", {
           method: "POST",
           body: JSON.stringify(details),
@@ -29,19 +29,30 @@ export default function Login(props) {
         })
       ).json();
 
-      if (result.error) {
+      if (login.error) {
+        setState({ email: "", password: ""});
         setUser(null);
         setShowAlert(true);
         return;
       }
-
-      setUser(result);
+      else {
+      setUser(login);
+      setState({ email: "", password: ""});
       setRedirect(true);
+      }
     }
   }
 
   if (redirect) {
     return <Redirect to="/" />;
+  }
+
+  const redirectRegister = () => {
+    props.history.push("/register");
+  }
+
+  const clearFields = () => {
+    setState({ email: "", password: ""});
   }
 
   return (
@@ -79,9 +90,25 @@ export default function Login(props) {
           <button
             onClick={login}
             type="submit"
-            className="btn btn-primary mt-5"
+            className="btn btn-primary w-100 mt-5"
           >
             Login
+          </button>
+
+          <button
+            onClick={redirectRegister}
+            type="login"
+            className="col-5 btn btn-primary btn-sm mt-3"
+          >
+            <small>Register</small>
+          </button>
+
+          <button
+            onClick={clearFields}
+            type="clear"
+            className="col-5 btn btn-primary btn-sm mt-3 float-right"
+          >
+            <small>CLEAR</small>
           </button>
 
           <div className="redirect mt-2">
