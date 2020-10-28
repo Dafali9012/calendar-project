@@ -47,6 +47,14 @@ export default function Login(props) {
     return <Redirect to="/" />;
   }
 
+  const redirectRegister = () => {
+    props.history.push("/register");
+  }
+
+  const clearFields = () => {
+    setState({ email: "", password: ""});
+  }
+
   return (
     <div className="pt-4">
       <div className="loginCard d-flex justify-content-center user-select-none">
@@ -85,6 +93,22 @@ export default function Login(props) {
             className="btn btn-primary w-100 mt-5"
           >
             Login
+          </button>
+
+          <button
+            onClick={redirectRegister}
+            type="login"
+            className="col-5 btn btn-primary btn-sm mt-3"
+          >
+            <small>Register</small>
+          </button>
+
+          <button
+            onClick={clearFields}
+            type="clear"
+            className="col-5 btn btn-primary btn-sm mt-3 float-right"
+          >
+            <small>CLEAR</small>
           </button>
 
           <div className="redirect mt-2">

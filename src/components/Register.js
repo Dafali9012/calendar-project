@@ -56,7 +56,6 @@ export default function Register(props) {
 
   const clearFields = () => {
     setState({ name: "", email: "", password: "", passwordConfirm: ""});
-    return;
   }
 
   const redirectLogin = () => {
@@ -138,16 +137,16 @@ export default function Register(props) {
           <button
             onClick={redirectLogin}
             type="login"
-            className="btn btn-primary login mt-1 p-0"
+            className="col-5 btn btn-primary btn-sm mt-3"
           >
-            Already a User
+            <small>Login</small>
           </button>
 
           <button
             onClick={clearFields}
             type="clear"
-            className="btn btn-primary login float-right mt-1 p-0">
-              Clear
+            className="col-5 btn btn-primary btn-sm mt-3 float-right">
+              <small>CLEAR</small>
           </button>
         </form>
       </div>
