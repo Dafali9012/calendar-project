@@ -1,6 +1,7 @@
-@import '../../node_modules/bootstrap/scss/bootstrap';
-@import 'create-event';
 @import 'variable-overrides';
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import 'utils';
 @import 'header';
-@import 'register';
 @import 'login';
+@import 'register';
+@import 'create-event';

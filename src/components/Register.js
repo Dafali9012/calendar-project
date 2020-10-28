@@ -20,30 +20,47 @@ export default function Register(props) {
     e.preventDefault();
     //if passwords match -> registerUser();
     if (state.password === state.passwordConfirm) {
-      if (state.name.length && state.email.length && state.passwordConfirm.length) {
-        registerNewUser();
+      if (
+        state.name.length &&
+        state.email.length &&
+        state.passwordConfirm.length
+      ) {
+        registerNewUser(e);
       } else {
-        setShowAlert('Please enter full details');
+        setShowAlert(true);
+        setState({ name: "", email: "", password: "", passwordConfirm: ""});
       }
     } else {
-        setShowAlert('Your password must match');
+      setShowAlert(true);
+      setState({password: "", passwordConfirm: ""});
     }
   };
 
-  async function registerNewUser(e) {
-    e.preventDefault();
+  async function registerNewUser() {
     delete state.passwordConfirm;
-    await (
+    let add = await (
       await fetch("/api/users/", {
         method: "POST",
         body: JSON.stringify(state),
         headers: { "Content-Type": "application/json" },
       })
     ).json();
-    setState({ email: "", password: "", passwordConfirm: "", name: "" });
-    redirectHome();
+    if (add.error) {
+      setShowAlert(true);
+    } else {
+      setState({ name: "", email: "", password: "", passwordConfirm: ""});
+      redirectHome();
+    }
   }
 
+  const clearFields = () => {
+    setState({ name: "", email: "", password: "", passwordConfirm: ""});
+  }
+
+  const redirectLogin = () => {
+    props.history.push("/login");
+  }
+  
   const redirectHome = () => {
     props.history.push("/");
   };
@@ -111,18 +128,38 @@ export default function Register(props) {
           <button
             onClick={submitClick}
             type="submit"
-            className="btn btn-primary submit mt-5"
+            className="btn btn-primary w-100 mt-5"
           >
             Register
+          </button>
+
+          <button
+            onClick={redirectLogin}
+            type="login"
+            className="col-5 btn btn-primary btn-sm mt-3"
+          >
+            <small>Login</small>
+          </button>
+
+          <button
+            onClick={clearFields}
+            type="clear"
+            className="col-5 btn btn-primary btn-sm mt-3 float-right">
+              <small>CLEAR</small>
           </button>
         </form>
       </div>
       <Alert
         color="danger"
-        className="my-5"
+        className="my-5 text-center"
         isOpen={showAlert}
-        toggle={() => setShowAlert(false)}>
-        {showAlert}
+        toggle={() => setShowAlert(false)}
+      >
+        <p>Something went wrong while registering your profile</p>
+        <hr />
+        <p className="mb-0">
+          Make sure to enter matching passwords/unused email
+        </p>
       </Alert>
     </div>
   );

@@ -1,36 +1,59 @@
-import React, {useState} from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-//import { Alert } from "reactstrap";
-
+import { Alert } from "reactstrap";
+import { UserContext } from "../Store";
+import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-  //this.app = app;
-
+  const [user,setUser] = useContext(UserContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
-  //const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  let [redirect, setRedirect] = useState(false);
   const updateValues = (e) => {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
 
-  //when clicking button
-  const submitClick = () => {
-    //if email/password entered -> post these
+  async function login(e) {
+    e.preventDefault();
+
     if ((state.email && state.password) !== null) {
       const details = { email: state.email, password: state.password };
-      this.app.post("/api/login", details);
-      // ---> help <---
 
-      //redirect to home
-      redirectHome();
-    } else {
-      //error message -> enter valid username/password
+      let login = await (
+        await fetch("/api/login", {
+          method: "POST",
+          body: JSON.stringify(details),
+          headers: { "Content-Type": "application/json" },
+        })
+      ).json();
+
+      if (login.error) {
+        setState({ email: "", password: ""});
+        setUser(null);
+        setShowAlert(true);
+        return;
+      }
+      else {
+      setUser(login);
+      setState({ email: "", password: ""});
+      setRedirect(true);
+      }
     }
-  };
-  const redirectHome = () => {
-    props.history.push("/");
-  };
+  }
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
+
+  const redirectRegister = () => {
+    props.history.push("/register");
+  }
+
+  const clearFields = () => {
+    setState({ email: "", password: ""});
+  }
 
   return (
     <div className="pt-4">
@@ -65,11 +88,27 @@ export default function Login(props) {
           </div>
 
           <button
-            onClick={submitClick}
+            onClick={login}
             type="submit"
-            className="btn btn-primary submit mt-5"
+            className="btn btn-primary w-100 mt-5"
           >
             Login
+          </button>
+
+          <button
+            onClick={redirectRegister}
+            type="login"
+            className="col-5 btn btn-primary btn-sm mt-3"
+          >
+            <small>Register</small>
+          </button>
+
+          <button
+            onClick={clearFields}
+            type="clear"
+            className="col-5 btn btn-primary btn-sm mt-3 float-right"
+          >
+            <small>CLEAR</small>
           </button>
 
           <div className="redirect mt-2">
@@ -79,14 +118,14 @@ export default function Login(props) {
           </div>
         </form>
       </div>
-      {/*<Alert
+      <Alert
         color="danger"
         className=""
         isOpen={showAlert}
         toggle={() => setShowAlert(false)}
       >
-        {showAlert}
-      </Alert>*/}
+        <p>Make sure to enter correct details. User does not exist</p>
+      </Alert>
     </div>
   );
 }
