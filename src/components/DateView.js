@@ -27,7 +27,7 @@ export default function DateView(){
                 <button className="btn-primary w-80 h-50"
                 onClick={() => editmainDateFromPreviousDate()}>Previous</button>
 
-                <h5 class="col-2 side-date"> {previousDate} </h5>
+                <h5 className="col-2 side-date"> {previousDate} </h5>
                 <h1 className="col-4 text-center"> {mainDate} </h1>
                 <h5 className="col-2 side-date"> {nextDate} </h5>
 

@@ -115,7 +115,7 @@ export default function CreateEvent() {
             author:user.id
         }
 
-            let response = await (
+            await (
               await fetch("/api/event", {
                 method: "POST",
                 body: JSON.stringify(eventObject),
