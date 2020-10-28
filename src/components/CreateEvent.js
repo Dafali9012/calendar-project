@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useRef ,useContext} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import {UserContext} from '../Store'
-export default function CreateEvent() {
 
-    // insignificant change
+export default function CreateEvent() {
 
     const [formData, setFormData] = useState({
         title:'', description:'',
         fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
-        toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
-
-    const[user, setUser] = useContext(UserContext);
+        toYear:'', toMonth:'', mainDate:'', toHour:'', toMinute:''});
     const [hidden, setHidden] = useState(true);
+
     const selectFromHourRef = useRef();
     const selectFromMinuteRef = useRef();
     const selectToHourRef = useRef();
@@ -110,20 +107,23 @@ export default function CreateEvent() {
         let eventObject = {
             title:formData.title,
             description:formData.description,
-            startDate:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
-            endDate:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'-'+formData.toHour+'-'+formData.toMinute,
-            userid:user.id
+            from:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
+            to:formData.toYear+'-'+formData.toMonth+'-'+formData.mainDate+'-'+formData.toHour+'-'+formData.toMinute
         }
 
-            let response = await (
-              await fetch("/api/event", {
-                method: "POST",
-                body: JSON.stringify(eventObject),
-                headers: { "Content-Type": "application/json" },
-              })
-            ).json();
+        /* disabled for testing
+        await(await fetch('/api/event', {
+            method:'POST',
+            body:JSON.stringify(eventObject),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })).json();
+        */
+        console.log(eventObject);
 
         setFormData({done:true});
+
         return true;
     }
 

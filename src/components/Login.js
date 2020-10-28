@@ -5,7 +5,7 @@ import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-  const [user,setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);

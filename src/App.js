@@ -11,9 +11,7 @@ import { UserContext } from "./Store";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  if(user == null){
-    fetchUser()
-  }
+  fetchUser();
   return (
     <Router>
       <div className="App d-flex flex-column">
