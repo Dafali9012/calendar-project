@@ -12,7 +12,9 @@ import DateView from './components/DateView';
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  fetchUser();
+  if(user == null){
+    fetchUser()
+  }
   return (
     <Router>
       <div className="App d-flex flex-column">
