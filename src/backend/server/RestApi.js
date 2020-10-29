@@ -45,12 +45,24 @@ module.exports = class RestApi {
     });
 
     this.expressApp.get(`/user/${table}/:id`, (req, res) => {
-      let result = this.database.select(
-        "SELECT * FROM " + table + " WHERE userid =" + req.params.id
-      );
-      if (result.length > 0) {
-        res.json(result);
-      } else {
+      console.log(req.session.user);
+      if(!req.session.user){
+          res.status(404);
+          res.json({ error: 404 });
+      }
+
+      if(req.session.user.id == req.params.id){
+        let result = this.database.select(
+          "SELECT * FROM " + table + " WHERE userid =" + req.params.id
+        );
+        if (result.length > 0) {
+          res.json(result);
+        } else {
+          res.status(404);
+          res.json({ error: 404 });
+        }
+      }
+       else {
         res.status(404);
         res.json({ error: 404 });
       }
