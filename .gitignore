@@ -24,4 +24,5 @@ yarn-error.log*
 
 # my folders
 /wireframes
+*.db
 src/backend/database/calendarDB.db
