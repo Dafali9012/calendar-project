@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 
 export default function Calendar(){
 
+    const [redirect, setRedirect] = useState({path:null});
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());
@@ -26,7 +27,7 @@ export default function Calendar(){
         setFunFact(data.text);
     }
 
-    if(view.done) { return <Redirect push to={{pathname:"/event", state:{eventId:view.done}}} />; }
+    if(redirect.path!=null) { return <Redirect push to={redirect.path} />; }
 
     function monthName(date) {
         let a = new Date(date.getTime());
@@ -170,7 +171,8 @@ export default function Calendar(){
                     let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
-                    return <div className={joinClasses(classes)} key={i} onClick={()=>setView({done:x.getDate()})}>{x.getDate()}</div>
+                    return <div className={joinClasses(classes)} key={i}
+                    onClick={()=>setRedirect({path:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>{x.getDate()}</div>
                 })}
             </div>
             <div className="flex-shrink-0 my-5">
