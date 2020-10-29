@@ -20,12 +20,30 @@ export default function App() {
         <Header className="header flex-shrink-0" />
         <div className="container flex-grow-1">
           <Switch>
-            <Route path="/login" render={() => {if(!user){return(<Login/>)}else{return(<Calendar/>)}}} />
-            <Route path="/register" component={Register} />
             
-            <Route exact path="/" render={() => {if(user){return(<Calendar/>)}else{return(<Login/>)}}} />
-            <Route path="/date" render={() => {if(user){return(<DateView/>)}else{return(<Login/>)}}} />
-            <Route path="/createevent" render={() => {if(user){return(<CreateEvent/>)}else{return(<Login/>)}}} />
+            <Route path="/login" render={() => {
+              if(!user){
+                return(<Login/>)}
+              return(<Calendar/>)}} />
+
+            <Route path="/register" 
+            component={Register} />
+            
+            <Route exact path="/" render={() => {
+              if(user){
+                return(<Calendar/>)}
+              return(<Login/>)}} />
+
+            <Route path="/date" render={() => {
+              if(user){
+                return(<DateView/>)}
+              return(<Login/>)}} />
+
+            <Route path="/createevent" render={() => {
+              if(user){
+                return(<CreateEvent/>)}
+              return(<Login/>)}} />
+
           </Switch>
         </div>
       </div>
