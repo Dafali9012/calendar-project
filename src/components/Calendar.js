@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import { UserContext } from "../Store";
 
 
@@ -26,9 +25,6 @@ export default function Calendar(){
         setFunFact(data.text);
     }
 
-    if(!user){
-        return <Redirect to="/login"/>
-      }
 
     function monthName(date) {
         let a = new Date(date.getTime());
