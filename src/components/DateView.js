@@ -17,9 +17,22 @@ export default function DateView(){
     nextDate = yyyy + '-' + nextDateDate + '-' + mm;
     previousDate = yyyy + '-' + previousDateDate + '-' + mm;
     */
+    useEffect(()=>{
+        fetchDateFact(dateSplit)
+    },[])
 
     const [redirect, setRedirect] = useState({path:null});
+    const [dateFact, setDateFact] = useState();
     const params = useParams();
+
+    const fetchDateFact = async (dateSplit) =>{
+        const baseURL = 'http://numbersapi.com/'
+        const date = dateSplit[1].toString()+'/'+dateSplit[2].toString()
+        const extension ='/date'
+        const resp = await fetch(baseURL+date+extension);
+        const data = await resp.text()
+        setDateFact(data);
+    }
 
     if(redirect.path!=null) return <Redirect push to={redirect.path}/>
     
@@ -69,6 +82,10 @@ export default function DateView(){
             <h3 className="mt-3 mb-3">Your Events</h3>
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
             <h6 className="mt-4 ml-2">No Events</h6>
+            <div>
+            <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
+        <div className="row justify-content-center align-items-center">{dateFact}</div>
+            </div>
         </div>
     ) 
 }

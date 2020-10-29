@@ -22,7 +22,7 @@ export default function Calendar(){
 
     const fetchFunFact = async () =>{
         //'random' = new fact each request, 'today' = Updates every 24 hours
-        const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+        const resp = await fetch('https://uselessfacts.jsph.pl/today.json?language=en');
         const data = await resp.json();
         setFunFact(data.text);
     }

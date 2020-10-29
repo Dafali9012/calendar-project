@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
   // eslint-disable-next-line
@@ -49,7 +50,8 @@ export default function Login(props) {
   }
 
   const redirectRegister = () => {
-    props.history.push("/register");
+    let path = '/register'; 
+      history.push(path);
   }
 
   const clearFields = () => {
@@ -98,7 +100,7 @@ export default function Login(props) {
 
           <button
             onClick={redirectRegister}
-            type="login"
+            type="button"
             className="col-5 btn btn-primary btn-sm mt-3"
           >
             <small>Register</small>
@@ -106,7 +108,7 @@ export default function Login(props) {
 
           <button
             onClick={clearFields}
-            type="clear"
+            type="button"
             className="col-5 btn btn-primary btn-sm mt-3 float-right"
           >
             <small>CLEAR</small>
