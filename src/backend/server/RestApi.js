@@ -53,7 +53,7 @@ module.exports = class RestApi {
 
       if(req.session.user.id == req.params.id){
         let result = this.database.select(
-          "SELECT * FROM " + table + " WHERE userid =" + req.params.id
+          "SELECT * FROM " + table + " WHERE id =" + req.params.id
         );
         if (result.length > 0) {
           res.json(result);

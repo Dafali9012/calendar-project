@@ -32,7 +32,7 @@ module.exports = class LoginHandler {
       let password = req.body.password;
       let requestResult = this.database.select(
         `SELECT *
-        FROM users
+        FROM user
         WHERE email = $email`,
         req.body
       );

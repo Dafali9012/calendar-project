@@ -4,7 +4,7 @@ import { Redirect, useParams } from 'react-router-dom';
 export default function DateView(){
 
     useEffect(()=>{
-        fetchDateFact(dateSplit)
+        // fetchDateFact(dateSplit)
         // eslint-disable-next-line
     },[])
 
