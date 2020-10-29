@@ -66,8 +66,6 @@ module.exports = class RestApi {
         res.json({ error: 404 });
       }
     });
-
-
   }
 
   getAllTables() {

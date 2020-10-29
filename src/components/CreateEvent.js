@@ -38,6 +38,8 @@ export default function CreateEvent() {
         // eslint-disable-next-line
     },[]);
 
+    console.log(user.id);
+
     if(redirect.path!=null) return <Redirect push to={redirect.path}/>
     
     let date = new Date();
@@ -123,10 +125,24 @@ export default function CreateEvent() {
             author:user.id
         }
 
-        await (
+        let result = await (
             await fetch("/api/event", {
                 method: "POST",
                 body: JSON.stringify(eventObject),
+                headers: { "Content-Type": "application/json" },
+            })
+        ).json();
+
+        let userEventObject = {
+            userId:user.id,
+            eventId:result.lastInsertRowid,
+            attending:"false"
+        }
+
+        await (
+            await fetch("/api/user_event", {
+                method: "POST",
+                body: JSON.stringify(userEventObject),
                 headers: { "Content-Type": "application/json" },
             })
         ).json();
