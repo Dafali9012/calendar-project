@@ -4,28 +4,25 @@ import {UserContext} from '../Store';
 
 export default function CreateEvent() {
 
+    // insignificant change
+
     const [formData, setFormData] = useState({
         title:'', description:'',
         fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
         toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
 
-    const [redirect, setRedirect] = useState({path:null});
-    // eslint-disable-next-line
-    const [user, setUser] = useContext(UserContext);
+    const[user, setUser] = useContext(UserContext);
     const [hidden, setHidden] = useState(true);
-
     const selectFromHourRef = useRef();
     const selectFromMinuteRef = useRef();
     const selectToHourRef = useRef();
     const selectToMinuteRef = useRef();
 
-    const params = useParams();
-
     useEffect(()=>{
         // change date values to the date we navigated from
-        let dateNow = new Date();
-        let dateMinute = Math.ceil(dateNow.getMinutes()/5)*5;
-        let dateHour = dateNow.getHours();
+        let date = new Date();
+        let dateMinute = Math.ceil(date.getMinutes()/5)*5;
+        let dateHour = date.getHours();
         dateHour = dateMinute===60?dateHour+1:dateHour
         dateMinute = dateMinute===60?0:dateMinute;
 
@@ -35,8 +32,7 @@ export default function CreateEvent() {
             fromYear:date.getFullYear(), fromMonth:date.getMonth()+1, fromDay:date.getDate(), fromHour:dateHour, fromMinute:dateMinute,
             toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute
         });
-        // eslint-disable-next-line
-    },[]);
+        },[]);
 
     console.log(user.id);
 
@@ -130,8 +126,8 @@ export default function CreateEvent() {
                 method: "POST",
                 body: JSON.stringify(eventObject),
                 headers: { "Content-Type": "application/json" },
-            })
-        ).json();
+              })
+            ).json();
 
         let userEventObject = {
             userId:user.id,
@@ -148,6 +144,7 @@ export default function CreateEvent() {
         ).json();
 
         setRedirect({path:"/date/"+params.date});
+
         return true;
     }
 
@@ -166,7 +163,7 @@ export default function CreateEvent() {
     const hideModal = (e) => { if(e.target===e.currentTarget) setHidden(true); }
     const showModal = () => setHidden(false);
 
-    const cancel = () => setRedirect({path:"/date/"+params.date});
+    const cancel = () => setFormData({done:"yes"});
 
     const handleInputChange = e => { setFormData({
         ...formData,

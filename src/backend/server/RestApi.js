@@ -16,10 +16,14 @@ module.exports = class RestApi {
     this.expressApp.post(`${this.routePrefix}/${table}`, (req, res) => {
       // res.json(this.database.select("SELECT * FROM " + table));
       res.json(
-      this.database.run(/*sql*/ `
+        this.database.run(
+          /*sql*/ `
         INSERT INTO ${table} (${Object.keys(req.body)})
         VALUES (${Object.keys(req.body).map((key) => "$" + key)})
-        `, req.body));
+        `,
+          req.body
+        )
+      );
     });
   }
 
@@ -56,16 +60,39 @@ module.exports = class RestApi {
       }
     });
 
+    this.expressApp.get(`/user/${table}/:id`, (req, res) => {
+      console.log(req.session.user);
+      if(!req.session.user){
+          res.status(404);
+          res.json({ error: 404 });
+      }
+
+      if(req.session.user.id == req.params.id){
+        let result = this.database.select(
+          "SELECT * FROM " + table + " WHERE id =" + req.params.id
+        );
+        if (result.length > 0) {
+          res.json(result);
+        } else {
+          res.status(404);
+          res.json({ error: 404 });
+        }
+      }
+       else {
+        res.status(404);
+        res.json({ error: 404 });
+      }
+    });
+
     this.expressApp.get(`${this.routePrefix}/p/${table}/:id`, (req, res) => {
       let result = this.database.select(
         "SELECT password FROM " + table + " WHERE id = $id",
         { id: req.params.id }
       );
       if (result.length > 0) {
-       let pass =  res.json(result[0].password);
-       return pass;
-      }
-      else {
+        let pass = res.json(result[0].password);
+        return pass;
+      } else {
         res.status(404);
         res.json({ error: 404 });
       }

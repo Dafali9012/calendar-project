@@ -9,7 +9,6 @@ import Calendar from './components/Calendar';
 import Event from './components/Event';
 import DateView from './components/DateView';
 
-
 export default function App() {
   const [user, setUser] = useContext(UserContext);
   if(user == null){

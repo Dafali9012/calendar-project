@@ -5,18 +5,15 @@ import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-  const [redirect, setRedirect] = useState({path:null});
-  // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
+  let [redirect, setRedirect] = useState(false);
   const updateValues = (e) => {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
-
-  if(redirect.path!=null) return <Redirect push to={redirect.path}/>;
 
   async function login(e) {
     e.preventDefault();
@@ -41,9 +38,17 @@ export default function Login(props) {
       else {
       setUser(login);
       setState({ email: "", password: ""});
-      setRedirect({path:"/"});
+      setRedirect(true);
       }
     }
+  }
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
+
+  const redirectRegister = () => {
+    props.history.push("/register");
   }
 
   const clearFields = () => {
@@ -91,8 +96,8 @@ export default function Login(props) {
           </button>
 
           <button
-            onClick={()=>setRedirect({path:"/register"})}
-            type="button"
+            onClick={redirectRegister}
+            type="login"
             className="col-5 btn btn-primary btn-sm mt-3"
           >
             <small>Register</small>
@@ -100,7 +105,7 @@ export default function Login(props) {
 
           <button
             onClick={clearFields}
-            type="button"
+            type="clear"
             className="col-5 btn btn-primary btn-sm mt-3 float-right"
           >
             <small>CLEAR</small>
