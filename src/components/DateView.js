@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
+import {UserContext} from '../Store';
 
 export default function DateView(){
 
@@ -9,6 +10,8 @@ export default function DateView(){
         // eslint-disable-next-line
     },[])
 
+    // eslint-disable-next-line
+    const [user, setUser] = useContext(UserContext);
     const [redirect, setRedirect] = useState({path:null});
     const [events, setEvents] = useState([]);
     const [dateFact, setDateFact] = useState();
@@ -23,16 +26,14 @@ export default function DateView(){
         setDateFact(data);
     }
 
-    console.log(redirect);
-
     const fetchEvents = async () => {
-        
+        setEvents(await(await fetch("/api/user_event/"+user.id)).json());
     }
 
     if(redirect.path!=null) {
         console.log("redirecting");
         return <Redirect push to={redirect.path}/>
-    }
+    } 
     
     let dateToday = new Date();
     let viewDate = new Date();
@@ -53,30 +54,36 @@ export default function DateView(){
 
     function previous(){
         viewDate.setDate(viewDate.getDate()-1)
-        setRedirect({path:"/date/"+viewDate.getFullYear()+'-'+(viewDate.getMonth()+1)+'-'+viewDate.getDate()})
+        dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
+        setRedirect({path:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
     function next(){
         viewDate.setDate(viewDate.getDate()+1)
-        setRedirect({path:"/date/"+viewDate.getFullYear()+'-'+(viewDate.getMonth()+1)+'-'+viewDate.getDate()})
+        dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
+        setRedirect({path:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
 
     return (
         <div className="mt-4">
             <section className="d-flex justify-content-center align-items-center">
                 
-                <button className="btn-sm btn-primary" onClick={()=>previous()}>Previous</button>
+                <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
 
                 <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
 
-                <button className="btn-sm btn-primary" onClick={()=>next()}>Next</button>
+                <button className="btn-sm btn-primary" onClick={next}>Next</button>
             </section>
             { viewDate.valueOf()>=dateToday.valueOf()?
             <div className="d-flex flex-column align-items-center mt-4">
                 <button className="btn btn-primary" onClick={()=>setRedirect({path:"/date/"+params.date+"/create-event"})}>Create Event</button>
             </div>:null}
-            <h3 className="mt-3 mb-3">Your Events</h3>
+            <h3 className="mt-3 mb-3">Events</h3>
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
-            <h6 className="mt-4 ml-2">No Events</h6>
+            <div>
+                {events.map((x,i)=>{
+                    return <div key={i}>{x.userId} {x.eventId} {x.attending}</div>
+                })}
+            </div>
             <div>
                 <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
                 <div className="row justify-content-center align-items-center">{dateFact}</div>

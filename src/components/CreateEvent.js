@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef ,useContext} from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import {UserContext} from '../Store'
+import {UserContext} from '../Store';
 
 export default function CreateEvent() {
 
