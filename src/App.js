@@ -12,6 +12,7 @@ import DateView from './components/DateView';
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
+  setUser("hej")
   if(user == null){
     fetchUser()
   }
