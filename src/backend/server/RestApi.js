@@ -40,18 +40,19 @@ module.exports = class RestApi {
       }
     });
 
-        this.expressApp.get(`/${table}/:id`, (req, res) => {
-          let result = this.database.select(
-            "SELECT * FROM " + table + " WHERE userid = $id",
-            { id: req.params.id }
-          );
-          if (result.length > 0) {
-            res.json(result[0]);
-          } else {
-            res.status(404);
-            res.json({ error: 404 });
-          }
-        });
+    this.expressApp.get(`/${table}/:id`, (req, res) => {
+      let result = this.database.select(
+        "SELECT * FROM " + table + " WHERE userId = $id",
+        { id: req.params.id }
+      );
+      if (result.length > 0) {
+        res.json(result[0]);
+      } else {
+        res.status(404);
+        res.json({ error: 404 });
+      }
+    });
+
     this.expressApp.get(`${this.routePrefix}/p/${table}/:id`, (req, res) => {
       let result = this.database.select(
         "SELECT password FROM " + table + " WHERE id = $id",

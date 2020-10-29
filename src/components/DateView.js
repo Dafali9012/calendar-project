@@ -18,21 +18,27 @@ export default function DateView(){
     previousDate = yyyy + '-' + previousDateDate + '-' + mm;
     */
     useEffect(()=>{
-        fetchDateFact(dateSplit)
+        fetchDateFact(dateSplit);
+        fetchEvents();
         // eslint-disable-next-line
     },[])
 
     const [redirect, setRedirect] = useState({path:null});
+    const [events, setEvents] = useState([]);
     const [dateFact, setDateFact] = useState();
     const params = useParams();
 
     const fetchDateFact = async (dateSplit) =>{
-        const baseURL = 'http://numbersapi.com/'
-        const date = dateSplit[1].toString()+'/'+dateSplit[2].toString()
-        const extension ='/date'
+        const baseURL = 'http://numbersapi.com/';
+        const date = dateSplit[1].toString()+'/'+dateSplit[2].toString();
+        const extension ='/date';
         const resp = await fetch(baseURL+date+extension);
-        const data = await resp.text()
+        const data = await resp.text();
         setDateFact(data);
+    }
+
+    const fetchEvents = async () => {
+        
     }
 
     if(redirect.path!=null) return <Redirect push to={redirect.path}/>
@@ -67,7 +73,7 @@ export default function DateView(){
             <section className="d-flex justify-content-center align-items-center">
                 {/* Knappen finns endast som test så länge datumen inte är klickbara */}
                 
-                <button className="btn-sm btn-primary">Previous</button>
+                <button className="btn-sm btn-primary" onClick={prev}>Previous</button>
 
                 {/*<h5 className="col-2 side-date"> {} </h5>*/}
                 <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
