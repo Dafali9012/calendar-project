@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UserContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
-import Calendar from "./components/Calendar";
-import DateView from "./components/DateView";
-import { UserContext } from "./Store";
+import Calendar from './components/Calendar';
+import Event from './components/Event';
+import DateView from './components/DateView';
+
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
@@ -22,8 +24,10 @@ export default function App() {
             <Route exact path="/" component={Calendar} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route path="/date/:date" component={DateView} />
             <Route path="/date" component={DateView} />
-            <Route path="/createevent" component={CreateEvent} />
+            <Route path="/create-event" component={CreateEvent} /> {/* route /create-event/yyyy-mm-dd */}
+            <Route path="/event" render={(props)=> <Event {...props}/>} />
           </Switch>
         </div>
       </div>

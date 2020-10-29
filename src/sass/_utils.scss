@@ -11,12 +11,30 @@ body, #root, .App {
     padding-right: 0;
 }
 
+.padx-15 {
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.padx-20 {
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
 .padl-0 {
     padding-left: 0;
 }
 
 .padr-0 {
     padding-right: 0;
+}
+
+.pad-0 {
+    padding: 0;
+}
+
+.mar-0 {
+    margin: 0;
 }
 
 .col-grid-7 {
