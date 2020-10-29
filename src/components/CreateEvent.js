@@ -4,14 +4,15 @@ import {UserContext} from '../Store';
 
 export default function CreateEvent() {
 
-    // insignificant change
-
     const [formData, setFormData] = useState({
-        title:'', description:'',
-        fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
-        toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
+    title:'', description:'',
+    fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
+    toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
 
-    const[user, setUser] = useContext(UserContext);
+    const params = useParams();
+    const [redirect, setRedirect] = useState({path:null});
+    // eslint-disable-next-line
+    const [user, setUser] = useContext(UserContext);
     const [hidden, setHidden] = useState(true);
     const selectFromHourRef = useRef();
     const selectFromMinuteRef = useRef();
@@ -19,8 +20,6 @@ export default function CreateEvent() {
     const selectToMinuteRef = useRef();
 
     useEffect(()=>{
-        // change date values to the date we navigated from
-        let date = new Date();
         let dateMinute = Math.ceil(date.getMinutes()/5)*5;
         let dateHour = date.getHours();
         dateHour = dateMinute===60?dateHour+1:dateHour
@@ -32,6 +31,7 @@ export default function CreateEvent() {
             fromYear:date.getFullYear(), fromMonth:date.getMonth()+1, fromDay:date.getDate(), fromHour:dateHour, fromMinute:dateMinute,
             toYear:date.getFullYear(), toMonth:date.getMonth()+1, toDay:date.getDate(), toHour:dateHour, toMinute:dateMinute
         });
+        // eslint-disable-next-line
         },[]);
 
     console.log(user.id);

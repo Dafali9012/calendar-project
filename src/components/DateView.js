@@ -35,6 +35,7 @@ export default function DateView(){
         return <Redirect push to={redirect.path}/>
     }
     
+    let dateToday = new Date();
     let viewDate = new Date();
     if(params.date) {
         viewDate = new Date(params.date);
