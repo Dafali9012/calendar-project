@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Alert } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 export default function Register(props) {
+  const history = useHistory();
   //this.app = app;
   //create state & update values after entering in input
   const [state, setState] = useState({
@@ -58,7 +60,8 @@ export default function Register(props) {
   }
 
   const redirectLogin = () => {
-    props.history.push("/login");
+      let path = '/login'; 
+      history.push(path);
   }
   
   const redirectHome = () => {
@@ -135,7 +138,7 @@ export default function Register(props) {
 
           <button
             onClick={redirectLogin}
-            type="login"
+            type="button"
             className="col-5 btn btn-primary btn-sm mt-3"
           >
             <small>Login</small>
