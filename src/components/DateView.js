@@ -37,11 +37,16 @@ export default function DateView(){
         setDateFact(data);
     }
 
+    console.log(redirect);
+
     const fetchEvents = async () => {
         
     }
 
-    if(redirect.path!=null) return <Redirect push to={redirect.path}/>
+    if(redirect.path!=null) {
+        console.log("redirecting");
+        return <Redirect push to={redirect.path}/>
+    }
     
     let dateToday = new Date();
     let viewDate = new Date();
@@ -73,7 +78,9 @@ export default function DateView(){
             <section className="d-flex justify-content-center align-items-center">
                 {/* Knappen finns endast som test så länge datumen inte är klickbara */}
                 
-                <button className="btn-sm btn-primary" onClick={prev}>Previous</button>
+                <button className="btn-sm btn-primary" onClick={()=>{
+                    setRedirect({path:"/date/1990-12-05"})
+                }}>Previous</button>
 
                 {/*<h5 className="col-2 side-date"> {} </h5>*/}
                 <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>

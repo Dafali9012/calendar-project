@@ -25,11 +25,11 @@ export default function App() {
               if(user)return<Calendar />
               return<Login />}}
             />
-            <Route path="/login" render={()=>{
+            <Route exact path="/login" render={()=>{
               if(!user)return<Login/>
               return<Calendar />}}
             />
-            <Route path="/register" render={()=>{
+            <Route exact path="/register" render={()=>{
               if(!user)return<Register />
               return<Calendar />}}
             />
@@ -41,7 +41,7 @@ export default function App() {
               if(user)return<CreateEvent />;
               return <Login />}}
             />
-            <Route path="/event" render={(props) => {
+            <Route exact path="/event" render={(props) => {
               if(user)return<Event {...props} />
               return<Login />}}
             />
