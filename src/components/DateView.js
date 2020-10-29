@@ -60,7 +60,7 @@ export default function DateView(){
         <div className="mt-4">
             <section className="d-flex justify-content-center align-items-center">
                 
-                <button className="btn-sm btn-primary" onClick={prev}>Previous</button>
+                <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
 
                 <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
 
