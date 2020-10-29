@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../Store";
+
 
 export default function Calendar(){
 
+    const [user, setUser] = useContext(UserContext);
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());
@@ -21,6 +24,7 @@ export default function Calendar(){
         const data = await resp.json();
         setFunFact(data.text);
     }
+
 
     function monthName(date) {
         let a = new Date(date.getTime());

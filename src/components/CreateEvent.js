@@ -36,6 +36,10 @@ export default function CreateEvent() {
     // change to previous date adress
     if(formData.done) { return <Redirect to="/" />; }
 
+    if(user == null){
+        return <Redirect to="/login"/>
+      }
+
     async function saveEvent(e) {
         e.preventDefault();
 
