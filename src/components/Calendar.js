@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Redirect } from 'react-router-dom';
 
 export default function Calendar(){
 
+    const [redirect, setRedirect] = useState({path:null});
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());
@@ -17,11 +22,12 @@ export default function Calendar(){
 
     const fetchFunFact = async () =>{
         //'random' = new fact each request, 'today' = Updates every 24 hours
-        const resp = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+        const resp = await fetch('https://uselessfacts.jsph.pl/today.json?language=en');
         const data = await resp.json();
         setFunFact(data.text);
     }
 
+    if(redirect.path!=null) { return <Redirect push to={redirect.path} />; }
 
     function monthName(date) {
         let a = new Date(date.getTime());
@@ -102,7 +108,7 @@ export default function Calendar(){
     }
 
     function setToday() {
-        setViewDate(dateNow.getTime());
+        setViewDate(new Date(dateNow.getTime()));
     }
 
     function changeView() {
@@ -137,7 +143,7 @@ export default function Calendar(){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="d-flex flex-column mt-4">
+        <div className="d-flex flex-column pt-4">
             <div className="flex-shrink-0">
                 <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
@@ -146,9 +152,9 @@ export default function Calendar(){
                     <button className="col-1 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
                     <button className="col-1 btn-sm btn-info" onClick={setToday}>Today</button>
                     <div className="col-2"/>
-                    <button className="col-1 btn-sm btn-info" onClick={prev}>{"<-"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="col-1 btn-sm btn-info" onClick={next}>{"->"}</button>
+                    <button className="col-1 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
                 <div className="row my-4 border">
                     <h5 className="col text-center">Monday</h5>
@@ -165,7 +171,8 @@ export default function Calendar(){
                     let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
-                    return <div className={joinClasses(classes)} key={i}>{x.getDate()}</div>
+                    return <div className={joinClasses(classes)} key={i}
+                    onClick={()=>setRedirect({path:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>{x.getDate()}</div>
                 })}
             </div>
             <div className="flex-shrink-0 my-5">

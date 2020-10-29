@@ -34,11 +34,7 @@ export default function CreateEvent() {
         },[]);
 
     // change to previous date adress
-    if(formData.done) { return <Redirect to="/" />; }
-
-    if(user == null){
-        return <Redirect to="/login"/>
-      }
+    if(formData.done) { return <Redirect push to={{pathname:"/"}} />; }
 
     async function saveEvent(e) {
         e.preventDefault();
@@ -116,7 +112,7 @@ export default function CreateEvent() {
             description:formData.description,
             startDate:formData.fromYear+'-'+formData.fromMonth+'-'+formData.fromDay+'-'+formData.fromHour+'-'+formData.fromMinute,
             endDate:formData.toYear+'-'+formData.toMonth+'-'+formData.toDay+'-'+formData.toHour+'-'+formData.toMinute,
-            userid:user.id
+            author:user.id
         }
 
             await (

@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UserContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
-import Calendar from "./components/Calendar";
-import DateView from "./components/DateView";
-import { UserContext } from "./Store";
+import Calendar from './components/Calendar';
+import Event from './components/Event';
+import DateView from './components/DateView';
+
 
 export default function App() {
-  document.title = "Calendar"
   const [user, setUser] = useContext(UserContext);
   if(user == null){
     fetchUser()
@@ -39,9 +40,14 @@ export default function App() {
                 return(<DateView/>)}
               return(<Login/>)}} />
 
-            <Route path="/createevent" render={() => {
+            <Route path="/create-event" render={() => {
               if(user){
                 return(<CreateEvent/>)}
+              return(<Login/>)}} /> {/* route /create-event/yyyy-mm-dd */}
+            
+            <Route path="/event" render={(props) => {
+              if(user){
+                return(<Event {...props}/>)}
               return(<Login/>)}} />
 
           </Switch>
@@ -49,8 +55,6 @@ export default function App() {
       </div>
     </Router>
   );
-  
-
 
   async function fetchUser() {
     let result = await (
