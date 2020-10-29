@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
-import { useHistory } from "react-router-dom";
 
 export default function Register(props) {
-  const history = useHistory();
+  const [redirect, setRedirect] = useState({path:null});
   //this.app = app;
   //create state & update values after entering in input
   const [state, setState] = useState({
@@ -17,6 +17,8 @@ export default function Register(props) {
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
   const [showAlert, setShowAlert] = useState(false);
+
+  if(redirect.path!=null) return <Redirect to={redirect.path} />
 
   const submitClick = (e) => {
     e.preventDefault();
@@ -41,7 +43,7 @@ export default function Register(props) {
   async function registerNewUser() {
     delete state.passwordConfirm;
     let add = await (
-      await fetch("/api/users/", {
+      await fetch("/api/user/", {
         method: "POST",
         body: JSON.stringify(state),
         headers: { "Content-Type": "application/json" },
@@ -51,22 +53,13 @@ export default function Register(props) {
       setShowAlert(true);
     } else {
       setState({ name: "", email: "", password: "", passwordConfirm: ""});
-      redirectHome();
+      setRedirect({path:"/"})
     }
   }
 
   const clearFields = () => {
     setState({ name: "", email: "", password: "", passwordConfirm: ""});
   }
-
-  const redirectLogin = () => {
-      let path = '/login'; 
-      history.push(path);
-  }
-  
-  const redirectHome = () => {
-    props.history.push("/");
-  };
 
   return (
     <div className="pt-4">
@@ -137,7 +130,7 @@ export default function Register(props) {
           </button>
 
           <button
-            onClick={redirectLogin}
+            onClick={()=>setRedirect({path:"/login"})}
             type="button"
             className="col-5 btn btn-primary btn-sm mt-3"
           >

@@ -12,7 +12,6 @@ import DateView from './components/DateView';
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  setUser("hej")
   if(user == null){
     fetchUser()
   }
@@ -34,11 +33,11 @@ export default function App() {
               if(!user)return<Register />
               return<Calendar />}}
             />
-            <Route path={["/date/:date", "/date"]} render={() => {
+            <Route exact path={["/date/:date", "/date"]} render={() => {
               if(user)return<DateView />
               return<Login />}}
             />
-            <Route path="/date/:date/create-event" render={()=>{
+            <Route exact path="/date/:date/create-event" render={()=>{
               if(user)return<CreateEvent />;
               return <Login />}}
             />

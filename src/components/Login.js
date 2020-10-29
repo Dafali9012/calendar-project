@@ -5,11 +5,7 @@ import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-<<<<<<< HEAD
   const [redirect, setRedirect] = useState({path:null});
-=======
-  const history = useHistory();
->>>>>>> 72798af016f96ec40eb446ee4e0f2c6ebc6eb402
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
   //create state & update values after entering in input
@@ -45,7 +41,7 @@ export default function Login(props) {
       else {
       setUser(login);
       setState({ email: "", password: ""});
-      setRedirect(true);
+      setRedirect({path:"/"});
       }
     }
   }

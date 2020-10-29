@@ -19,6 +19,7 @@ export default function DateView(){
     */
     useEffect(()=>{
         fetchDateFact(dateSplit)
+        // eslint-disable-next-line
     },[])
 
     const [redirect, setRedirect] = useState({path:null});
