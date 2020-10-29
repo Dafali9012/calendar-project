@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { UserContext } from "../Store";
-
+import React, { useState, useEffect } from 'react';
 
 export default function Calendar(){
 
-    const [user, setUser] = useContext(UserContext);
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());

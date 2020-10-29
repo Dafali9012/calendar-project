@@ -20,7 +20,7 @@ export default function App() {
         <Header className="header flex-shrink-0" />
         <div className="container flex-grow-1">
           <Switch>
-            
+
             <Route path="/login" render={() => {
               if(!user){
                 return(<Login/>)}
