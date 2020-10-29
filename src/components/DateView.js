@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 
 export default function DateView(){
@@ -36,7 +36,12 @@ export default function DateView(){
 
     if(redirect.path!=null) return <Redirect push to={redirect.path}/>
     
+    let dateToday = new Date();
     let viewDate = new Date();
+
+    dateToday.setHours(0,0,0,0);
+    viewDate.setHours(0,0,0,0);
+
     if(params.date) {
         viewDate = new Date(params.date);
     }
@@ -57,26 +62,30 @@ export default function DateView(){
     */
 
     return (
-        <>
-        <div className="justify-content-center mt-4">
-            <section className="row d-flex justify-content-around">
+        <div className="mt-4">
+            <section className="d-flex justify-content-center align-items-center">
                 {/* Knappen finns endast som test så länge datumen inte är klickbara */}
                 
-                <button className="btn-sm btn-primary w-80 h-50">Previous</button>
+                <button className="btn-sm btn-primary">Previous</button>
 
                 {/*<h5 className="col-2 side-date"> {} </h5>*/}
-                <h1 className="col-4 text-center"> {dateSplit.join("-")} </h1>
+                <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
                 {/*<h5 className="col-2 side-date"> {} </h5>*/}
 
                 {/* Knappen finns endast som test så länge datumen inte är klickbara */}
-                <button className="btn-sm btn-primary w-80 h-50">Next</button>
+                <button className="btn-sm btn-primary">Next</button>
             </section>
-                <h3 className="mt-3 mb-3">Your Events</h3>
-                <u><p style={{width:"100%"}}/></u>
-                <h6 className="mt-4 ml-2">No Events</h6>
-        </div>
-        <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
+            { viewDate.valueOf()>=dateToday.valueOf()?
+            <div className="d-flex flex-column align-items-center mt-4">
+                <button className="btn btn-primary" onClick={()=>setRedirect({path:"/date/"+params.date+"/create-event"})}>Create Event</button>
+            </div>:null}
+            <h3 className="mt-3 mb-3">Your Events</h3>
+            <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
+            <h6 className="mt-4 ml-2">No Events</h6>
+            <div>
+            <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
         <div className="row justify-content-center align-items-center">{dateFact}</div>
-        </>
+            </div>
+        </div>
     ) 
 }

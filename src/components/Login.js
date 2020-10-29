@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
-  const history = useHistory();
+  // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
