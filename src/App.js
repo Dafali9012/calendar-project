@@ -24,9 +24,8 @@ export default function App() {
             <Route exact path="/" component={Calendar} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/date/:date" component={DateView} />
-            <Route path="/date" component={DateView} />
-            <Route path="/create-event" component={CreateEvent} /> {/* route /create-event/yyyy-mm-dd */}
+            <Route path="/date/:date/create-event" component={CreateEvent} />
+            <Route exact path={["/date/:date", "/date"]} component={DateView} />
             <Route path="/event" render={(props)=> <Event {...props}/>} />
           </Switch>
         </div>
