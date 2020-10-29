@@ -27,31 +27,35 @@ module.exports = class RestApi {
       res.json(this.database.select("SELECT * FROM " + table));
     });
 
-    this.expressApp.get(`${this.routePrefix}/${table}/:id`, (req, res) => {
-      let result = this.database.select(
-        "SELECT * FROM " + table + " WHERE id = $id",
-        { id: req.params.id }
-      );
-      if (result.length > 0) {
-        res.json(result[0]);
-      } else {
-        res.status(404);
-        res.json({ error: 404 });
-      }
-    });
+    
 
-    this.expressApp.get(`/${table}/:id`, (req, res) => {
-      let result = this.database.select(
-        "SELECT * FROM " + table + " WHERE userId = $id",
-        { id: req.params.id }
-      );
-      if (result.length > 0) {
-        res.json(result[0]);
-      } else {
-        res.status(404);
-        res.json({ error: 404 });
-      }
-    });
+    if(table==="user_event") {
+      this.expressApp.get(`${this.routePrefix}/${table}/:id`, (req, res) => {
+        let result = this.database.select(
+          "SELECT * FROM " + table + " WHERE userId = $id",
+          { id: req.params.id }
+        );
+        if (result.length > 0) {
+          res.json(result);
+        } else {
+          res.status(404);
+          res.json({ error: 404 });
+        }
+      });
+    } else {
+      this.expressApp.get(`${this.routePrefix}/${table}/:id`, (req, res) => {
+        let result = this.database.select(
+          "SELECT * FROM " + table + " WHERE id = $id",
+          { id: req.params.id }
+        );
+        if (result.length > 0) {
+          res.json(result[0]);
+        } else {
+          res.status(404);
+          res.json({ error: 404 });
+        }
+      });
+    }
 
     this.expressApp.get(`${this.routePrefix}/p/${table}/:id`, (req, res) => {
       let result = this.database.select(
