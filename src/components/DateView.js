@@ -74,7 +74,7 @@ export default function DateView(){
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
             <div>
                 {events.map((x,i)=>{
-                    return <div key={i}>{x.userId} {x.eventId} {x.attending}</div>
+                    return <div key={i} onClick={()=>setRedirect({path:"/event"})}>{x.userId} {x.eventId} {x.attending}</div>
                 })}
             </div>
             <div>

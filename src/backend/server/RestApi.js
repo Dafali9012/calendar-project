@@ -35,12 +35,7 @@ module.exports = class RestApi {
           "SELECT * FROM " + table + " WHERE userId = $id",
           { id: req.params.id }
         );
-        if (result.length > 0) {
-          res.json(result);
-        } else {
-          res.status(404);
-          res.json({ error: 404 });
-        }
+        res.json(result);
       });
     } else {
       this.expressApp.get(`${this.routePrefix}/${table}/:id`, (req, res) => {
