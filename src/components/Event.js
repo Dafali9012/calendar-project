@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Event(props) {
+export default function Event() {
     
     const [event, setEvent] = useState({});
     let dateFrom = [];

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { UserContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -22,29 +22,29 @@ export default function App() {
         <Header className="header flex-shrink-0" />
         <div className="container flex-grow-1">
           <Switch>
-            <Route exact path="/" render={()=>{
+            <Route exact path="/" render={()=> {
               if(user!=null)return<Calendar />;
-              return<Login />}}
+              return<Redirect to="/login" />}}
             />
-            <Route exact path="/login" render={()=>{
+            <Route exact path="/login" render={()=> {
               if(user==null)return<Login/>;
-              return<Calendar />}}
+              return<Redirect to="/" />}}
             />
-            <Route exact path="/register" render={()=>{
+            <Route exact path="/register" render={()=> {
               if(user==null)return<Register />;
-              return<Calendar />}}
+              return<Redirect to="/" />}}
             />
             <Route exact path={["/date/:date", "/date"]} render={() => {
               if(user!=null)return<DateView />;
-              return<Login />}}
+              return<Redirect to="/login" />}}
             />
-            <Route exact path="/date/:date/create-event" render={()=>{
+            <Route exact path="/date/:date/create-event" render={()=> {
               if(user!=null)return<CreateEvent />;
-              return <Login />}}
+              return<Redirect to="/login" />}}
             />
-            <Route exact path="/event" render={(props) => {
-              if(user!=null)return<Event {...props} />;
-              return<Login />}}
+            <Route exact path="/event" render={() => {
+              if(user!=null)return<Event />;
+              return<Redirect to="/login" />}}
             />
           </Switch>
         </div>
