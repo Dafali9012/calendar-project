@@ -9,12 +9,12 @@ export default function Event(props) {
     let dateTo = [];
 
     useEffect(()=>{
-        if(props.location.state.eventId===1)fetchEvent();
+        fetchEvent();
         // eslint-disable-next-line
     },[])
 
     async function fetchEvent() {
-        setEvent(await(await fetch(`/api/event/`+props.location.state.eventId)).json());
+        setEvent(await(await fetch(`/api/event/1`)).json());
     }
 
     function isObjectEmpty(obj) {
@@ -25,11 +25,11 @@ export default function Event(props) {
     }
 
     if(!isObjectEmpty(event)) {
-        for(let x of event.from.split("-")) {
+        for(let x of event.startDate.split("-")) {
             if(x.length===1) dateFrom.push('0'+x);
             else dateFrom.push(x);
         };
-        for(let x of event.to.split("-")) {
+        for(let x of event.endDate.split("-")) {
             if(x.length===1) dateTo.push('0'+x);
             else dateTo.push(x);
         };
@@ -52,7 +52,6 @@ export default function Event(props) {
                         <h4 className="text-center mx-5">{dateTo[3]}:{dateTo[4]}</h4>
                     </div>
                 </div>
-                
             </div>
             <div className="col-12 d-flex mt-4 justify-content-center">
                 <button className="btn-sm btn-primary">Attend Event</button>

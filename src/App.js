@@ -15,6 +15,7 @@ export default function App() {
   if(user == null){
     fetchUser()
   }
+
   return (
     <Router>
       <div className="App d-flex flex-column">
@@ -22,27 +23,27 @@ export default function App() {
         <div className="container flex-grow-1">
           <Switch>
             <Route exact path="/" render={()=>{
-              if(user)return<Calendar />
+              if(user!=null)return<Calendar />;
               return<Login />}}
             />
             <Route exact path="/login" render={()=>{
-              if(!user)return<Login/>
+              if(user==null)return<Login/>;
               return<Calendar />}}
             />
             <Route exact path="/register" render={()=>{
-              if(!user)return<Register />
+              if(user==null)return<Register />;
               return<Calendar />}}
             />
             <Route exact path={["/date/:date", "/date"]} render={() => {
-              if(user)return<DateView />
+              if(user!=null)return<DateView />;
               return<Login />}}
             />
             <Route exact path="/date/:date/create-event" render={()=>{
-              if(user)return<CreateEvent />;
+              if(user!=null)return<CreateEvent />;
               return <Login />}}
             />
             <Route exact path="/event" render={(props) => {
-              if(user)return<Event {...props} />
+              if(user!=null)return<Event {...props} />;
               return<Login />}}
             />
           </Switch>
