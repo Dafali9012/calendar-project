@@ -106,11 +106,6 @@ export default function Login(props) {
             <small>CLEAR</small>
           </button>
 
-          <div className="redirect mt-2">
-            <Link to="/Register">
-              <label className="link">Create account</label>
-            </Link>
-          </div>
         </form>
       </div>
       <Alert

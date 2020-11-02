@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { UserContext } from "../Store";
 
@@ -14,7 +15,7 @@ export default function Header() {
   }
 
   async function deleteSession() {
-   let result = await (
+    let result = await (
       await fetch("/api/login", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -44,13 +45,27 @@ export default function Header() {
     <header className="header-of-page">
       <div className="col-3 nav-menu">
         <Link to="/">
-          <h3 className="link">Calendar</h3>
+          <h1 className="link"><strong>Calendar</strong></h1>
         </Link>
       </div>
+
       <div className="header-user col-3">
-        {user == null ? register() : <h4>{user.name}</h4>}
-        {user == null ? login() : logout()}
+
+      <UncontrolledDropdown>
+        <DropdownToggle>
+        {user == null ? <h4>Menu</h4> : <h4>{user.name}</h4>}
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>{user == null ? login() : ''}</DropdownItem>
+          <DropdownItem>{user == null ? register() : ''}</DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>{user == null ? '' : logout()}</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
       </div>
+      
     </header>
   );
 }
