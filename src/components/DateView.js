@@ -1,42 +1,42 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import {UserContext} from '../Store';
 
 export default function DateView(){
 
-    useEffect(()=>{
-        fetchDateFact(dateSplit);
-        fetchEvents();
-        // eslint-disable-next-line
-    },[])
-
+    const params = useParams();
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
-    const [redirect, setRedirect] = useState({path:null});
+    const [redirect, setRedirect] = useState({path:params.date});
+    // eslint-disable-next-line
     const [events, setEvents] = useState([]);
     const [dateFact, setDateFact] = useState();
-    const params = useParams();
 
-    const fetchDateFact = async (dateSplit) =>{
+    const fetchDateFact = async () =>{
         const baseURL = 'http://numbersapi.com/';
-        const date = dateSplit[1].toString()+'/'+dateSplit[2].toString();
+        const date = redirect.path.split("/").pop().split("-")[1]+'/'+redirect.path.split("/").pop().split("-")[2];
         const extension ='/date';
         const resp = await fetch(baseURL+date+extension);
         const data = await resp.text();
         setDateFact(data);
     }
 
-    const fetchEvents = async () => {
-        setEvents(await(await fetch("/api/user_event/"+user.id)).json());
-    }
+    useEffect(()=>{
+        fetchDateFact();
+        // eslint-disable-next-line
+    },[redirect]);
 
-    if(redirect.path!=null) return <Redirect push to={redirect.path}/>
-    
+    if(redirect.path && redirect.path.split("/").pop() !== params.date) return <Redirect push to={redirect.path}/>
+
     let dateToday = new Date();
     let viewDate = new Date();
     if(params.date) {
         viewDate = new Date(params.date);
     }
+
+    dateToday.setHours(0,0,0,0);
+    viewDate.setHours(0,0,0,0);
+
     if(isNaN(viewDate.getDate())) setRedirect({path:"/"});
 
     let dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
@@ -62,7 +62,7 @@ export default function DateView(){
                 
                 <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
 
-                <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
+                <h4 className="text-center mx-5"> {dateSplit.join("-")} </h4>
 
                 <button className="btn-sm btn-primary" onClick={next}>Next</button>
             </section>
@@ -77,10 +77,10 @@ export default function DateView(){
                     return <div key={i} onClick={()=>setRedirect({path:"/event"})}>{x.userId} {x.eventId} {x.attending}</div>
                 })}
             </div>
-            <div>
-                <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
-                <div className="row justify-content-center align-items-center">{dateFact}</div>
+            <div className="container">
+                <div className="row justify-content-center align-items-center mt-5 ml-1"><strong>This date in history:</strong></div>
+                <div className="row justify-content-center align-items-center text-center">{dateFact}</div>
             </div>
         </div>
-    ) 
+    );
 }

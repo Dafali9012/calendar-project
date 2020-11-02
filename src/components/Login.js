@@ -15,8 +15,8 @@ export default function Login(props) {
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
 
-  if(user!=null) setRedirect({path:"/"});
   if(redirect.path!=null) return <Redirect push to={redirect.path}/>;
+  if(user!=null) setRedirect({path:"/"});
 
   async function login(e) {
     e.preventDefault();
@@ -36,11 +36,9 @@ export default function Login(props) {
         setState({ email: "", password: ""});
         setUser(null);
         setShowAlert(true);
-        return;
-      }
-      else {
-      setUser(login);
-      setState({ email: "", password: ""});
+      } else {
+        setUser(login);
+        setState({ email: "", password: ""});
       }
     }
   }
