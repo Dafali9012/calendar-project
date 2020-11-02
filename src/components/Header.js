@@ -53,13 +53,13 @@ export default function Header() {
 
       <UncontrolledDropdown>
         <DropdownToggle>
-        {user == null ? <h4><strong>Menu</strong></h4> : <h4><span role="img" aria-label="user">👤</span> {user.name}</h4>}
+        {user == null ? <h4 className="button-title"><strong>Menu</strong></h4> : <h4><span role="img" aria-label="user"></span> {user.name}</h4>}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>{user == null ? login() : ''}</DropdownItem>
-          <DropdownItem>{user == null ? register() : ''}</DropdownItem>
+          <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
+          <DropdownItem>{user == null ? register() : '/path here?'}</DropdownItem>
           <DropdownItem divider />
           <DropdownItem>{user == null ? '' : logout()}</DropdownItem>
         </DropdownMenu>
