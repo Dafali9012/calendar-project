@@ -11,14 +11,12 @@ import DateView from "./components/DateView";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
+  // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
 
   useEffect(()=>{
     if(user == null){
       fetchUser()
-    }
-    if (user && eventList.lenght === 0) {
-      fetchEventList();
     }
     // eslint-disable-next-line
   },[]);
@@ -33,12 +31,13 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
+      fetchEventList(result.id);
     }
   }
 
-  async function fetchEventList() {
+  async function fetchEventList(id) {
     let result = await (
-      await fetch(`/api/event/${user.id}`, {
+      await fetch(`/api/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
@@ -74,8 +73,8 @@ export default function App() {
               if(user!=null)return<CreateEvent />;
               return<Redirect to="/login" />}}
             />
-            <Route exact path="/event" render={() => {
-              if(user!=null)return<Event />;
+            <Route exact path="/event" render={(props) => {
+              if(user!=null)return<Event {...props} />;
               return<Redirect to="/login" />}}
             />
           </Switch>
