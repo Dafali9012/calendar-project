@@ -72,9 +72,7 @@ module.exports = class RestApi {
               "SELECT * FROM " + table + " WHERE author = $id",
               { id: req.params.id }
             );
-            if (result.length > 0) {
-              res.json(result);
-            }
+            res.json(result);
           } else {
             res.status(403).send({ error: "Forbidden" });
           }

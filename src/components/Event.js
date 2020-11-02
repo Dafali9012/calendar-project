@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import { EventListContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Event(props) {
+export default function Event() {
     
-    const [event, setEvent] = useState({});
+    // eslint-disable-next-line
+    const [eventList, setEventList] = useContext(EventListContext);
+    let event = eventList[0];
     let dateFrom = [];
     let dateTo = [];
 
-    useEffect(()=>{
-        fetchEvent();
-        // eslint-disable-next-line
-    },[])
-
-    async function fetchEvent() {
-        setEvent(await(await fetch(`/api/event/1`)).json());
-    }
+    console.log(eventList);
 
     function isObjectEmpty(obj) {
         for(let x in obj) {

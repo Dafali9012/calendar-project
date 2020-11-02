@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { UserContext, EventListContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -12,73 +12,16 @@ import DateView from "./components/DateView";
 export default function App() {
   const [user, setUser] = useContext(UserContext);
   const [eventList, setEventList] = useContext(EventListContext);
-  if (user == null) {
-    fetchUser();
-  }
 
-  if (user && eventList.lenght === 0) {
-    fetchEventList();
-  }
-
-  return (
-    <Router>
-      <div className="App d-flex flex-column">
-        <Header className="header flex-shrink-0" />
-        <div className="container flex-grow-1">
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => {
-                if (user != null) return <Calendar />;
-                return <Login />;
-              }}
-            />
-            <Route
-              exact
-              path="/login"
-              render={() => {
-                if (user == null) return <Login />;
-                return <Calendar />;
-              }}
-            />
-            <Route
-              exact
-              path="/register"
-              render={() => {
-                if (user == null) return <Register />;
-                return <Calendar />;
-              }}
-            />
-            <Route
-              exact
-              path={["/date/:date", "/date"]}
-              render={() => {
-                if (user != null) return <DateView />;
-                return <Login />;
-              }}
-            />
-            <Route
-              exact
-              path="/date/:date/create-event"
-              render={() => {
-                if (user != null) return <CreateEvent />;
-                return <Login />;
-              }}
-            />
-            <Route
-              exact
-              path="/event"
-              render={(props) => {
-                if (user != null) return <Event {...props} />;
-                return <Login />;
-              }}
-            />
-          </Switch>
-        </div>
-      </div>
-    </Router>
-  );
+  useEffect(()=>{
+    if(user == null){
+      fetchUser()
+    }
+    if (user && eventList.lenght === 0) {
+      fetchEventList();
+    }
+    // eslint-disable-next-line
+  },[]);
 
   async function fetchUser() {
     let result = await (
@@ -105,4 +48,39 @@ export default function App() {
       setEventList(result);
     }
   }
+
+  return (
+    <Router>
+      <div className="App d-flex flex-column">
+        <Header className="header flex-shrink-0" />
+        <div className="container flex-grow-1">
+          <Switch>
+            <Route exact path="/" render={()=> {
+              if(user!=null)return<Calendar />;
+              return<Redirect to="/login" />}}
+            />
+            <Route exact path="/login" render={()=> {
+              return<Login/>;}}
+            />
+            <Route exact path="/register" render={()=> {
+              if(user==null)return<Register />;
+              return<Redirect to="/" />}}
+            />
+            <Route exact path={["/date/:date", "/date"]} render={() => {
+              if(user!=null)return<DateView />;
+              return<Redirect to="/login" />}}
+            />
+            <Route exact path="/date/:date/create-event" render={()=> {
+              if(user!=null)return<CreateEvent />;
+              return<Redirect to="/login" />}}
+            />
+            <Route exact path="/event" render={() => {
+              if(user!=null)return<Event />;
+              return<Redirect to="/login" />}}
+            />
+          </Switch>
+        </div>
+      </div>
+    </Router>
+  );
 }
