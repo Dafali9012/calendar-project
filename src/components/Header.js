@@ -8,7 +8,7 @@ export default function Header() {
 
   function logout() {
     return (
-      <Link className="text-decoration: none;" to="/">
+      <Link className="text-decoration-none" to="/">
         <h5 onClick={deleteSession} className="link">Log me out</h5>
       </Link>
     );
@@ -27,7 +27,7 @@ export default function Header() {
 
   function login() {
     return (
-      <Link to="/login">
+      <Link className="text-decoration-none" to="/login">
         <h4 className="link">Login</h4>
       </Link>
     );
@@ -35,7 +35,7 @@ export default function Header() {
 
   function register() {
     return (
-      <Link to="/register">
+      <Link className="text-decoration-none" to="/register">
         <h4 className="user-btn">Register</h4>
       </Link>
     );
