@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Button , Dropdown} from 'react-bootstrap';
+import { Button, Dropdown } from "react-bootstrap";
+import { EmailContext } from "../Store";
 
 export default function Event(props) {
   const [event, setEvent] = useState({
@@ -12,18 +13,10 @@ export default function Event(props) {
     endDate: "2020-10-31-23-35",
     author: 14,
   });
-
+  const [emailList, setEmailList] = useContext(EmailContext);
+  const [list, setlist] = useState([]);
   let dateFrom = [];
   let dateTo = [];
-
-  useEffect(() => {
-    fetchEvent();
-    // eslint-disable-next-line
-  }, []);
-
-  async function fetchEvent() {
-    setEvent(await (await fetch(`/api/event/`)).json());
-  }
 
   function isObjectEmpty(obj) {
     for (let x in obj) {
@@ -41,6 +34,13 @@ export default function Event(props) {
       if (x.length === 1) dateTo.push("0" + x);
       else dateTo.push(x);
     }
+  }
+
+  function mailList() {
+    emailList.map((email) => {
+      console.log("email -", email.email);
+      return <Dropdown.Item>{email.email}</Dropdown.Item>;
+    });
   }
 
   return (
@@ -76,17 +76,20 @@ export default function Event(props) {
       <div className="col-12 d-flex mt-4 justify-content-center">
         <button className="btn-sm btn-primary">Attend Event</button>
       </div>
+      <div className="col-12 d-flex mt-4 justify-content-end">
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
           Select
         </Dropdown.Toggle>
-
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          {emailList.map((email) => {
+            return (
+              <Dropdown.Item key={email.email}>{email.email}</Dropdown.Item>
+            );
+          })}
         </Dropdown.Menu>
       </Dropdown>
+      </div>
       <div className="pt-4 col-12 d-flex flex-column padx-20">
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>

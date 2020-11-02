@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { UserContext, EventListContext } from "./Store";
+import { UserContext, EventListContext, EmailContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -9,9 +9,12 @@ import Calendar from "./components/Calendar";
 import Event from "./components/Event";
 import DateView from "./components/DateView";
 
+
 export default function App() {
   const [user, setUser] = useContext(UserContext);
   const [eventList, setEventList] = useContext(EventListContext);
+  const [emailList, setEmailList] = useContext(EmailContext);
+  
 
   if (user == null) {
     fetchUser();
@@ -101,6 +104,18 @@ export default function App() {
 
     if (!result.error) {
       setEventList(result);
+      getEmailList()
     }
   }
+
+  async function getEmailList() {
+    let result = await (
+      await fetch(`/api/user`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+    setEmailList(result);
+  }
+
 }

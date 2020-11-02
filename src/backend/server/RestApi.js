@@ -70,9 +70,7 @@ module.exports = class RestApi {
               "SELECT * FROM " + table + " WHERE author = $id",
               { id: req.params.id }
             );
-            if (result.length > 0) {
-              res.json(result);
-            }
+            res.json(result);
           } else {
             res.status(403).send({ error: "Forbidden" });
           }
@@ -92,7 +90,7 @@ module.exports = class RestApi {
       case "user":
         this.expressApp.get(`${this.routePrefix}/${table}`, (req, res) => {
           if (req.session.user) {
-            let result = this.database.select("select email from " + table);
+            let result = this.database.select("select email, id from " + table);
             res.json(result);
           }
         });
