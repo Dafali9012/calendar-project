@@ -8,8 +8,8 @@ export default function Header() {
 
   function logout() {
     return (
-      <Link to="/">
-        <h4 onClick={deleteSession} className="link">Logout</h4>
+      <Link className="text-decoration: none;" to="/">
+        <h5 onClick={deleteSession} className="link">Log me out</h5>
       </Link>
     );
   }
@@ -45,7 +45,7 @@ export default function Header() {
     <header className="header-of-page">
       <div className="col-3 nav-menu">
         <Link to="/">
-          <h1 className="link"><strong>Calendar</strong></h1>
+          <h1 className="link logo pl-5"><strong>iCalendar</strong></h1>
         </Link>
       </div>
 
@@ -53,7 +53,7 @@ export default function Header() {
 
       <UncontrolledDropdown>
         <DropdownToggle>
-        {user == null ? <h4>Menu</h4> : <h4>{user.name}</h4>}
+        {user == null ? <h4><strong>Menu</strong></h4> : <h4><span role="img" aria-label="user">👤</span> {user.name}</h4>}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>

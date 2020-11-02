@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";

@@ -30,3 +30,9 @@
     left: -40px!important;
     width: 20px!important;
   }
+
+  @media only screen and (max-width: 600px) {
+    .logo {
+      font-size: xx-large;
+    }
+  }
