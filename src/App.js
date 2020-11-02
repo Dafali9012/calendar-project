@@ -1,19 +1,23 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { UserContext } from "./Store";
+import { UserContext, EventListContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
-import Calendar from './components/Calendar';
-import Event from './components/Event';
-import DateView from './components/DateView';
-
+import Calendar from "./components/Calendar";
+import Event from "./components/Event";
+import DateView from "./components/DateView";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  if(user == null){
-    fetchUser()
+  const [eventList, setEventList] = useContext(EventListContext);
+  if (user == null) {
+    fetchUser();
+  }
+
+  if (user && eventList.lenght === 0) {
+    fetchEventList();
   }
 
   return (
@@ -22,29 +26,53 @@ export default function App() {
         <Header className="header flex-shrink-0" />
         <div className="container flex-grow-1">
           <Switch>
-            <Route exact path="/" render={()=>{
-              if(user!=null)return<Calendar />;
-              return<Login />}}
+            <Route
+              exact
+              path="/"
+              render={() => {
+                if (user != null) return <Calendar />;
+                return <Login />;
+              }}
             />
-            <Route exact path="/login" render={()=>{
-              if(user==null)return<Login/>;
-              return<Calendar />}}
+            <Route
+              exact
+              path="/login"
+              render={() => {
+                if (user == null) return <Login />;
+                return <Calendar />;
+              }}
             />
-            <Route exact path="/register" render={()=>{
-              if(user==null)return<Register />;
-              return<Calendar />}}
+            <Route
+              exact
+              path="/register"
+              render={() => {
+                if (user == null) return <Register />;
+                return <Calendar />;
+              }}
             />
-            <Route exact path={["/date/:date", "/date"]} render={() => {
-              if(user!=null)return<DateView />;
-              return<Login />}}
+            <Route
+              exact
+              path={["/date/:date", "/date"]}
+              render={() => {
+                if (user != null) return <DateView />;
+                return <Login />;
+              }}
             />
-            <Route exact path="/date/:date/create-event" render={()=>{
-              if(user!=null)return<CreateEvent />;
-              return <Login />}}
+            <Route
+              exact
+              path="/date/:date/create-event"
+              render={() => {
+                if (user != null) return <CreateEvent />;
+                return <Login />;
+              }}
             />
-            <Route exact path="/event" render={(props) => {
-              if(user!=null)return<Event {...props} />;
-              return<Login />}}
+            <Route
+              exact
+              path="/event"
+              render={(props) => {
+                if (user != null) return <Event {...props} />;
+                return <Login />;
+              }}
             />
           </Switch>
         </div>
@@ -62,6 +90,19 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
+    }
+  }
+
+  async function fetchEventList() {
+    let result = await (
+      await fetch(`/api/event/${user.id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setEventList(result);
     }
   }
 }
