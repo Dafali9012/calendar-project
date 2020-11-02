@@ -12,12 +12,9 @@ import DateView from "./components/DateView";
 export default function App() {
   const [user, setUser] = useContext(UserContext);
   const [eventList, setEventList] = useContext(EventListContext);
+
   if (user == null) {
     fetchUser();
-  }
-
-  if (user && eventList.lenght === 0) {
-    fetchEventList();
   }
 
   return (
@@ -90,12 +87,13 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
+      fetchEventList(result.id)
     }
   }
 
-  async function fetchEventList() {
+  async function fetchEventList(id) {
     let result = await (
-      await fetch(`/api/event/${user.id}`, {
+      await fetch(`/api/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
