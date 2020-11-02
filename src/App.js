@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { UserContext } from "./Store";
 import Header from "./components/Header";
@@ -12,8 +12,25 @@ import DateView from './components/DateView';
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  if(user == null){
-    fetchUser()
+
+  useEffect(()=>{
+    if(user == null){
+      fetchUser()
+    }
+    // eslint-disable-next-line
+  },[]);
+
+  async function fetchUser() {
+    let result = await (
+      await fetch("/api/login", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setUser(result);
+    }
   }
 
   return (
@@ -27,8 +44,7 @@ export default function App() {
               return<Redirect to="/login" />}}
             />
             <Route exact path="/login" render={()=> {
-              if(user==null)return<Login/>;
-              return<Redirect to="/" />}}
+              return<Login/>;}}
             />
             <Route exact path="/register" render={()=> {
               if(user==null)return<Register />;
@@ -51,17 +67,4 @@ export default function App() {
       </div>
     </Router>
   );
-
-  async function fetchUser() {
-    let result = await (
-      await fetch("/api/login", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-    ).json();
-
-    if (!result.error) {
-      setUser(result);
-    }
-  }
 }
