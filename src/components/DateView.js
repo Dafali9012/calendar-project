@@ -63,7 +63,7 @@ export default function DateView(){
                 
                 <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
 
-                <h1 className="text-center mx-5"> {dateSplit.join("-")} </h1>
+                <h4 className="text-center mx-5"> {dateSplit.join("-")} </h4>
 
                 <button className="btn-sm btn-primary" onClick={next}>Next</button>
             </section>
@@ -86,9 +86,9 @@ export default function DateView(){
                     return null;
                 })}
             </div>
-            <div>
-                <div className="row justify-content-center align-items-center mt-5"><strong>This date in history:</strong></div>
-                <div className="row justify-content-center align-items-center">{dateFact}</div>
+            <div className="container">
+                <div className="row justify-content-center align-items-center mt-5 ml-1"><strong>This date in history:</strong></div>
+                <div className="row justify-content-center align-items-center text-center">{dateFact}</div>
             </div>
         </div>
     );

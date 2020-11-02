@@ -143,27 +143,27 @@ export default function Calendar(){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="d-flex flex-column pt-4">
+        <div className="d-flex flex-column pt-md-4">
             <div className="flex-shrink-0">
                 <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
 
-                <div className="row align-items-center mt-4">
-                    <button className="col-1 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
-                    <button className="col-1 btn-sm btn-info" onClick={setToday}>Today</button>
-                    <div className="col-2"/>
-                    <button className="col-1 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                    <h4 className="col-2 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="col-1 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
+                <div className="row align-items-center mt-md-4 mt-1">
+                    <button className="col-md-1 col-6 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
+                    <button className="col-md-1 col-6 btn-sm btn-info" onClick={setToday}>Today</button>
+                    <div className="col-md-2 col-1"/>
+                    <button className="col-md-1 col-2 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <h4 className="col-md-2 col-6 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
+                    <button className="col-md-1 col-2 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
-                <div className="row my-4 border">
-                    <h5 className="col text-center">Monday</h5>
-                    <h5 className="col text-center">Tuesday</h5>
-                    <h5 className="col text-center">Wednesday</h5>
-                    <h5 className="col text-center">Thursday</h5>
-                    <h5 className="col text-center">Friday</h5>
-                    <h5 className="col text-center">Saturday</h5>
-                    <h5 className="col text-center">Sunday</h5>
+                <div className="row my-2 border">
+                    <h6 className="col-grid-7 h-25 text-center">Mon</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Wed</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Thu</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Tue</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Fri</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Sat</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Sun</h6>
                 </div>
             </div>
             <div className="row">    

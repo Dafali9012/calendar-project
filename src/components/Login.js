@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
@@ -104,11 +103,6 @@ export default function Login(props) {
             <small>CLEAR</small>
           </button>
 
-          <div className="redirect mt-2">
-            <Link to="/Register">
-              <label className="link">Create account</label>
-            </Link>
-          </div>
         </form>
       </div>
       <Alert
