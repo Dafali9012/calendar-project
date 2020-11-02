@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { UserContext } from "../Store";
 import { Redirect } from "react-router-dom";
@@ -16,8 +15,8 @@ export default function Login(props) {
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
 
-  if(user!=null) setRedirect({path:"/"});
   if(redirect.path!=null) return <Redirect push to={redirect.path}/>;
+  if(user!=null) setRedirect({path:"/"});
 
   async function login(e) {
     e.preventDefault();
@@ -37,11 +36,9 @@ export default function Login(props) {
         setState({ email: "", password: ""});
         setUser(null);
         setShowAlert(true);
-        return;
-      }
-      else {
-      setUser(login);
-      setState({ email: "", password: ""});
+      } else {
+        setUser(login);
+        setState({ email: "", password: ""});
       }
     }
   }
@@ -106,11 +103,6 @@ export default function Login(props) {
             <small>CLEAR</small>
           </button>
 
-          <div className="redirect mt-2">
-            <Link to="/Register">
-              <label className="link">Create account</label>
-            </Link>
-          </div>
         </form>
       </div>
       <Alert

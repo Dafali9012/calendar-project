@@ -180,23 +180,23 @@ export default function CreateEvent() {
 
     return (
         <div className="row pt-4 justify-content-center">
-            <div hidden={hidden} className="col mod-date h-100 w-100">
+            <div hidden={hidden} className="mod-date h-100 w-100">
                 <div className="row h-100 justify-content-center align-items-center" onClick={hideModal}>
-                    <div className="col-7 mod-date-content">
-                        <h4 className="row text-light unselectable" >Select End Date</h4>
-                        <div className="row h-100 justify-content-center align-items-center">
+                    <div className="col-md-6 col-12 mod-date-content justify-content-center">
+                        <h4 className="row text-light unselectable">Select End Date</h4>
+                        <div className="col-md-4 col-12 h-100 justify-content-center align-items-center">
                             {[...Array(8).keys()].map(num => {
                                 let fromDate = new Date(formData.fromYear+'-'+(formData.fromMonth)+'-'+formData.fromDay);
                                 let toDate = new Date(fromDate);
                                 toDate.setDate(fromDate.getDate()+num);
-                                return <button className="btn btn-light col text-center unselectable mx-1" key={num} value={(toDate.getFullYear()+'-'+(toDate.getMonth()+1)+'-'+toDate.getDate()).toString()} onClick={selectEndDate}>
+                                return <button className="btn btn-light col text-center unselectable mx-1 mb-1" key={num} value={(toDate.getFullYear()+'-'+(toDate.getMonth()+1)+'-'+toDate.getDate()).toString()} onClick={selectEndDate}>
                                     {toDate.getFullYear()+'-'+(toDate.getMonth()+1)+'-'+toDate.getDate()}</button>
                             })}
                         </div>
                     </div>
                 </div>
             </div>
-            <form className="col-6" onSubmit={saveEvent}>
+            <form className="col-md-6 col-12" onSubmit={saveEvent}>
                 <h3 className="mb-4">Create Event</h3>
                 <div className="form-group">
                     <label className="w-100"><strong>Title:</strong>
