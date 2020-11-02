@@ -1,21 +1,24 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { UserContext } from "./Store";
+import { UserContext, EventListContext } from "./Store";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import CreateEvent from "./components/CreateEvent";
-import Calendar from './components/Calendar';
-import Event from './components/Event';
-import DateView from './components/DateView';
-
+import Calendar from "./components/Calendar";
+import Event from "./components/Event";
+import DateView from "./components/DateView";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
+  const [eventList, setEventList] = useContext(EventListContext);
 
   useEffect(()=>{
     if(user == null){
       fetchUser()
+    }
+    if (user && eventList.lenght === 0) {
+      fetchEventList();
     }
     // eslint-disable-next-line
   },[]);
@@ -30,6 +33,19 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
+    }
+  }
+
+  async function fetchEventList() {
+    let result = await (
+      await fetch(`/api/event/${user.id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setEventList(result);
     }
   }
 
