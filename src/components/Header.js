@@ -44,7 +44,7 @@ export default function Header() {
   return (
     <header className="header-of-page">
       <div className="col-3 nav-menu">
-        <Link to="/">
+        <Link className="text-decoration-none" to="/">
           <h1 className="link logo pl-5"><strong>iCalendar</strong></h1>
         </Link>
       </div>
