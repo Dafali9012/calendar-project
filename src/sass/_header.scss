@@ -9,6 +9,10 @@
   .link{
     color: #25252585;
   }
+
+  .nav-menu{
+    padding-left: 40px;
+  }
   
   .header-user, .nav-menu{
     display:flex;
@@ -29,6 +33,10 @@
   .dropdown-menu{
     left: -40px!important;
     width: 20px!important;
+  }
+
+  .dropdown-toggle{
+
   }
 
   @media only screen and (max-width: 600px) {

@@ -8,7 +8,7 @@ export default function Header() {
 
   function logout() {
     return (
-      <Link className="text-decoration: none;" to="/">
+      <Link className="text-decoration-none" to="/">
         <h5 onClick={deleteSession} className="link">Log me out</h5>
       </Link>
     );
@@ -27,7 +27,7 @@ export default function Header() {
 
   function login() {
     return (
-      <Link to="/login">
+      <Link className="text-decoration-none" to="/login">
         <h4 className="link">Login</h4>
       </Link>
     );
@@ -35,7 +35,7 @@ export default function Header() {
 
   function register() {
     return (
-      <Link to="/register">
+      <Link className="text-decoration-none" to="/register">
         <h4 className="user-btn">Register</h4>
       </Link>
     );
@@ -53,13 +53,13 @@ export default function Header() {
 
       <UncontrolledDropdown>
         <DropdownToggle>
-        {user == null ? <h4><strong>Menu</strong></h4> : <h4><span role="img" aria-label="user">👤</span> {user.name}</h4>}
+        {user == null ? <h4 className="button-title"><strong>Menu</strong></h4> : <h4><span role="img" aria-label="user"></span> {user.name}</h4>}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>{user == null ? login() : ''}</DropdownItem>
-          <DropdownItem>{user == null ? register() : ''}</DropdownItem>
+          <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
+          <DropdownItem>{user == null ? register() : '/path here?'}</DropdownItem>
           <DropdownItem divider />
           <DropdownItem>{user == null ? '' : logout()}</DropdownItem>
         </DropdownMenu>
