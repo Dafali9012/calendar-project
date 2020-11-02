@@ -13,6 +13,7 @@ import DateView from "./components/DateView";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
+  // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   const [emailList, setEmailList] = useContext(EmailContext);
   
@@ -25,9 +26,6 @@ export default function App() {
   useEffect(()=>{
     if(user == null){
       fetchUser()
-    }
-    if (user && eventList.lenght === 0) {
-      fetchEventList();
     }
     // eslint-disable-next-line
   },[]);
