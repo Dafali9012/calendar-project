@@ -3,33 +3,22 @@ import { EventListContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function Event() {
+export default function Event(props) {
     
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
-    let event = eventList[0];
+    let event = eventList[props.location.state.eventPos];
     let dateFrom = [];
     let dateTo = [];
 
-    console.log(eventList);
-
-    function isObjectEmpty(obj) {
-        for(let x in obj) {
-            return false;
-        }
-        return true;
-    }
-
-    if(!isObjectEmpty(event)) {
-        for(let x of event.startDate.split("-")) {
-            if(x.length===1) dateFrom.push('0'+x);
-            else dateFrom.push(x);
-        };
-        for(let x of event.endDate.split("-")) {
-            if(x.length===1) dateTo.push('0'+x);
-            else dateTo.push(x);
-        };
-    }
+    for(let x of event.startDate.split("-")) {
+        if(x.length===1) dateFrom.push('0'+x);
+        else dateFrom.push(x);
+    };
+    for(let x of event.endDate.split("-")) {
+        if(x.length===1) dateTo.push('0'+x);
+        else dateTo.push(x);
+    };
     
     return (
         <div className="row">
@@ -70,6 +59,5 @@ export default function Event() {
                 </div>
             </div>
         </div>
-        
     );
 }

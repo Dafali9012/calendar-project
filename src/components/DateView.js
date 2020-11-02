@@ -1,20 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import {UserContext} from '../Store';
+import {UserContext, EventListContext} from '../Store';
 
 export default function DateView(){
 
     const params = useParams();
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
-    const [redirect, setRedirect] = useState({path:params.date});
     // eslint-disable-next-line
-    const [events, setEvents] = useState([]);
+    const [eventList, setEventList] = useContext(EventListContext);
+    const [redirect, setRedirect] = useState({pathname:params.date});
+    // eslint-disable-next-line
     const [dateFact, setDateFact] = useState();
 
     const fetchDateFact = async () =>{
         const baseURL = 'http://numbersapi.com/';
-        const date = redirect.path.split("/").pop().split("-")[1]+'/'+redirect.path.split("/").pop().split("-")[2];
+        const date = redirect.pathname.split("/").pop().split("-")[1]+'/'+redirect.pathname.split("/").pop().split("-")[2];
         const extension ='/date';
         const resp = await fetch(baseURL+date+extension);
         const data = await resp.text();
@@ -22,11 +23,11 @@ export default function DateView(){
     }
 
     useEffect(()=>{
-        fetchDateFact();
+        if(redirect.pathname && redirect.pathname!=="/event")fetchDateFact();
         // eslint-disable-next-line
     },[redirect]);
 
-    if(redirect.path && redirect.path.split("/").pop() !== params.date) return <Redirect push to={redirect.path}/>
+    if(redirect.pathname && redirect.pathname.split("/").pop() !== params.date) return <Redirect push to={redirect}/>
 
     let dateToday = new Date();
     let viewDate = new Date();
@@ -48,16 +49,16 @@ export default function DateView(){
     function previous(){
         viewDate.setDate(viewDate.getDate()-1)
         dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
-        setRedirect({path:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
+        setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
     function next(){
         viewDate.setDate(viewDate.getDate()+1)
         dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
-        setRedirect({path:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
+        setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
 
     return (
-        <div className="mt-4">
+        <div className="mt-4 padx-20">
             <section className="d-flex justify-content-center align-items-center">
                 
                 <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
@@ -73,8 +74,16 @@ export default function DateView(){
             <h3 className="mt-3 mb-3">Events</h3>
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
             <div>
-                {events.map((x,i)=>{
-                    return <div key={i} onClick={()=>setRedirect({path:"/event"})}>{x.userId} {x.eventId} {x.attending}</div>
+                {eventList.map((x,i)=>{
+                    let startDate = new Date(x.startDate.split("-")[0]+"-"+x.startDate.split("-")[1]+"-"+x.startDate.split("-")[2]);
+                    let endDate = new Date(x.endDate.split("-")[0]+"-"+x.endDate.split("-")[1]+"-"+x.endDate.split("-")[2]);
+                    startDate.setHours(0,0,0,0);
+                    endDate.setHours(0,0,0,0);
+                    if(viewDate.valueOf() >= startDate.valueOf() && viewDate.valueOf() <= endDate.valueOf()) {
+                        return <div className="card my-2 text-center marx-20 py-2" key={i} 
+                        onClick={() => setRedirect({pathname:"/event", state:{eventPos:i}})}>{x.title}</div>
+                    }
+                    return null;
                 })}
             </div>
             <div>
