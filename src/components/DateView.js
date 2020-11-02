@@ -57,6 +57,8 @@ export default function DateView(){
         setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
 
+    console.log(eventList);
+
     return (
         <div className="mt-4 padx-20">
             <section className="d-flex justify-content-center align-items-center">
@@ -69,7 +71,7 @@ export default function DateView(){
             </section>
             { viewDate.valueOf()>=dateToday.valueOf()?
             <div className="d-flex flex-column align-items-center mt-4">
-                <button className="btn btn-primary" onClick={()=>setRedirect({path:"/date/"+params.date+"/create-event"})}>Create Event</button>
+                <button className="btn btn-primary" onClick={()=>setRedirect({pathname:"/date/"+params.date+"/create-event"})}>Create Event</button>
             </div>:null}
             <h3 className="mt-3 mb-3">Events</h3>
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
