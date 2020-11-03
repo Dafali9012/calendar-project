@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { EventListContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +7,8 @@ import { Redirect } from 'react-router-dom';
 
 export default function Calendar(){
 
+    // eslint-disable-next-line
+    const [eventList, setEventList] = useContext(EventListContext);
     const [redirect, setRedirect] = useState({path:null});
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
@@ -168,11 +171,26 @@ export default function Calendar(){
             </div>
             <div className="row">    
                 {calendarData.map((x,i)=>{
+                    let numEvents = 0;
+                    for(let y of eventList) {
+                        let startDateSplit = y.startDate.split("-");
+                        let endDateSplit = y.endDate.split("-");
+                        let startDate = new Date(startDateSplit[0]+"-"+startDateSplit[1]+"-"+startDateSplit[2]);
+                        let endDate = new Date(endDateSplit[0]+"-"+endDateSplit[1]+"-"+endDateSplit[2]);
+                        startDate.setHours(0,0,0,0);
+                        endDate.setHours(0,0,0,0);
+                        if(x.valueOf() >= startDate.valueOf() && x.valueOf() <= endDate.valueOf()) {
+                            numEvents++;
+                        } 
+                    }
                     let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
                     return <div className={joinClasses(classes)} key={i}
-                    onClick={()=>setRedirect({path:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>{x.getDate()}</div>
+                    onClick={()=>setRedirect({path:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>
+                        {x.getDate()}
+                        {numEvents>0?<div className="event-marker text-light mt-3 ml-1">{numEvents>9?"9+":numEvents}</div>:null}
+                    </div>
                 })}
             </div>
             <div className="flex-shrink-0 my-5">

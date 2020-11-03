@@ -57,8 +57,6 @@ export default function DateView(){
         setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
     }
 
-    console.log(eventList);
-
     return (
         <div className="mt-4 padx-20">
             <section className="d-flex justify-content-center align-items-center">
@@ -77,8 +75,10 @@ export default function DateView(){
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
             <div>
                 {eventList.map((x,i)=>{
-                    let startDate = new Date(x.startDate.split("-")[0]+"-"+x.startDate.split("-")[1]+"-"+x.startDate.split("-")[2]);
-                    let endDate = new Date(x.endDate.split("-")[0]+"-"+x.endDate.split("-")[1]+"-"+x.endDate.split("-")[2]);
+                    let startDateSplit = x.startDate.split("-");
+                    let endDateSplit = x.endDate.split("-");
+                    let startDate = new Date(startDateSplit[0]+"-"+startDateSplit[1]+"-"+startDateSplit[2]);
+                    let endDate = new Date(endDateSplit[0]+"-"+endDateSplit[1]+"-"+endDateSplit[2]);
                     startDate.setHours(0,0,0,0);
                     endDate.setHours(0,0,0,0);
                     if(viewDate.valueOf() >= startDate.valueOf() && viewDate.valueOf() <= endDate.valueOf()) {

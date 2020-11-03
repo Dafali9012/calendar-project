@@ -33,9 +33,9 @@ module.exports = class RestApi {
             res.json(
               this.database.run(
                 /*sql*/ `
-        INSERT INTO ${table} (${Object.keys(req.body)})
-        VALUES (${Object.keys(req.body).map((key) => "$" + key)})
-        `,
+                INSERT INTO ${table} (${Object.keys(req.body)})
+                VALUES (${Object.keys(req.body).map((key) => "$" + key)})
+                `,
                 req.body
               )
             );
