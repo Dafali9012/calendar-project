@@ -129,7 +129,7 @@ export default function CreateEvent() {
             await fetch("/api/event", {
                 method: "POST",
                 body: JSON.stringify(eventObject),
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" }
             })
         ).json();
 
@@ -143,7 +143,7 @@ export default function CreateEvent() {
             await fetch("/api/user_event", {
                 method: "POST",
                 body: JSON.stringify(userEventObject),
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" }
             })
         ).json();
 

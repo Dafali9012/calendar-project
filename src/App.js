@@ -20,8 +20,9 @@ export default function App() {
   const [emailList, setEmailList] = useContext(EmailContext);
   
   useEffect(()=>{
+    console.log("mounted app");
     if(user == null){
-      fetchUser()
+      fetchUser();
     }
   // eslint-disable-next-line
   },[]);

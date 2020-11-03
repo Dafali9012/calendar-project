@@ -17,7 +17,10 @@ module.exports = class LoginHandler {
         secret: "superSecretKey",
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: "auto" },
+        cookie: { 
+          secure: "auto",
+          sameSite: "strict"
+        },
       })
     );
   }
