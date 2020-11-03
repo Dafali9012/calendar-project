@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Button, Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { EmailContext } from "../Store";
 
 export default function Event(props) {
@@ -14,9 +14,13 @@ export default function Event(props) {
     author: 14,
   });
   const [emailList, setEmailList] = useContext(EmailContext);
-  const [list, setlist] = useState([]);
+  const [selectedEmails, setSelectedEmail] = useState([]);
   let dateFrom = [];
   let dateTo = [];
+
+  function selectItem(email) {
+    console.log("selected ", email);
+  }
 
   function isObjectEmpty(obj) {
     for (let x in obj) {
@@ -34,13 +38,6 @@ export default function Event(props) {
       if (x.length === 1) dateTo.push("0" + x);
       else dateTo.push(x);
     }
-  }
-
-  function mailList() {
-    emailList.map((email) => {
-      console.log("email -", email.email);
-      return <Dropdown.Item>{email.email}</Dropdown.Item>;
-    });
   }
 
   return (
@@ -76,19 +73,37 @@ export default function Event(props) {
       <div className="col-12 d-flex mt-4 justify-content-center">
         <button className="btn-sm btn-primary">Attend Event</button>
       </div>
-      <div className="col-12 d-flex mt-4 justify-content-end">
-      <Dropdown>
-        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          Select
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {emailList.map((email) => {
-            return (
-              <Dropdown.Item key={email.email}>{email.email}</Dropdown.Item>
-            );
-          })}
-        </Dropdown.Menu>
-      </Dropdown>
+      <div className="col-12 mt-4 d-flex justify-content-center">
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Select
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {emailList.map((email) => {
+              return (
+                <Dropdown.Item
+                  value={email}
+                  onClick={ e => selectItem(e.target.value)}
+                  as="button"
+                  key={email.id}
+                >
+                  {email.email}
+                </Dropdown.Item>
+              );
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+      <div className="col-12 mt-4 d-flex justify-content-center">
+        {selectedEmails
+          ? selectedEmails.map((selected) => {
+              return (
+                <button type="button" class="btn m-1 btn-outline-info">
+                  {selected.email} X
+                </button>
+              );
+            })
+          : ""}
       </div>
       <div className="pt-4 col-12 d-flex flex-column padx-20">
         <h4 className="mt-4">Description</h4>

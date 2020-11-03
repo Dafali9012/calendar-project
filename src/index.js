@@ -4,6 +4,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "./sass/style.scss";
 import Store from "./Store";
+import $ from 'jquery';
+import Popper from 'popper.js';
 
 
 ReactDOM.render(
