@@ -1,20 +1,17 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown } from "react-bootstrap";
-import { EmailContext } from "../Store";
+import { EventListContext, EmailContext } from "../Store";
 
 export default function Event(props) {
-  const [event, setEvent] = useState({
-    id: 17,
-    title: "Go ",
-    description: "Goind",
-    startDate: "2020-10-31-17-35",
-    endDate: "2020-10-31-23-35",
-    author: 14,
-  });
+  // eslint-disable-next-line
+  const [eventList, setEventList] = useContext(EventListContext);
+  // eslint-disable-next-line
   const [emailList, setEmailList] = useContext(EmailContext);
+  // eslint-disable-next-line
   const [selectedEmails, setSelectedEmail] = useState([]);
+  let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
 
@@ -22,23 +19,16 @@ export default function Event(props) {
     console.log("selected ", e);
   }
 
-  function isObjectEmpty(obj) {
-    for (let x in obj) {
-      return false;
-    }
-    return true;
+
+  for (let x of event.startDate.split("-")) {
+    if (x.length === 1) dateFrom.push("0" + x);
+    else dateFrom.push(x);
+  }
+  for (let x of event.endDate.split("-")) {
+    if (x.length === 1) dateTo.push("0" + x);
+    else dateTo.push(x);
   }
 
-  if (!isObjectEmpty(event)) {
-    for (let x of event.startDate.split("-")) {
-      if (x.length === 1) dateFrom.push("0" + x);
-      else dateFrom.push(x);
-    }
-    for (let x of event.endDate.split("-")) {
-      if (x.length === 1) dateTo.push("0" + x);
-      else dateTo.push(x);
-    }
-  }
 
   return (
     <div className="row">
