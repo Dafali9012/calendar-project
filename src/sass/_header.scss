@@ -34,9 +34,15 @@
     left: -40px!important;
     width: 20px!important;
   }
+  .userName{
+    color: white;
+  }
 
   .dropdown-toggle{
 
+  }
+  .logo {
+    color:$fourth;
   }
 
   @media only screen and (max-width: 600px) {

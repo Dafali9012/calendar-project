@@ -1,7 +1,15 @@
+@import 'variable-overrides';
+
 .event-marker {
     width: 1.5rem;
     height: 1.5rem;
     background-color: lightsalmon;
     text-align: center;
     border-radius: 25%;
+}
+
+.dateBox:hover{
+    background-color: $primary !important;
+    transition: border-radius, background-color 0.2s;
+    border-radius: 5%;
 }
