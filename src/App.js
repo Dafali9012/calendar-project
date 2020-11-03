@@ -21,6 +21,10 @@ export default function App() {
     // eslint-disable-next-line
   },[]);
 
+  if(user == null){
+    fetchUser()
+  }
+
   async function fetchUser() {
     let result = await (
       await fetch("/api/login", {
