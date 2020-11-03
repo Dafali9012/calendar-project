@@ -18,12 +18,16 @@ export default function Event(props) {
   let dateFrom = [];
   let dateTo = [];
 
-  const selectEmail = (email) => {
+  function selectEmail(email) {
     if (![...selectedEmails].includes(email)) {
       setSelectedEmail([...selectedEmails, email]);
     }
-    console.log(selectedEmails);
   };
+
+  function removeSelectedEmail(email){
+    let selected = [...selectedEmails].filter( e => e !== email)
+    setSelectedEmail([...selected])
+  }
 
   function isObjectEmpty(obj) {
     for (let x in obj) {
@@ -105,7 +109,11 @@ export default function Event(props) {
                   key={selected.id}
                   className="btn m-1 btn-outline-info"
                 >
-                  {selected.email} X
+                {selected.email} 
+                <span
+                onClick={(e) => removeSelectedEmail(selected)}
+                className="badge badge-danger ml-2"
+                >X</span>
                 </button>
               );
             })
