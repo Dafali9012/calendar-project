@@ -18,7 +18,7 @@ export default function App() {
     if(user == null){
       fetchUser()
     }
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   },[]);
 
   async function fetchUser() {
