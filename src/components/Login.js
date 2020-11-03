@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Alert } from "reactstrap";
-import { UserContext } from "../Store";
+import { UserContext, EventListContext } from "../Store";
 import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
   const [redirect, setRedirect] = useState({path:null});
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
+  // eslint-disable-next-line
+  const [eventList, setEventList] = useContext(EventListContext);
   //create state & update values after entering in input
   const [state, setState] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
@@ -38,8 +40,22 @@ export default function Login(props) {
         setShowAlert(true);
       } else {
         setUser(login);
+        fetchEventList(login.id);
         setState({ email: "", password: ""});
       }
+    }
+  }
+
+  async function fetchEventList(id) {
+    let result = await (
+      await fetch(`/api/event/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setEventList(result);
     }
   }
 
