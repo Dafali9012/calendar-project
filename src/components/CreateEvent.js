@@ -117,8 +117,6 @@ export default function CreateEvent() {
             }
         } 
 
-        console.log(user.id);
-
         let eventObject = {
             title:formData.title,
             description:formData.description,
