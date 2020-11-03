@@ -13,21 +13,14 @@ import DateView from "./components/DateView";
 
 export default function App() {
   const [user, setUser] = useContext(UserContext);
-  // eslint-disable-next-line
+
   const [eventList, setEventList] = useContext(EventListContext);
   const [emailList, setEmailList] = useContext(EmailContext);
   
-
-  if (user == null) {
-    fetchUser();
-  }
-
-
   useEffect(()=>{
     if(user == null){
       fetchUser()
     }
-    // eslint-disable-next-line
   },[]);
 
   async function fetchUser() {
@@ -93,9 +86,9 @@ export default function App() {
               if(user!=null)return<CreateEvent />;
               return<Redirect to="/login" />}}
             />
-            <Route exact path="/event" render={() => {
-              if(user!=null)return<Event />;
-              return<Redirect to="/event" />}}
+            <Route exact path="/event" render={(props) => {
+              if(user!=null)return<Event {...props} />;
+              return<Redirect to="/login" />}}
             />
           </Switch>
         </div>

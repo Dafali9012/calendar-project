@@ -18,8 +18,8 @@ export default function Event(props) {
   let dateFrom = [];
   let dateTo = [];
 
-  function selectItem(email) {
-    console.log("selected ", email);
+  function selectItem(e) {
+    console.log("selected ", e);
   }
 
   function isObjectEmpty(obj) {
@@ -83,7 +83,7 @@ export default function Event(props) {
               return (
                 <Dropdown.Item
                   value={email}
-                  onClick={ e => selectItem(e.target.value)}
+                  onClick={ e => selectItem(e)}
                   as="button"
                   key={email.id}
                 >
