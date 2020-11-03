@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef ,useContext} from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import {UserContext} from '../Store'
+import { UserContext, EventListContext } from '../Store'
 
 export default function CreateEvent() {
 
@@ -12,6 +12,8 @@ export default function CreateEvent() {
     const [redirect, setRedirect] = useState({path:null});
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
+    // eslint-disable-next-line
+    const [eventList, setEventList] = useContext(EventListContext);
     const [hidden, setHidden] = useState(true);
 
     const selectFromHourRef = useRef();
@@ -37,8 +39,6 @@ export default function CreateEvent() {
         });
         // eslint-disable-next-line
     },[]);
-
-    console.log(user.id);
 
     if(redirect.path!=null) return <Redirect push to={redirect.path}/>
     
@@ -147,6 +147,7 @@ export default function CreateEvent() {
             })
         ).json();
 
+        fetchEventList(user.id);
         setRedirect({path:"/date/"+params.date});
         return true;
     }
@@ -177,6 +178,19 @@ export default function CreateEvent() {
         selectToHourRef.current.setCustomValidity('');
         selectToMinuteRef.current.setCustomValidity('');
     };
+
+    async function fetchEventList(id) {
+        let result = await (
+            await fetch(`/api/event/${id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            })
+        ).json();
+
+        if (!result.error) {
+            setEventList(result);
+        }
+    }
 
     return (
         <div className="row pt-4 justify-content-center">
