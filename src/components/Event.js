@@ -18,9 +18,12 @@ export default function Event(props) {
   let dateFrom = [];
   let dateTo = [];
 
-  function selectItem(e) {
-    console.log("selected ", e);
-  }
+  const selectEmail = (email) => {
+    if (![...selectedEmails].includes(email)) {
+      setSelectedEmail([...selectedEmails, email]);
+    }
+    console.log(selectedEmails);
+  };
 
   function isObjectEmpty(obj) {
     for (let x in obj) {
@@ -82,8 +85,7 @@ export default function Event(props) {
             {emailList.map((email) => {
               return (
                 <Dropdown.Item
-                  value={email}
-                  onClick={ e => selectItem(e)}
+                  onClick={(e) => selectEmail(email)}
                   as="button"
                   key={email.id}
                 >
@@ -98,7 +100,11 @@ export default function Event(props) {
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
-                <button type="button" class="btn m-1 btn-outline-info">
+                <button
+                  type="button"
+                  key={selected.id}
+                  className="btn m-1 btn-outline-info"
+                >
                   {selected.email} X
                 </button>
               );
