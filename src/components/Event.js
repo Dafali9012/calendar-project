@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Button } from "react-bootstrap";
 import { EventListContext, EmailContext } from "../Store";
 
 export default function Event(props) {
@@ -14,18 +14,21 @@ export default function Event(props) {
   let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
+  
+  if(emailList.length === 0){
+    getEmailList()
+  }
 
   function selectEmail(email) {
     if (![...selectedEmails].includes(email)) {
       setSelectedEmail([...selectedEmails, email]);
     }
-  };
-
-  function removeSelectedEmail(email){
-    let selected = [...selectedEmails].filter( e => e !== email)
-    setSelectedEmail([...selected])
   }
 
+  function removeSelectedEmail(email) {
+    let selected = [...selectedEmails].filter((e) => e !== email);
+    setSelectedEmail([...selected]);
+  }
 
   for (let x of event.startDate.split("-")) {
     if (x.length === 1) dateFrom.push("0" + x);
@@ -36,6 +39,15 @@ export default function Event(props) {
     else dateTo.push(x);
   }
 
+  async function getEmailList() {
+    let result = await (
+      await fetch(`/api/user`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+    setEmailList(result);
+  }
 
   return (
     <div className="row">
@@ -89,6 +101,9 @@ export default function Event(props) {
             })}
           </Dropdown.Menu>
         </Dropdown>
+        <Button className="ml-5" variant="success">
+          Invite
+        </Button>
       </div>
       <div className="col-12 mt-4 d-flex justify-content-center">
         {selectedEmails
@@ -99,11 +114,13 @@ export default function Event(props) {
                   key={selected.id}
                   className="btn m-1 btn-outline-info"
                 >
-                {selected.email} 
-                <span
-                onClick={(e) => removeSelectedEmail(selected)}
-                className="badge badge-danger ml-2"
-                >X</span>
+                  {selected.email}
+                  <span
+                    onClick={(e) => removeSelectedEmail(selected)}
+                    className="badge badge-danger ml-2"
+                  >
+                    X
+                  </span>
                 </button>
               );
             })

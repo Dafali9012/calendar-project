@@ -1,6 +1,6 @@
 import React, { useContext , useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { UserContext, EventListContext, EmailContext } from "./Store";
+import { UserContext, EventListContext} from "./Store";
 import { Redirect } from 'react-router-dom';
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -12,12 +12,11 @@ import DateView from "./components/DateView";
 
 
 export default function App() {
+    // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
-
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
-  // eslint-disable-next-line
-  const [emailList, setEmailList] = useContext(EmailContext);
+
   
   useEffect(()=>{
     console.log("mounted app");
@@ -51,19 +50,9 @@ export default function App() {
 
     if (!result.error) {
       setEventList(result);
-      getEmailList()
     }
   }
 
-  async function getEmailList() {
-    let result = await (
-      await fetch(`/api/user`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-    ).json();
-    setEmailList(result);
-  }
 
   return (
     <Router>
