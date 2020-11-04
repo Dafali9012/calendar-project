@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import { UserContext, EventListContext } from '../Store'
+import { UserContext, EventListContext, InviteContext } from '../Store'
 
 export default function CreateEvent() {
 
@@ -12,6 +12,8 @@ export default function CreateEvent() {
     const [redirect, setRedirect] = useState({path:null});
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
+    // eslint-disable-next-line
+    const [inviteList, setInviteList] = useContext(InviteContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
     const [hidden, setHidden] = useState(true);
@@ -147,7 +149,7 @@ export default function CreateEvent() {
             })
         ).json();
 
-        fetchEventList(user.id);
+        fetchEvents(user.id);
         setRedirect({path:"/date/"+params.date});
         return true;
     }
@@ -179,18 +181,45 @@ export default function CreateEvent() {
         selectToMinuteRef.current.setCustomValidity('');
     };
 
-    async function fetchEventList(id) {
-        let result = await (
-            await fetch(`/api/event/${id}`, {
+    async function fetchEvents(id) {
+        let userEvents = await (
+          await fetch(`/api/user_event/${id}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
-            })
+          })
         ).json();
-
-        if (!result.error) {
-            setEventList(result);
+    
+        let actualEvents = [];
+        let actualInvites = [];
+    
+        if(!userEvents.error) {
+          userEvents.forEach(async (userEvent)=>{
+            if(userEvent.attending !== null) {
+              let result = await (
+                await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+                  method: "GET",
+                  headers: { "Content-Type": "application/json" },
+                })
+              ).json();
+              if(!result.error) {
+                let push = true;
+                if(userEvent.attending==="false" && result.author !== id) push = false;
+                if(push) actualEvents.push(result);
+              } 
+            } else {
+              let result = await (
+                await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+                  method: "GET",
+                  headers: { "Content-Type": "application/json" },
+                })
+              ).json();
+              if(!result.error) actualInvites.push(result);
+            }
+          });
         }
-    }
+        setEventList(actualEvents);
+        setInviteList(actualInvites);
+      }
 
     return (
         <div className="row pt-4 justify-content-center">
