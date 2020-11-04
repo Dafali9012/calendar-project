@@ -149,10 +149,19 @@ export default function CreateEvent() {
             })
         ).json();
 
-        fetchEvents(user.id);
+        updateEvents(user.id);
         setRedirect({path:"/date/"+params.date});
         return true;
     }
+
+    async function updateEvents(id) {
+        let result = await(await fetch("/api/event/user/"+id)).json();
+        if(!result.error) {
+          console.log(result);
+          setEventList(result.events);
+          setInviteList(result.invites);
+        }
+      }
 
     function selectEndDate(e) {
         let splitDate = e.currentTarget.value.split('-')
@@ -180,46 +189,6 @@ export default function CreateEvent() {
         selectToHourRef.current.setCustomValidity('');
         selectToMinuteRef.current.setCustomValidity('');
     };
-
-    async function fetchEvents(id) {
-        let userEvents = await (
-          await fetch(`/api/user_event/${id}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          })
-        ).json();
-    
-        let actualEvents = [];
-        let actualInvites = [];
-    
-        if(!userEvents.error) {
-          userEvents.forEach(async (userEvent)=>{
-            if(userEvent.attending !== null) {
-              let result = await (
-                await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-                  method: "GET",
-                  headers: { "Content-Type": "application/json" },
-                })
-              ).json();
-              if(!result.error) {
-                let push = true;
-                if(userEvent.attending==="false" && result.author !== id) push = false;
-                if(push) actualEvents.push(result);
-              } 
-            } else {
-              let result = await (
-                await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-                  method: "GET",
-                  headers: { "Content-Type": "application/json" },
-                })
-              ).json();
-              if(!result.error) actualInvites.push(result);
-            }
-          });
-        }
-        setEventList(actualEvents);
-        setInviteList(actualInvites);
-      }
 
     return (
         <div className="row pt-4 justify-content-center">

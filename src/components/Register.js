@@ -79,48 +79,17 @@ export default function Register(props) {
     ).json();
 
     setUser(login);
-    fetchEvents(login.id);
+    updateEvents(login.id);
     clearFields();
   }
 
-  async function fetchEvents(id) {
-    let userEvents = await (
-      await fetch(`/api/user_event/${id}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-    ).json();
-
-    let actualEvents = [];
-    let actualInvites = [];
-
-    if(!userEvents.error) {
-      userEvents.forEach(async (userEvent)=>{
-        if(userEvent.attending !== null) {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) {
-            let push = true;
-            if(userEvent.attending==="false" && result.author !== id) push = false;
-            if(push) actualEvents.push(result);
-          } 
-        } else {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) actualInvites.push(result);
-        }
-      });
+  async function updateEvents(id) {
+    let result = await(await fetch("/api/event/user/"+id)).json();
+    if(!result.error) {
+      console.log(result);
+      setEventList(result.events);
+      setInviteList(result.invites);
     }
-    setEventList(actualEvents);
-    setInviteList(actualInvites);
   }
 
   return (

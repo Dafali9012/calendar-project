@@ -76,12 +76,25 @@ module.exports = class RestApi {
           }
         });
 
-        this.expressApp.get(`${this.routePrefix}/${table}/eventid/:id`, (req, res) => {
-          let result = this.database.select(
-            "SELECT * FROM " + table + " WHERE id = $id",
+        this.expressApp.get(`${this.routePrefix}/${table}/user/:id`, (req, res) => {
+          let result = {events:[],invites:[]};
+          let userEvents = this.database.select(
+            "SELECT * FROM user_event WHERE userId = $id",
             { id: req.params.id }
           );
-          res.json(result[0]);
+          for(let userEvent of userEvents) {
+            let event = this.database.select(
+              "SELECT * FROM "+table+" WHERE id = "+userEvent.eventId
+            )
+            if(!(event[0].author != req.params.id && userEvent.attending=="false")) {
+              if(userEvent.attending === null) {
+                result.invites.push(event[0]);
+              } else {
+                result.events.push(event[0]);
+              }
+            }
+          }
+          res.json(result);
         });
         break;
 

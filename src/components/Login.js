@@ -20,7 +20,7 @@ export default function Login(props) {
   };
 
   if(redirect.path!=null) return <Redirect push to={redirect.path}/>;
-  if(user!=null) setRedirect({path:"/"});
+  if(user!==null) setRedirect({path:"/"});
 
   async function login(e) {
     e.preventDefault();
@@ -42,50 +42,20 @@ export default function Login(props) {
         setShowAlert(true);
       } else {
         setUser(login);
-        fetchEvents(login.id);
+        updateEvents(login.id);
         setState({ email: "", password: ""});
       }
     }
   }
 
-  async function fetchEvents(id) {
-    let userEvents = await (
-      await fetch(`/api/user_event/${id}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-    ).json();
-
-    let actualEvents = [];
-    let actualInvites = [];
-
-    if(!userEvents.error) {
-      userEvents.forEach(async (userEvent)=>{
-        if(userEvent.attending !== null) {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) {
-            let push = true;
-            if(userEvent.attending==="false" && result.author !== id) push = false;
-            if(push) actualEvents.push(result);
-          } 
-        } else {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) actualInvites.push(result);
-        }
-      });
+  async function updateEvents(id) {
+    console.log("updating events from login")
+    let result = await(await fetch("/api/event/user/"+id)).json();
+    if(!result.error) {
+      console.log(result);
+      setEventList(result.events);
+      setInviteList(result.invites);
     }
-    setEventList(actualEvents);
-    setInviteList(actualInvites);
   }
 
   const clearFields = () => {
