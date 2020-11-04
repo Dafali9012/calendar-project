@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Alert } from "reactstrap";
-import { UserContext, EventListContext } from "../Store";
+import { UserContext, EventListContext, InviteContext } from "../Store";
 import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
   const [redirect, setRedirect] = useState({path:null});
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
+  // eslint-disable-next-line
+  const [inviteList, setInviteList] = useContext(InviteContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   //create state & update values after entering in input
@@ -40,23 +42,50 @@ export default function Login(props) {
         setShowAlert(true);
       } else {
         setUser(login);
-        fetchEventList(login.id);
+        fetchEvents(login.id);
         setState({ email: "", password: ""});
       }
     }
   }
 
-  async function fetchEventList(id) {
-    let result = await (
-      await fetch(`/api/event/${id}`, {
+  async function fetchEvents(id) {
+    let userEvents = await (
+      await fetch(`/api/user_event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
     ).json();
 
-    if (!result.error) {
-      setEventList(result);
+    let actualEvents = [];
+    let actualInvites = [];
+
+    if(!userEvents.error) {
+      userEvents.forEach(async (userEvent)=>{
+        if(userEvent.attending !== null) {
+          let result = await (
+            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+          ).json();
+          if(!result.error) {
+            let push = true;
+            if(userEvent.attending==="false" && result.author !== id) push = false;
+            if(push) actualEvents.push(result);
+          } 
+        } else {
+          let result = await (
+            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+          ).json();
+          if(!result.error) actualInvites.push(result);
+        }
+      });
     }
+    setEventList(actualEvents);
+    setInviteList(actualInvites);
   }
 
   const clearFields = () => {

@@ -1,6 +1,6 @@
 import React, { useContext , useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { UserContext, EventListContext} from "./Store";
+import { UserContext, EventListContext, InviteContext} from "./Store";
 import { Redirect } from 'react-router-dom';
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -15,6 +15,8 @@ export default function App() {
     // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   // eslint-disable-next-line
+  const [inviteList, setInviteList] = useContext(InviteContext);
+  // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
 
   
@@ -26,10 +28,6 @@ export default function App() {
   // eslint-disable-next-line
   },[]);
 
-  if(user == null){
-    fetchUser()
-  }
-
   async function fetchUser() {
     let result = await (
       await fetch("/api/login", {
@@ -40,23 +38,49 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
-      fetchEventList(result.id)
+      fetchEvents(result.id)
     }
   }
 
-  async function fetchEventList(id) {
-    let result = await (
-      await fetch(`/api/event/${id}`, {
+  async function fetchEvents(id) {
+    let userEvents = await (
+      await fetch(`/api/user_event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
     ).json();
 
-    if (!result.error) {
-      setEventList(result);
-    }
-  }
+    let actualEvents = [];
+    let actualInvites = [];
 
+    if(!userEvents.error) {
+      userEvents.forEach(async (userEvent)=>{
+        if(userEvent.attending !== null) {
+          let result = await (
+            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+          ).json();
+          if(!result.error) {
+            let push = true;
+            if(userEvent.attending==="false" && result.author !== id) push = false;
+            if(push) actualEvents.push(result);
+          } 
+        } else {
+          let result = await (
+            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+          ).json();
+          if(!result.error) actualInvites.push(result);
+        }
+      });
+    }
+    setEventList(actualEvents);
+    setInviteList(actualInvites);
+  }
 
   return (
     <Router>

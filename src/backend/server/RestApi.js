@@ -75,6 +75,14 @@ module.exports = class RestApi {
             res.status(403).send({ error: "Forbidden" });
           }
         });
+
+        this.expressApp.get(`${this.routePrefix}/${table}/eventid/:id`, (req, res) => {
+          let result = this.database.select(
+            "SELECT * FROM " + table + " WHERE id = $id",
+            { id: req.params.id }
+          );
+          res.json(result[0]);
+        });
         break;
 
       case "user_event":
