@@ -139,6 +139,14 @@ export default function CreateEvent() {
             attending:"false"
         }
 
+        await (
+            await fetch("/api/user_event", {
+                method: "POST",
+                body: JSON.stringify(userEventObject),
+                headers: { "Content-Type": "application/json" }
+            })
+        ).json();
+
         fetchEventList(user.id);
         setRedirect({path:"/date/"+params.date});
         return true;

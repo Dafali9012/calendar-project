@@ -14,26 +14,28 @@ export default function Event(props) {
   let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
-  let inviteObjectList = [];
+  //let inviteObjectList = [];
 
   if (emailList.length === 0) {
     getEmailList();
   }
 
   function invite(){
-    let userInviteList = [];
-    selectedEmails.forEach( (emailObject) => {
-      userInviteList.push({
+    //let userInviteList = [];
+    for(let emailObject of selectedEmails) {
+      console.log(emailObject);
+      postToUser_Event({
         eventId: event.id,
         userID: emailObject.id,
         attending: null
-      })
-    })
+      });
+    };
 
-    postToUser_Event(userInviteList)
+    //postToUser_Event(userInviteList)
   }
 
   function selectEmail(email) {
+    console.log(email);
     if (![...selectedEmails].includes(email)) {
       setSelectedEmail([...selectedEmails, email]);
     }
@@ -53,11 +55,11 @@ export default function Event(props) {
     else dateTo.push(x);
   }
 
-  async function postToUser_Event(inviteList) {
+  async function postToUser_Event(invite) {
     let result = await (
       await fetch(`/api/user_event`, {
         method: "POST",
-        body: JSON.stringify(inviteList),
+        body: JSON.stringify(invite),
         headers: { "Content-Type": "application/json" },
       })
     ).json();
@@ -118,7 +120,7 @@ export default function Event(props) {
             {emailList.map((email) => {
               return (
                 <Dropdown.Item
-                  onClick={(e) => selectEmail(email)}
+                  onClick={() => selectEmail(email)}
                   as="button"
                   key={email.id}
                 >
