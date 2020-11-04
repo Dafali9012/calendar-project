@@ -1,0 +1,9 @@
+.scheduled{
+    transition: all 0.1s ease-out;
+    cursor: pointer;
+  }
+
+  .scheduled:hover{
+    transform: scale(1.2);
+    transition: all 0.1s ease-in;
+  }

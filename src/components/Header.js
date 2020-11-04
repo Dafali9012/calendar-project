@@ -55,7 +55,7 @@ export default function Header() {
         <DropdownToggle>
         {user == null ? <h4 className="button-title"><strong>Menu</strong></h4> : <h4 className="userName"><span role="img" aria-label="user"></span>{user.name}</h4>}
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu className="drop">
           <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>
           <DropdownItem divider />
           <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
