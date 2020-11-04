@@ -82,7 +82,7 @@ export default function DateView(){
                     startDate.setHours(0,0,0,0);
                     endDate.setHours(0,0,0,0);
                     if(viewDate.valueOf() >= startDate.valueOf() && viewDate.valueOf() <= endDate.valueOf()) {
-                        return <div className="card my-2 text-center marx-20 py-2" key={i} 
+                        return <div className="card my-2 text-center marx-20 py-2 scheduled" key={i} 
                         onClick={() => setRedirect({pathname:"/event", state:{eventPos:i}})}>{x.title}</div>
                     }
                     return null;

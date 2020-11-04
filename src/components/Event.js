@@ -81,11 +81,11 @@ export default function Event(props) {
   return (
     <div className="row">
       <div className="pt-4 col-12 d-flex flex-column padx-20">
-        <h4 className="text-center">
+        <h3 className="text-center">
           <strong>
             <u>{event.title}</u>
           </strong>
-        </h4>
+        </h3>
         <div className="d-flex justify-content-center mt-4">
           <div className="d-flex flex-column justify-content-center">
             <h5 className="text-center mx-5">
@@ -144,7 +144,7 @@ export default function Event(props) {
                 <button
                   type="button"
                   key={selected.id}
-                  className="btn m-1 btn-outline-info"
+                  className="btn m-1 btn-outline-info nohover"
                 >
                   {selected.email}
                   <span
