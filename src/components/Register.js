@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
+import { UserContext, EventListContext } from "../Store";
 
 export default function Register(props) {
+  // eslint-disable-next-line
+  const [user,setUser] = useContext(UserContext);
+  // eslint-disable-next-line
+  const [eventList, setEventList] = useContext(EventListContext);
   const [redirect, setRedirect] = useState({path:null});
   //this.app = app;
   //create state & update values after entering in input
@@ -52,13 +57,41 @@ export default function Register(props) {
     if (add.error) {
       setShowAlert(true);
     } else {
-      setState({ name: "", email: "", password: "", passwordConfirm: ""});
-      setRedirect({path:"/"})
+      autoLogin();
+      clearFields();
     }
   }
 
-  const clearFields = () => {
+  function clearFields() {
     setState({ name: "", email: "", password: "", passwordConfirm: ""});
+  }
+
+  async function autoLogin() {
+    const details = { email: state.email, password: state.password };
+    let login = await (
+      await fetch("/api/login", {
+        method: "POST",
+        body: JSON.stringify(details),
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    setUser(login);
+    fetchEventList(login.id);
+    clearFields();
+  }
+
+  async function fetchEventList(id) {
+    let result = await (
+      await fetch(`/api/event/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
+    if (!result.error) {
+      setEventList(result);
+    }
   }
 
   return (
