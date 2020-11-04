@@ -16,7 +16,7 @@ export default function App() {
   const [user, setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
-
+  
   
   useEffect(()=>{
     console.log("mounted app");
