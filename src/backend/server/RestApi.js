@@ -47,15 +47,17 @@ module.exports = class RestApi {
 
       case "user_event":
         this.expressApp.post(`${this.routePrefix}/${table}`, (req, res) => {
-          res.json(
-            this.database.run(
-              /*sql*/ `
-        INSERT INTO ${table} (${Object.keys(req.body)})
-        VALUES (${Object.keys(req.body).map((key) => "$" + key)})
-        `,
-              req.body
-            )
-          );
+          req.body.forEach((userEvent) => {
+            res.json(
+              this.database.run(
+                /*sql*/ `
+          INSERT INTO ${table} (${Object.keys(userEvent)})
+          VALUES (${Object.keys(userEvent).map((key) => "$" + key)})
+          `,
+                userEvent
+              )
+            );
+          });
         });
         break;
     }
