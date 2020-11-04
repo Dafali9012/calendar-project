@@ -14,13 +14,17 @@ import DateView from "./components/DateView";
 export default function App() {
   const [user, setUser] = useContext(UserContext);
 
+  // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
+  // eslint-disable-next-line
   const [emailList, setEmailList] = useContext(EmailContext);
   
   useEffect(()=>{
+    console.log("mounted app");
     if(user == null){
-      fetchUser()
+      fetchUser();
     }
+  // eslint-disable-next-line
   },[]);
 
   async function fetchUser() {
