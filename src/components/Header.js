@@ -40,6 +40,7 @@ export default function Header() {
       </Link>
     );
   }
+  let notifications = 2;
 
   return (
     <header className="header-of-page">
@@ -53,10 +54,13 @@ export default function Header() {
 
       <UncontrolledDropdown>
         <DropdownToggle>
-        {user == null ? <h4 className="button-title"><strong>Menu</strong></h4> : <h4 className="userName"><span role="img" aria-label="user"></span>{user.name}</h4>}
+        <div className="row">
+        <div className="col my-auto">{user == null ? <h4 className="button-title userName">Menu</h4> : <h5 className="userName"><span role="img" aria-label="user"></span>{user.name}</h5>}</div>
+        {user != null ? <div className="col my-auto pl-0">{notifications>0?<div className="event-marker text-light my-0">{notifications>9?"9+":notifications}</div>:null}</div>:null}
+        </div>
         </DropdownToggle>
         <DropdownMenu className="drop">
-          <DropdownItem header>{user == null ? 'I want to' : user.email}</DropdownItem>
+          <DropdownItem header>{user == null ? 'I want to: ' : user.email}</DropdownItem>
           <DropdownItem divider />
           <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
           <DropdownItem>{user == null ? register() : '/path here?'}</DropdownItem>

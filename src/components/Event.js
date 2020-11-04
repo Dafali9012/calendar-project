@@ -16,10 +16,6 @@ export default function Event(props) {
   let dateTo = [];
   //let inviteObjectList = [];
 
-  if (emailList.length === 0) {
-    getEmailList();
-  }
-
   function invite(){
     //let userInviteList = [];
     for(let emailObject of selectedEmails) {
@@ -30,12 +26,9 @@ export default function Event(props) {
         attending: null
       });
     };
-
-    //postToUser_Event(userInviteList)
   }
 
   function selectEmail(email) {
-    console.log(email);
     if (![...selectedEmails].includes(email)) {
       setSelectedEmail([...selectedEmails, email]);
     }
@@ -69,6 +62,7 @@ export default function Event(props) {
   }
 
   async function getEmailList() {
+    console.log("fetch")
     let result = await (
       await fetch(`/api/user`, {
         method: "GET",
@@ -112,11 +106,12 @@ export default function Event(props) {
         <button className="btn-sm btn-primary">Attend Event</button>
       </div>
       <div className="col-12 mt-4 d-flex justify-content-center">
-        <Dropdown>
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        <Dropdown onClick={getEmailList}>
+          <Dropdown.Toggle 
+          variant="primary" id="dropdown-basic"  >
             Select
           </Dropdown.Toggle>
-          <Dropdown.Menu>
+          <Dropdown.Menu >
             {emailList.map((email) => {
               return (
                 <Dropdown.Item
