@@ -1,4 +1,5 @@
 const session = require("express-session");
+const store = require('better-express-store');
 const PasswordHandler = require("./PasswordHandler");
 const DbHandler = require("./DbHandler");
 
@@ -21,6 +22,7 @@ module.exports = class LoginHandler {
           secure: "auto",
           sameSite: "strict"
         },
+        store: store({  dbPath: 'src/backend/database/calendarDB.db'})
       })
     );
   }
