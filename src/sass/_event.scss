@@ -1,0 +1,18 @@
+.nohover{
+    color: black;
+}
+
+.nohover:hover {
+    background-color: unset !important;
+    color: unset !important;
+    text-decoration: none;
+  }
+
+  .badge{
+    transition: all 0.1s ease-out;
+  }
+
+  .badge:hover{
+    transform: scale(1.4);
+    transition: all 0.1s ease-in;
+  }
