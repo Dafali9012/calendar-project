@@ -56,7 +56,7 @@ export default function Header() {
         <DropdownToggle>
         <div className="row">
         <div className="col my-auto">{user == null ? <h4 className="button-title userName">Menu</h4> : <h5 className="userName"><span role="img" aria-label="user"></span>{user.name}</h5>}</div>
-        <div className="col my-auto pl-0">{notifications>0?<div className="event-marker text-light my-0">{notifications>9?"9+":notifications}</div>:null}</div>
+        {user != null ? <div className="col my-auto pl-0">{notifications>0?<div className="event-marker text-light my-0">{notifications>9?"9+":notifications}</div>:null}</div>:null}
         </div>
         </DropdownToggle>
         <DropdownMenu className="drop">
