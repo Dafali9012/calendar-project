@@ -150,8 +150,6 @@ export default function Calendar(){
     if(view==="Month") buildMonth();
     else if(view==="Week") buildWeek();
 
-    console.log("eventlist:",eventList, "invitelist",inviteList);
-
     return (
         <div className="d-flex flex-column pt-md-4">
             <div className="flex-shrink-0">
@@ -188,7 +186,7 @@ export default function Calendar(){
                         endDate.setHours(0,0,0,0);
                         if(x.valueOf() >= startDate.valueOf() && x.valueOf() <= endDate.valueOf()) {
                             numEvents++;
-                        } 
+                        }
                     }
                     let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light", cssClass:"dateBox"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
