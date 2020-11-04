@@ -183,7 +183,7 @@ export default function Calendar(){
                             numEvents++;
                         } 
                     }
-                    let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light"};
+                    let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light", cssClass:"dateBox"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
                     return <div className={joinClasses(classes)} key={i}

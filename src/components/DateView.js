@@ -23,7 +23,7 @@ export default function DateView(){
     }
 
     useEffect(()=>{
-        if(redirect.pathname && redirect.pathname!=="/event")fetchDateFact();
+        if(redirect.pathname && redirect.pathname!=="/event") fetchDateFact();
         // eslint-disable-next-line
     },[redirect]);
 

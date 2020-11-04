@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { UserContext, EventListContext } from "./Store";
+import React, { useContext , useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UserContext, EventListContext} from "./Store";
+import { Redirect } from 'react-router-dom';
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -9,16 +10,20 @@ import Calendar from "./components/Calendar";
 import Event from "./components/Event";
 import DateView from "./components/DateView";
 
+
 export default function App() {
+    // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
 
+  
   useEffect(()=>{
+    console.log("mounted app");
     if(user == null){
-      fetchUser()
+      fetchUser();
     }
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   },[]);
 
   if(user == null){
@@ -35,7 +40,7 @@ export default function App() {
 
     if (!result.error) {
       setUser(result);
-      fetchEventList(result.id);
+      fetchEventList(result.id)
     }
   }
 
@@ -51,6 +56,7 @@ export default function App() {
       setEventList(result);
     }
   }
+
 
   return (
     <Router>

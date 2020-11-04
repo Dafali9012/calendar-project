@@ -62,9 +62,7 @@ module.exports = class RestApi {
   }
 
   getRoute(table) {
-
     switch (table) {
-
       case "event":
         this.expressApp.get(`${this.routePrefix}/${table}/:id`, (req, res) => {
           if (req.session.user && req.session.user.id == req.params.id) {
@@ -86,6 +84,15 @@ module.exports = class RestApi {
             { id: req.params.id }
           );
           res.json(result);
+        });
+        break;
+
+      case "user":
+        this.expressApp.get(`${this.routePrefix}/${table}`, (req, res) => {
+          if (req.session.user) {
+            let result = this.database.select("select email, id from " + table);
+            res.json(result);
+          }
         });
         break;
     }
