@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
@@ -14,9 +14,23 @@ export default function Event(props) {
   let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
-  
-  if(emailList.length === 0){
-    getEmailList()
+  let inviteObjectList = [];
+
+  if (emailList.length === 0) {
+    getEmailList();
+  }
+
+  function invite(){
+    let userInviteList = [];
+    selectedEmails.forEach( (emailObject) => {
+      userInviteList.push({
+        eventId: event.id,
+        userID: emailObject.id,
+        attending: null
+      })
+    })
+
+    postToUser_Event(userInviteList)
   }
 
   function selectEmail(email) {
@@ -39,6 +53,19 @@ export default function Event(props) {
     else dateTo.push(x);
   }
 
+  async function postToUser_Event(inviteList) {
+    let result = await (
+      await fetch(`/api/user_event`, {
+        method: "POST",
+        body: JSON.stringify(inviteList),
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+    if(result.changes){
+      setSelectedEmail([])
+    }
+  }
+
   async function getEmailList() {
     let result = await (
       await fetch(`/api/user`, {
@@ -46,7 +73,7 @@ export default function Event(props) {
         headers: { "Content-Type": "application/json" },
       })
     ).json();
-    setEmailList(result);
+    setEmailList(result)
   }
 
   return (
@@ -101,7 +128,10 @@ export default function Event(props) {
             })}
           </Dropdown.Menu>
         </Dropdown>
-        <Button className="ml-5" variant="success">
+        <Button 
+        onClick={invite}
+        className="ml-5" 
+        variant="success">
           Invite
         </Button>
       </div>
