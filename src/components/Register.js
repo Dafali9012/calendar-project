@@ -1,13 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
-import { UserContext, EventListContext, InviteContext } from "../Store";
+import { UserContext, EventListContext } from "../Store";
 
 export default function Register(props) {
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
-  // eslint-disable-next-line
-  const [inviteList, setInviteList] = useContext(InviteContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   const [redirect, setRedirect] = useState({path:null});
@@ -79,48 +77,21 @@ export default function Register(props) {
     ).json();
 
     setUser(login);
-    fetchEvents(login.id);
+    fetchEventList(login.id);
     clearFields();
   }
 
-  async function fetchEvents(id) {
-    let userEvents = await (
-      await fetch(`/api/user_event/${id}`, {
+  async function fetchEventList(id) {
+    let result = await (
+      await fetch(`/api/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
     ).json();
 
-    let actualEvents = [];
-    let actualInvites = [];
-
-    if(!userEvents.error) {
-      userEvents.forEach(async (userEvent)=>{
-        if(userEvent.attending !== null) {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) {
-            let push = true;
-            if(userEvent.attending==="false" && result.author !== id) push = false;
-            if(push) actualEvents.push(result);
-          } 
-        } else {
-          let result = await (
-            await fetch(`/api/event/eventid/${userEvent.eventId}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
-          ).json();
-          if(!result.error) actualInvites.push(result);
-        }
-      });
+    if (!result.error) {
+      setEventList(result);
     }
-    setEventList(actualEvents);
-    setInviteList(actualInvites);
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { EventListContext, InviteContext, UserContext } from "../Store";
+import { EventListContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -7,10 +7,6 @@ import { Redirect } from 'react-router-dom';
 
 export default function Calendar(){
 
-    // eslint-disable-next-line
-    const [user,setUser] = useContext(UserContext);
-    // eslint-disable-next-line
-    const [inviteList, setInviteList] = useContext(InviteContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
     const [redirect, setRedirect] = useState({path:null});
@@ -25,7 +21,6 @@ export default function Calendar(){
     
     useEffect(()=>{
         fetchFunFact()
-        // eslint-disable-next-line
     },[])
 
     const fetchFunFact = async () =>{
@@ -149,8 +144,6 @@ export default function Calendar(){
 
     if(view==="Month") buildMonth();
     else if(view==="Week") buildWeek();
-
-    console.log("eventlist:",eventList, "invitelist",inviteList);
 
     return (
         <div className="d-flex flex-column pt-md-4">
