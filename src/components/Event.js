@@ -1,20 +1,27 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
 import { EventListContext, EmailContext } from "../Store";
 
 export default function Event(props) {
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
-  // eslint-disable-next-line
   const [emailList, setEmailList] = useContext(EmailContext);
-  // eslint-disable-next-line
   const [selectedEmails, setSelectedEmail] = useState([]);
+  const [usersAttending, setUsersAttending] = useState([]);
   let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
-  //let inviteObjectList = [];
+
+  useEffect(()=>{
+    fetchUsersAttending();
+    // eslint-disable-next-line
+  },[]);
 
   function invite(){
     //let userInviteList = [];
@@ -26,6 +33,11 @@ export default function Event(props) {
         attending: null
       });
     };
+  }
+
+  async function fetchUsersAttending() {
+    let result = await(await fetch("/api/user/event/"+event.id)).json();
+    if(!result.error) setUsersAttending(result);
   }
 
   function selectEmail(email) {
@@ -72,33 +84,36 @@ export default function Event(props) {
     setEmailList(result)
   }
 
+  console.log("users attending:", usersAttending);
+
   return (
     <div className="row">
-      <div className="pt-4 col-12 d-flex flex-column padx-20">
+      <div className="container pt-4">
         <h3 className="text-center">
           <strong>
             <u>{event.title}</u>
           </strong>
         </h3>
-        <div className="d-flex justify-content-center mt-4">
-          <div className="d-flex flex-column justify-content-center">
-            <h5 className="text-center mx-5">
+        <div className="row justify-content-center mt-4">
+            <div className="col-4 justify-content-center">
+            <h6 className="text-center">
               {dateFrom[0]}-{dateFrom[1]}-{dateFrom[2]}
-            </h5>
-            <h5 className="text-center mx-5">
+            </h6>
+            <h6 className="text-center">
               {dateFrom[3]}:{dateFrom[4]}
-            </h5>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
+            </h6>
+            </div>
+      
+          <div className="col-4 col-md-1 d-flex justify-content-center align-items-center">
             <FontAwesomeIcon icon={faArrowRight} />
           </div>
-          <div className="d-flex flex-column justify-content-center">
-            <h5 className="text-center mx-5">
+          <div className="col-4 justify-content-center">
+            <h6 className="text-center">
               {dateTo[0]}-{dateTo[1]}-{dateTo[2]}
-            </h5>
-            <h5 className="text-center mx-5">
+            </h6>
+            <h6 className="text-center">
               {dateTo[3]}:{dateTo[4]}
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
@@ -132,19 +147,19 @@ export default function Event(props) {
           Invite
         </Button>
       </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      <div className="container pt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
                 <button
                   type="button"
                   key={selected.id}
-                  className="btn m-1 btn-outline-info nohover"
+                  className="col-sm-12 col-lg-3 btn m-1 btn-outline-info nohover"
                 >
                   {selected.email}
                   <span
                     onClick={(e) => removeSelectedEmail(selected)}
-                    className="badge badge-danger ml-2"
+                    className="badge badge-danger ml-2 d-flex justify-content-end"
                   >
                     X
                   </span>
@@ -153,61 +168,28 @@ export default function Event(props) {
             })
           : ""}
       </div>
-      <div className="pt-4 col-12 d-flex flex-column padx-20">
+      <div className="container">
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>
       </div>
-      <div className="col-12 d-flex flex-column mt-4 padx-15">
+      <div className="container">
         <h4>Attendees</h4>
         <div className="row">
-          <p className="col-4 mar-0">
-            Attendee Number One{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Two{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Three{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Four{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Five{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Six{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Seven{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Eight{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
+          {usersAttending.map((x,i)=>{
+            let classes = "mar-0";
+            if(x.id===event.author) {
+              classes = classes.concat(" ml-2");
+            }
+            return <div className="col-sm-12 col-md-4 mar-0 card" key={i}>
+              <span className="d-flex align-items-center">
+                {x.id===event.author?<FontAwesomeIcon icon={faCrown}/>:null}
+                <p className={classes}>{x.name}</p>
+                {x.attending===null?<FontAwesomeIcon className="ml-auto" icon={faQuestion}/>:
+                x.attending==="false"?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
+                x.attending==="true"?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
+              </span>
+            </div>
+          })}
         </div>
       </div>
     </div>

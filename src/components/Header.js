@@ -59,7 +59,7 @@ export default function Header() {
 
   return (
     <header className="header-of-page">
-      <div className="col-3 nav-menu">
+      <div className="col-md-3 col-4 nav-menu">
         <Link className="text-decoration-none" to="/">
           <h1 className="link logo pl-5">
             <strong>iCalendar</strong>
@@ -97,7 +97,7 @@ export default function Header() {
             header>
               {user == null ? "I want to: " : user.email}
             </DropdownItem>
-            <DropdownItem divider />
+           
             {notifications.map((notif) => {
               return (
                 <DropdownItem>
