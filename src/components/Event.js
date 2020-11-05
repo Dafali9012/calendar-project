@@ -159,7 +159,7 @@ export default function Event(props) {
                   {selected.email}
                   <span
                     onClick={(e) => removeSelectedEmail(selected)}
-                    className="badge badge-danger ml-2 d-flex justify-content-end"
+                    className="badge badge-danger ml-2"
                   >
                     X
                   </span>
