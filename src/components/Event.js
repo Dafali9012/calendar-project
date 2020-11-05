@@ -139,12 +139,12 @@ export default function Event(props) {
                 <button
                   type="button"
                   key={selected.id}
-                  className="btn m-1 btn-outline-info nohover"
+                  className="col-sm-12 col-lg-3 btn m-1 btn-outline-info nohover"
                 >
                   {selected.email}
                   <span
                     onClick={(e) => removeSelectedEmail(selected)}
-                    className="badge badge-danger ml-2"
+                    className="badge badge-danger ml-2 d-flex justify-content-end"
                   >
                     X
                   </span>
