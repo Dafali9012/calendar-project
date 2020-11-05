@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
 export default function Header(props) {
@@ -18,11 +17,11 @@ export default function Header(props) {
 
   function logout() {
     return (
-      <Link className="text-decoration-none" to="/">
-        <h5 onClick={deleteSession} className="link">
+      <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={deleteSession}>
+        <h5 className="link">
           Log me out
         </h5>
-      </Link>
+      </div>
     );
   }
 
