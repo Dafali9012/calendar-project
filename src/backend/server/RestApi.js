@@ -10,6 +10,7 @@ module.exports = class RestApi {
       this.postRoute(table);
     });
     this.putUserEvent();
+    this.deleteUserEvent();
   }
 
   postRoute(table) {
@@ -88,12 +89,10 @@ module.exports = class RestApi {
               let event = this.database.select(
               "SELECT * FROM "+table+" WHERE id = "+userEvent.eventId
             )
-            if(!(event[0].author != req.params.id && userEvent.attending=="false")) {
-              if(userEvent.attending === null) {
-                result.invites.push(event[0]);
-              } else {
-                result.events.push(event[0]);
-              }
+            if(userEvent.attending === null) {
+              result.invites.push(event[0]);
+            } else {
+              result.events.push(event[0]);
             }
           }
           res.json(result);
@@ -137,13 +136,39 @@ module.exports = class RestApi {
   putUserEvent() {
     this.expressApp.put(`${this.routePrefix}/user_event`, (req, res)=>{
       //if(req.session.user && req.session.user.id === req.params.id) {
-        console.log("this is running")
         res.json(this.database.run(
           `UPDATE user_event
           set attending = ${req.body.attending}
           WHERE userId = ${req.body.userId} AND eventId = ${req.body.eventId}`,
           req.body
         ));
+      }
+    //}
+    )
+  }
+
+  deleteUserEvent() {
+    this.expressApp.delete(`${this.routePrefix}/user_event`, (req, res)=>{
+      //if(req.session.user && req.session.user.id === req.params.id) {
+        let event = this.database.select(
+          `SELECT * FROM event
+          WHERE id = ${req.body.eventId}`,
+          req.body
+        );
+        if(event[0].author === req.body.userId) {
+          console.log("deleting event")
+          this.database.run(
+            `DELETE FROM event WHERE id = ${req.body.eventId}`,
+            req.body
+          );
+        } else {
+          console.log("deleting user_event")
+          this.database.run(
+            `DELETE FROM user_event WHERE userId = ${req.body.userId} AND eventId = ${req.body.eventId}`,
+            req.body
+          );
+        }
+        res.json({result:"all was probably good"});
       }
     //}
     )
