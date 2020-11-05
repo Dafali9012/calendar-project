@@ -1,6 +1,4 @@
 import React, { useContext , useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -111,10 +109,10 @@ export default function Header() {
 
   return (
     <header className="header-of-page">
-      <div className="col-md-3 col-5 nav-menu pl-2">
+      <div className="col-md-3 col-4 nav-menu">
         <Link className="text-decoration-none" to="/">
-          <h1 className="link logo">
-            <FontAwesomeIcon icon={faApple}/>iCalendar
+          <h1 className="link logo pl-5">
+            <strong>iCalendar</strong>
           </h1>
         </Link>
       </div>

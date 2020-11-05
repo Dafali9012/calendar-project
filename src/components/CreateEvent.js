@@ -138,7 +138,7 @@ export default function CreateEvent() {
         let userEventObject = {
             userId:user.id,
             eventId:result.lastInsertRowid,
-            attending:0
+            attending:"false"
         }
 
         await (
