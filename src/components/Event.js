@@ -132,7 +132,7 @@ export default function Event(props) {
           Invite
         </Button>
       </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      <div className="col-12 mt-4 d-grid justify-content-center">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
