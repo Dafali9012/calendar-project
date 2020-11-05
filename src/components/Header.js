@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
@@ -7,11 +12,21 @@ export default function Header() {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
+  console.log("notification ", notifications);
+
+  function renderNotifications() {
+    notifications.forEach((notif) => {
+      console.log("notif ", notif);
+      return <DropdownItem>Hello</DropdownItem>;
+    });
+  }
 
   function logout() {
     return (
       <Link className="text-decoration-none" to="/">
-        <h5 onClick={deleteSession} className="link">Log me out</h5>
+        <h5 onClick={deleteSession} className="link">
+          Log me out
+        </h5>
       </Link>
     );
   }
@@ -23,8 +38,7 @@ export default function Header() {
         headers: { "Content-Type": "application/json" },
       })
     ).json();
-    setUser(null)
-    console.log(result)
+    setUser(null);
   }
 
   function login() {
@@ -47,30 +61,56 @@ export default function Header() {
     <header className="header-of-page">
       <div className="col-3 nav-menu">
         <Link className="text-decoration-none" to="/">
-          <h1 className="link logo pl-5"><strong>iCalendar</strong></h1>
+          <h1 className="link logo pl-5">
+            <strong>iCalendar</strong>
+          </h1>
         </Link>
       </div>
 
       <div className="header-user col-3">
-
-      <UncontrolledDropdown>
-        <DropdownToggle>
-        <div className="row">
-        <div className="col my-auto">{user == null ? <h4 className="button-title userName">Menu</h4> : <h5 className="userName"><span role="img" aria-label="user"></span>{user.name}</h5>}</div>
-        {user != null ? <div className="col my-auto pl-0">{notifications.length>0?<div className="event-marker text-light my-0">{notifications.length>9?"9+":notifications.length}</div>:null}</div>:null}
-        </div>
-        </DropdownToggle>
-        <DropdownMenu className="drop">
-          <DropdownItem header>{user == null ? 'I want to: ' : user.email}</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
-          <DropdownItem>{user == null ? register() : '/path here?'}</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>{user == null ? '' : logout()}</DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+        <UncontrolledDropdown>
+          <DropdownToggle >
+            <div className="row">
+              <div className="col my-auto">
+                {user == null ? (
+                  <h4 className="button-title userName">Menu</h4>
+                ) : (
+                  <h5 className="userName">
+                    <span role="img" aria-label="user"></span>
+                    {user.name}
+                  </h5>
+                )}
+              </div>
+              {user != null ? (
+                <div className="col my-auto pl-0">
+                  {notifications.length > 0 ? (
+                    <div className="event-marker text-light my-0">
+                      {notifications.length > 9 ? "9+" : notifications.length}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          </DropdownToggle>
+          <DropdownMenu className="drop">
+            <DropdownItem
+            header>
+              {user == null ? "I want to: " : user.email}
+            </DropdownItem>
+            <DropdownItem divider />
+            {notifications.map((notif) => {
+              return (
+                <DropdownItem>
+                  {notif.title}
+                  <DropdownItem divider />
+                </DropdownItem>
+              );
+            })}
+            <DropdownItem divider />
+            <DropdownItem>{user == null ? "" : logout()}</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       </div>
-      
     </header>
   );
 }
