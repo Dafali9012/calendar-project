@@ -10,18 +10,11 @@ import {
 import { Link } from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
-export default function Header() {
+export default function Header(props) {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
   console.log("notification ", notifications);
-
-  function renderNotifications() {
-    notifications.forEach((notif) => {
-      console.log("notif ", notif);
-      return <DropdownItem>Hello</DropdownItem>;
-    });
-  }
 
   function logout() {
     return (
@@ -34,29 +27,13 @@ export default function Header() {
   }
 
   async function deleteSession() {
-    let result = await (
+    await (
       await fetch("/api/login", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       })
     ).json();
     setUser(null);
-  }
-
-  function login() {
-    return (
-      <Link className="text-decoration-none" to="/login">
-        <h4 className="link">Login</h4>
-      </Link>
-    );
-  }
-
-  function register() {
-    return (
-      <Link className="text-decoration-none" to="/register">
-        <h4 className="user-btn">Register</h4>
-      </Link>
-    );
   }
 
   function dropIt() {
@@ -93,7 +70,7 @@ export default function Header() {
 
             {notifications.map((notif) => {
               return (
-                <DropdownItem>
+                <DropdownItem onClick={()=>props.redirectCallback({pathname:"/event", state:{event:notif}})}>
                   {notif.title}
                   <DropdownItem divider />
                 </DropdownItem>
@@ -109,12 +86,12 @@ export default function Header() {
 
   return (
     <header className="header-of-page">
-      <div className="col-md-3 col-5 nav-menu pl-2">
-        <Link className="text-decoration-none" to="/">
-          <h1 className="link logo">
-            <FontAwesomeIcon icon={faApple}/>iCalendar
+      <div className="col-md-3 col-4 nav-menu">
+        <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
+          <h1 className="link logo pl-5 d-flex flex-row">
+            <FontAwesomeIcon icon={faApple} /><strong>iCalendar</strong>
           </h1>
-        </Link>
+        </div>
       </div>
       {user == null ? "" : dropIt()}
     </header>

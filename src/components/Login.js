@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Alert } from "reactstrap";
 import { UserContext, EventListContext, InviteContext } from "../Store";
-import { Redirect } from "react-router-dom";
 
 export default function Login(props) {
-  const [redirect, setRedirect] = useState({path:null});
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
   // eslint-disable-next-line
@@ -18,9 +16,6 @@ export default function Login(props) {
     const { id, value } = e.target;
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
-
-  if(redirect.path!=null) return <Redirect push to={redirect.path}/>;
-  if(user!==null) setRedirect({path:"/"});
 
   async function login(e) {
     e.preventDefault();
@@ -103,7 +98,7 @@ export default function Login(props) {
           </button>
 
           <button
-            onClick={()=>setRedirect({path:"/register"})}
+            onClick={()=>props.redirectCallback({pathname:"/register"})}
             type="button"
             className="col-5 btn btn-primary btn-sm mt-3"
           >
