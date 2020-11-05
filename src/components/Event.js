@@ -7,7 +7,6 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
 import { EventListContext, EmailContext, UserContext, InviteContext } from "../Store";
-import { Redirect } from "react-router-dom";
 
 export default function Event(props) {
   // eslint-disable-next-line
@@ -19,8 +18,7 @@ export default function Event(props) {
   const [emailList, setEmailList] = useContext(EmailContext);
   const [selectedEmails, setSelectedEmail] = useState([]);
   const [usersAttending, setUsersAttending] = useState([]);
-  const [redirect, setRedirect] = useState({path:null});
-  let event = eventList[props.location.state.eventPos];
+  let event = props.location.state.event;
   let dateFrom = [];
   let dateTo = [];
 
@@ -28,8 +26,6 @@ export default function Event(props) {
     fetchUsersAttending();
     // eslint-disable-next-line
   },[]);
-
-  if(redirect.path!=null) return <Redirect push to={redirect.path}/>
 
   function invite(){
     //let userInviteList = [];
@@ -114,7 +110,7 @@ export default function Event(props) {
     })).json();
     if(!result.error) {
       updateEvents(user.id);
-      setRedirect({path:"/"})
+      props.redirectCallback({pathname:"/"})
     };
   }
 
@@ -131,6 +127,7 @@ export default function Event(props) {
     })).json();
     if(!result.error) {
       fetchUsersAttending();
+      updateEvents(user.id);
     }
   }
 
@@ -177,15 +174,24 @@ export default function Event(props) {
           </Dropdown.Toggle>
           <Dropdown.Menu >
             {emailList.map((email) => {
-              return (
-                <Dropdown.Item
-                  onClick={() => selectEmail(email)}
-                  as="button"
-                  key={email.id}
-                >
-                  {email.email}
-                </Dropdown.Item>
-              );
+              let additem = true;
+              for(let x of usersAttending) {
+                if(x.id === email.id) {
+                  additem = false;
+                  break;
+                }
+              }
+              if(additem) {
+                return (
+                  <Dropdown.Item
+                    onClick={() => selectEmail(email)}
+                    as="button"
+                    key={email.id}
+                  >
+                    {email.email}
+                  </Dropdown.Item>
+                );
+              } else return null;
             })}
           </Dropdown.Menu>
         </Dropdown>

@@ -1,21 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {UserContext, EventListContext} from '../Store';
 
-export default function DateView(){
+export default function DateView(props){
 
     const params = useParams();
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
-    const [redirect, setRedirect] = useState({pathname:params.date});
     // eslint-disable-next-line
     const [dateFact, setDateFact] = useState();
 
     const fetchDateFact = async () =>{
         const baseURL = 'http://numbersapi.com/';
-        const date = redirect.pathname.split("/").pop().split("-")[1]+'/'+redirect.pathname.split("/").pop().split("-")[2];
+        const date = props.locationPathname.split("/").pop().split("-")[1]+'/'+props.locationPathname.split("/").pop().split("-")[2];
         const extension ='/date';
         const resp = await fetch(baseURL+date+extension);
         const data = await resp.text();
@@ -23,11 +22,9 @@ export default function DateView(){
     }
 
     useEffect(()=>{
-        if(redirect.pathname && redirect.pathname!=="/event") fetchDateFact();
+        fetchDateFact();
         // eslint-disable-next-line
-    },[redirect]);
-
-    if(redirect.pathname && redirect.pathname.split("/").pop() !== params.date) return <Redirect push to={redirect}/>
+    },[]);
 
     let dateToday = new Date();
     let viewDate = new Date();
@@ -38,7 +35,7 @@ export default function DateView(){
     dateToday.setHours(0,0,0,0);
     viewDate.setHours(0,0,0,0);
 
-    if(isNaN(viewDate.getDate())) setRedirect({path:"/"});
+    if(isNaN(viewDate.getDate())) props.redirectCallback({pathname:"/"});
 
     let dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
 
@@ -49,12 +46,12 @@ export default function DateView(){
     function previous(){
         viewDate.setDate(viewDate.getDate()-1)
         dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
-        setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
+        props.redirectCallback({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]});
     }
     function next(){
         viewDate.setDate(viewDate.getDate()+1)
         dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
-        setRedirect({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]})
+        props.redirectCallback({pathname:"/date/"+dateSplit[0]+'-'+dateSplit[1]+'-'+dateSplit[2]});
     }
 
     return (
@@ -69,7 +66,7 @@ export default function DateView(){
             </section>
             { viewDate.valueOf()>=dateToday.valueOf()?
             <div className="d-flex flex-column align-items-center mt-4">
-                <button className="btn btn-primary" onClick={()=>setRedirect({pathname:"/date/"+params.date+"/create-event"})}>Create Event</button>
+                <button className="btn btn-primary" onClick={()=>props.redirectCallback({pathname:"/date/"+params.date+"/create-event"})}>Create Event</button>
             </div>:null}
             <h3 className="mt-3 mb-3">Events</h3>
             <div style={{width:"100%", height:"1px", backgroundColor:"black"}}/>
@@ -83,7 +80,7 @@ export default function DateView(){
                     endDate.setHours(0,0,0,0);
                     if(viewDate.valueOf() >= startDate.valueOf() && viewDate.valueOf() <= endDate.valueOf()) {
                         return <div className="card my-2 text-center marx-20 py-2 scheduled" key={i} 
-                        onClick={() => setRedirect({pathname:"/event", state:{eventPos:i}})}>{x.title}</div>
+                        onClick={()=>props.redirectCallback({pathname:"/event", state:{event:x}})}>{x.title}</div>
                     }
                     return null;
                 })}

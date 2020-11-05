@@ -3,9 +3,8 @@ import { EventListContext, InviteContext, UserContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { Redirect } from 'react-router-dom';
 
-export default function Calendar(){
+export default function Calendar(props){
 
     // eslint-disable-next-line
     const [user,setUser] = useContext(UserContext);
@@ -13,7 +12,6 @@ export default function Calendar(){
     const [inviteList, setInviteList] = useContext(InviteContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
-    const [redirect, setRedirect] = useState({path:null});
     const [view, setView] = useState("Month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());
@@ -34,8 +32,6 @@ export default function Calendar(){
         const data = await resp.json();
         setFunFact(data.text);
     }
-
-    if(redirect.path!=null) { return <Redirect push to={redirect.path} />; }
 
     function monthName(date) {
         let a = new Date(date.getTime());
@@ -193,7 +189,7 @@ export default function Calendar(){
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
                     return <div className={joinClasses(classes)} key={i}
-                    onClick={()=>setRedirect({path:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>
+                    onClick={()=>props.redirectCallback({pathname:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>
                         {x.getDate()}
                         {numEvents>0?<div className="event-marker text-light mt-3 ml-1">{numEvents>9?"9+":numEvents}</div>:null}
                     </div>

@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { UserContext, EventListContext, InviteContext } from '../Store'
 
-export default function CreateEvent() {
+export default function CreateEvent(props) {
 
     const [formData, setFormData] = useState({
         title:'', description:'',
         fromYear:'', fromMonth:'', fromDay:'', fromHour:'', fromMinute:'',
         toYear:'', toMonth:'', toDay:'', toHour:'', toMinute:''});
 
-    const [redirect, setRedirect] = useState({path:null});
     // eslint-disable-next-line
     const [user, setUser] = useContext(UserContext);
     // eslint-disable-next-line
@@ -41,12 +40,10 @@ export default function CreateEvent() {
         });
         // eslint-disable-next-line
     },[]);
-
-    if(redirect.path!=null) return <Redirect push to={redirect.path}/>
     
     let date = new Date();
     date = new Date(params.date);
-    if(isNaN(date.getDate())) setRedirect({path:"/"});
+    if(isNaN(date.getDate())) props.redirectCallback({pathname:"/"});
 
     async function saveEvent(e) {
         e.preventDefault();
@@ -150,7 +147,7 @@ export default function CreateEvent() {
         ).json();
 
         updateEvents(user.id);
-        setRedirect({path:"/date/"+params.date});
+        props.redirectCallback({pathname:"/date/"+params.date});
         return true;
     }
 
@@ -178,7 +175,7 @@ export default function CreateEvent() {
     const hideModal = (e) => { if(e.target===e.currentTarget) setHidden(true); }
     const showModal = () => setHidden(false);
 
-    const cancel = () => setRedirect({path:"/date/"+params.date});
+    const cancel = () => props.redirectCallback({pathname:"/date/"+params.date});
 
     const handleInputChange = e => { setFormData({
         ...formData,
