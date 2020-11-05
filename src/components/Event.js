@@ -2,9 +2,11 @@ import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
-import { EventListContext, EmailContext } from "../Store";
+import { EventListContext, EmailContext, UserContext } from "../Store";
 
 export default function Event(props) {
+  // eslint-disable-next-line
+  const [user,setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   // eslint-disable-next-line
@@ -26,8 +28,7 @@ export default function Event(props) {
         attending: null
       });
     };
-
-    //postToUser_Event(userInviteList)
+    fetchUsersAttending();
   }
 
   function selectEmail(email) {
@@ -107,7 +108,7 @@ export default function Event(props) {
       <div className="col-12 d-flex mt-4 justify-content-center">
         <button className="btn-sm btn-primary">Attend Event</button>
       </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
           <Dropdown.Toggle 
           variant="primary" id="dropdown-basic"  >
@@ -133,8 +134,8 @@ export default function Event(props) {
         variant="success">
           Invite
         </Button>
-      </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      </div>:null}
+      <div className="container pt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
@@ -162,54 +163,21 @@ export default function Event(props) {
       <div className="col-12 d-flex flex-column mt-4 padx-15">
         <h4>Attendees</h4>
         <div className="row">
-          <p className="col-4 mar-0">
-            Attendee Number One{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Two{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Three{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Four{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Five{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Six{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Seven{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
-          <p className="col-4 mar-0">
-            Attendee Number Eight{" "}
-            <span className="text-muted" style={{ fontSize: ".75em" }}>
-              #12345
-            </span>
-          </p>
+          {usersAttending.map((x,i)=>{
+            return <div className="col-sm-12 col-md-4 mar-0 card" key={i}>
+              <span className="d-flex align-items-center">
+                {x.id===event.author?<FontAwesomeIcon icon={faCrown}/>:null}
+                <div className={x.id===event.author?"ml-2":""}>
+                  <p className="mar-0">{x.name}</p>
+                  <p className="mar-0 text-muted">{x.email}</p>
+                </div>
+                
+                {x.attending===null?<FontAwesomeIcon className="ml-auto" icon={faQuestion}/>:
+                x.attending==="false"?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
+                x.attending==="true"?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
+              </span>
+            </div>
+          })}
         </div>
       </div>
     </div>
