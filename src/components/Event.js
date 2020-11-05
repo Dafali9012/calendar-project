@@ -193,5 +193,6 @@ export default function Event(props) {
         </div>
       </div>
     </div>
+
   );
 }
