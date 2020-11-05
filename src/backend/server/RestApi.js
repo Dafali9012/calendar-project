@@ -9,6 +9,7 @@ module.exports = class RestApi {
       this.getRoute(table);
       this.postRoute(table);
     });
+    this.putUserEvent();
   }
 
   postRoute(table) {
@@ -131,6 +132,21 @@ module.exports = class RestApi {
         });
         break;
     }
+  }
+
+  putUserEvent() {
+    this.expressApp.put(`${this.routePrefix}/user_event`, (req, res)=>{
+      //if(req.session.user && req.session.user.id === req.params.id) {
+        console.log("this is running")
+        res.json(this.database.run(
+          `UPDATE user_event
+          set attending = ${req.body.attending}
+          WHERE userId = ${req.body.userId} AND eventId = ${req.body.eventId}`,
+          req.body
+        ));
+      }
+    //}
+    )
   }
 
   getAllTables() {

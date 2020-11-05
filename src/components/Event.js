@@ -87,7 +87,21 @@ export default function Event(props) {
     setEmailList(result)
   }
 
-  console.log("users attending:", usersAttending);
+  async function updateMyAttendance(status) {
+    let result = await(await fetch("/api/user_event",
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        userId:user.id,
+        eventId:event.id,
+        attending:status
+      }),
+      headers: {"Content-Type": "application/json"}
+    })).json();
+    if(!result.error) {
+      fetchUsersAttending();
+    }
+  }
 
   return (
     <div className="row">
@@ -121,7 +135,8 @@ export default function Event(props) {
         </div>
       </div>
       <div className="col-12 d-flex mt-4 justify-content-center">
-        <button className="btn-sm btn-primary">Attend Event</button>
+        <button className="btn-sm btn-primary mr-2" onClick={()=>updateMyAttendance(0)}>Abstain Event</button>
+        <button className="btn-sm btn-primary ml-2" onClick={()=>updateMyAttendance(1)}>Attend Event</button>
       </div>
       {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
@@ -188,12 +203,15 @@ export default function Event(props) {
                 </div>
                 
                 {x.attending===null?<FontAwesomeIcon className="ml-auto" icon={faQuestion}/>:
-                x.attending==="false"?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
-                x.attending==="true"?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
+                x.attending===0?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
+                x.attending===1?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
               </span>
             </div>
           })}
         </div>
+      </div>
+      <div className="col-12 d-flex mt-4 justify-content-center">
+        <button className="btn-sm btn-danger mr-4">Delete Event</button>
       </div>
     </div>
 
