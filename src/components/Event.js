@@ -1,6 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
 import { EventListContext, EmailContext, UserContext } from "../Store";
 
@@ -13,10 +17,15 @@ export default function Event(props) {
   const [emailList, setEmailList] = useContext(EmailContext);
   // eslint-disable-next-line
   const [selectedEmails, setSelectedEmail] = useState([]);
-  let event = eventList[props.location.state.eventPos];
+  const [usersAttending, setUsersAttending] = useState([]);
+  let event = props.location.state.event;
   let dateFrom = [];
   let dateTo = [];
   //let inviteObjectList = [];
+
+  useEffect(()=>{
+    fetchUsersAttending();
+  },[])
 
   function invite(){
     //let userInviteList = [];
@@ -29,6 +38,11 @@ export default function Event(props) {
       });
     };
     fetchUsersAttending();
+  }
+
+  async function fetchUsersAttending() {
+    let result = await(await fetch("/api/user/event/"+event.id)).json();
+    if(!result.error) setUsersAttending(result);
   }
 
   function selectEmail(email) {
@@ -135,7 +149,7 @@ export default function Event(props) {
           Invite
         </Button>
       </div>:null}
-      <div className="container pt-2">
+      <div className="mt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (

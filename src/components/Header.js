@@ -5,16 +5,17 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link , Redirect} from "react-router-dom";
+import { Link , Redirect, useLocation} from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
 export default function Header() {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
-  const [redirect, setRedirect] = useState({path:null});
+  const [redirect, setRedirect] = useState({pathname:null});
 
-  if(redirect.path!=null) return <Redirect to={redirect}/>
+  let loc = useLocation();
+  if(redirect.pathname!=null && loc !== redirect.pathname) return <Redirect to={redirect}/>
 
 
   function logout() {
@@ -28,7 +29,7 @@ export default function Header() {
   }
 
   async function deleteSession() {
-    let result = await (
+    await (
       await fetch("/api/login", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -89,7 +90,7 @@ export default function Header() {
               return (
                 <DropdownItem
                 key={notif.id}
-                onClick={() => setRedirect({path:"/event", state:{eventPos:notif}})}
+                onClick={() => setRedirect({pathname:"/event", state:{event:notif}})}
                 >
                   {notif.title}
                   <DropdownItem divider />
