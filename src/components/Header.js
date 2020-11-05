@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
@@ -47,7 +49,7 @@ export default function Header() {
     <header className="header-of-page">
       <div className="col-md-3 col-4 nav-menu">
         <Link className="text-decoration-none" to="/">
-          <h1 className="link logo pl-5"><strong>iCalendar</strong></h1>
+          <h1 className="link logo pl-5"><FontAwesomeIcon icon={faAppleAlt}/><strong> iCalendar</strong></h1>
         </Link>
       </div>
 
