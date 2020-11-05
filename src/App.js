@@ -63,27 +63,27 @@ export default function App() {
           {(redirect.pathname!=null && redirect.pathname !== loc.pathname)?<Redirect push to={redirect}/>:null}
           <Route exact path="/" render={()=> {
             if(user!=null)return<Calendar redirectCallback={(to)=>setRedirect(to)} />;
-            return<Redirect to="/login" />}}
+            else setRedirect({pathname:"/login"})}}
           />
           <Route exact path="/login" render={()=> {
             if(user==null)return<Login redirectCallback={(to)=>setRedirect(to)}/>
-            return<Redirect to="/" />}}
+            else setRedirect({pathname:"/"})}}
           />
           <Route exact path="/register" render={()=> {
             if(user==null)return<Register redirectCallback={(to)=>setRedirect(to)}/>;
-            return<Redirect to="/" />}}
+            else setRedirect({pathname:"/"})}}
           />
           <Route exact path={["/date/:date", "/date"]} render={() => {
             if(user!=null)return<DateView locationPathname={loc.pathname} redirectCallback={(to)=>setRedirect(to)}/>;
-            return<Redirect to="/login" />}}
+            else setRedirect({pathname:"/login"})}}
           />
           <Route exact path="/date/:date/create-event" render={()=> {
             if(user!=null)return<CreateEvent redirectCallback={(to)=>setRedirect(to)}/>;
-            return<Redirect to="/login" />}}
+            else setRedirect({pathname:"/login"})}}
           />
           <Route exact path="/event" render={(props) => {
             if(user!=null)return<Event {...props} redirectCallback={(to)=>setRedirect(to)} />;
-            return<Redirect to="/login" />}}
+            else setRedirect({pathname:"/login"})}}
           />
         </Switch>
       </div>
