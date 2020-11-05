@@ -6,11 +6,14 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
-import { EventListContext, EmailContext, UserContext } from "../Store";
+import { EventListContext, EmailContext, UserContext, InviteContext } from "../Store";
+import { Redirect } from "react-router-dom";
 
 export default function Event(props) {
   // eslint-disable-next-line
   const [user,setUser] = useContext(UserContext);
+  // eslint-disable-next-line
+  const [inviteList, setInviteList] = useContext(InviteContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   // eslint-disable-next-line
@@ -19,6 +22,8 @@ export default function Event(props) {
   const [selectedEmails, setSelectedEmail] = useState([]);
   const [usersAttending, setUsersAttending] = useState([]);
   let event = props.location.state.event;
+  const [redirect, setRedirect] = useState({path:null});
+  let event = eventList[props.location.state.eventPos];
   let dateFrom = [];
   let dateTo = [];
   //let inviteObjectList = [];
@@ -26,6 +31,8 @@ export default function Event(props) {
   useEffect(()=>{
     fetchUsersAttending();
   },[])
+
+  if(redirect.path!=null) return <Redirect push to={redirect.path}/>
 
   function invite(){
     //let userInviteList = [];
@@ -43,6 +50,16 @@ export default function Event(props) {
   async function fetchUsersAttending() {
     let result = await(await fetch("/api/user/event/"+event.id)).json();
     if(!result.error) setUsersAttending(result);
+  }
+
+  async function updateEvents(id) {
+    console.log("updating events from login")
+    let result = await(await fetch("/api/event/user/"+id)).json();
+    if(!result.error) {
+      console.log(result);
+      setEventList(result.events);
+      setInviteList(result.invites);
+    }
   }
 
   function selectEmail(email) {
@@ -89,6 +106,37 @@ export default function Event(props) {
     setEmailList(result)
   }
 
+  async function deleteEvent() {
+    let result = await(await fetch("/api/user_event", {
+      method:"DELETE",
+      body: JSON.stringify({
+        userId: user.id,
+        eventId: event.id
+      }),
+      headers: {"Content-Type": "application/json"}
+    })).json();
+    if(!result.error) {
+      updateEvents(user.id);
+      setRedirect({path:"/"})
+    };
+  }
+
+  async function updateMyAttendance(status) {
+    let result = await(await fetch("/api/user_event",
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        userId:user.id,
+        eventId:event.id,
+        attending:status
+      }),
+      headers: {"Content-Type": "application/json"}
+    })).json();
+    if(!result.error) {
+      fetchUsersAttending();
+    }
+  }
+
   return (
     <div className="row">
       <div className="pt-4 col-12 d-flex flex-column padx-20">
@@ -120,7 +168,8 @@ export default function Event(props) {
         </div>
       </div>
       <div className="col-12 d-flex mt-4 justify-content-center">
-        <button className="btn-sm btn-primary">Attend Event</button>
+        <button className="btn-sm btn-primary mr-2" onClick={()=>updateMyAttendance(0)}>Abstain Event</button>
+        <button className="btn-sm btn-primary ml-2" onClick={()=>updateMyAttendance(1)}>Attend Event</button>
       </div>
       {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
@@ -187,12 +236,15 @@ export default function Event(props) {
                 </div>
                 
                 {x.attending===null?<FontAwesomeIcon className="ml-auto" icon={faQuestion}/>:
-                x.attending==="false"?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
-                x.attending==="true"?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
+                x.attending===0?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
+                x.attending===1?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
               </span>
             </div>
           })}
         </div>
+      </div>
+      <div className="col-12 d-flex mt-4 justify-content-center">
+        <button className="btn-sm btn-danger mr-4" onClick={deleteEvent}>Delete Event</button>
       </div>
     </div>
   );
