@@ -6,9 +6,11 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Button } from "react-bootstrap";
-import { EventListContext, EmailContext } from "../Store";
+import { EventListContext, EmailContext, UserContext } from "../Store";
 
 export default function Event(props) {
+  // eslint-disable-next-line
+  const [user,setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
   const [emailList, setEmailList] = useContext(EmailContext);
@@ -121,7 +123,7 @@ export default function Event(props) {
       <div className="col-12 d-flex mt-4 justify-content-center">
         <button className="btn-sm btn-primary">Attend Event</button>
       </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
           <Dropdown.Toggle 
           variant="primary" id="dropdown-basic"  >
@@ -147,7 +149,7 @@ export default function Event(props) {
         variant="success">
           Invite
         </Button>
-      </div>
+      </div>:null}
       <div className="container pt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
