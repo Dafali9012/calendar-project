@@ -33,6 +33,7 @@ export default function Event(props) {
         attending: null
       });
     };
+    fetchUsersAttending();
   }
 
   async function fetchUsersAttending() {
@@ -176,14 +177,14 @@ export default function Event(props) {
         <h4>Attendees</h4>
         <div className="row">
           {usersAttending.map((x,i)=>{
-            let classes = "mar-0";
-            if(x.id===event.author) {
-              classes = classes.concat(" ml-2");
-            }
             return <div className="col-sm-12 col-md-4 mar-0 card" key={i}>
               <span className="d-flex align-items-center">
                 {x.id===event.author?<FontAwesomeIcon icon={faCrown}/>:null}
-                <p className={classes}>{x.name}</p>
+                <div className={x.id===event.author?"ml-2":""}>
+                  <p className="mar-0">{x.name}</p>
+                  <p className="mar-0 text-muted">{x.email}</p>
+                </div>
+                
                 {x.attending===null?<FontAwesomeIcon className="ml-auto" icon={faQuestion}/>:
                 x.attending==="false"?<FontAwesomeIcon className="ml-auto" icon={faTimes}/>:
                 x.attending==="true"?<FontAwesomeIcon className="ml-auto" icon={faCheck}/>:null}
