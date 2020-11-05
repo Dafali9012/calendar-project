@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { UserContext, EventListContext, InviteContext } from "../Store";
 
@@ -10,7 +9,6 @@ export default function Register(props) {
   const [inviteList, setInviteList] = useContext(InviteContext);
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
-  const [redirect, setRedirect] = useState({path:null});
   //this.app = app;
   //create state & update values after entering in input
   const [state, setState] = useState({
@@ -24,8 +22,6 @@ export default function Register(props) {
     setState((prevState) => ({ ...prevState, [id]: value }));
   };
   const [showAlert, setShowAlert] = useState(false);
-
-  if(redirect.path!=null) return <Redirect to={redirect.path} />
 
   const submitClick = (e) => {
     e.preventDefault();
@@ -161,7 +157,7 @@ export default function Register(props) {
           </button>
 
           <button
-            onClick={()=>setRedirect({path:"/login"})}
+            onClick={()=>props.redirectCallback({pathname:"/login"})}
             type="button"
             className="col-5 btn btn-primary btn-sm mt-3"
           >

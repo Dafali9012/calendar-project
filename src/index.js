@@ -4,12 +4,15 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "./sass/style.scss";
 import Store from "./Store";
+import {BrowserRouter as Router} from 'react-router-dom';
 
 
 ReactDOM.render(
   <React.Fragment>
     <Store>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Store>
   </React.Fragment>,
   document.getElementById("root")
