@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Link } from "react-router-dom";
-import { UserContext } from "../Store";
+import { UserContext, InviteContext } from "../Store";
 
 export default function Header() {
   const [user, setUser] = useContext(UserContext);
+  //eslint-disable-next-line
+  const [notifications, setNotifications] = useContext(InviteContext);
 
   function logout() {
     return (
@@ -40,7 +42,6 @@ export default function Header() {
       </Link>
     );
   }
-  let notifications = 2;
 
   return (
     <header className="header-of-page">
@@ -56,7 +57,7 @@ export default function Header() {
         <DropdownToggle>
         <div className="row">
         <div className="col my-auto">{user == null ? <h4 className="button-title userName">Menu</h4> : <h5 className="userName"><span role="img" aria-label="user"></span>{user.name}</h5>}</div>
-        {user != null ? <div className="col my-auto pl-0">{notifications>0?<div className="event-marker text-light my-0">{notifications>9?"9+":notifications}</div>:null}</div>:null}
+        {user != null ? <div className="col my-auto pl-0">{notifications.length>0?<div className="event-marker text-light my-0">{notifications.length>9?"9+":notifications.length}</div>:null}</div>:null}
         </div>
         </DropdownToggle>
         <DropdownMenu className="drop">
