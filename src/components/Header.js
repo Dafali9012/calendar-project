@@ -1,25 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext , useState} from "react";
 import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link , Redirect} from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
 export default function Header() {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
-  console.log("notification ", notifications);
+  const [redirect, setRedirect] = useState({path:null});
 
-  function renderNotifications() {
-    notifications.forEach((notif) => {
-      console.log("notif ", notif);
-      return <DropdownItem>Hello</DropdownItem>;
-    });
-  }
+  if(redirect.path!=null) return <Redirect to={redirect}/>
+
 
   function logout() {
     return (
@@ -100,12 +96,17 @@ export default function Header() {
            
             {notifications.map((notif) => {
               return (
-                <DropdownItem>
+                <DropdownItem
+                key={notif.id}
+                onClick={() => setRedirect({path:"/event", state:{eventPos:notif}})}
+                >
                   {notif.title}
                   <DropdownItem divider />
                 </DropdownItem>
               );
             })}
+            <DropdownItem>{user == null ? login() : 'events here?'}</DropdownItem>
+            <DropdownItem>{user == null ? register() : '/path here?'}</DropdownItem>
             <DropdownItem divider />
             <DropdownItem>{user == null ? "" : logout()}</DropdownItem>
           </DropdownMenu>
