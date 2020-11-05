@@ -19,11 +19,15 @@ export default function App() {
   
   
   useEffect(()=>{
-    console.log("mounted app");
-    if(user == null){
-      fetchUser();
-    }
-  // eslint-disable-next-line
+    // console.log("mounted app");
+    // if (user == null) {
+    //   fetchUser();
+    // }
+    // if (user) {
+    //   fetchEventList(user.id);
+    // }
+
+    // eslint-disable-next-line
   },[]);
 
   if(user == null){

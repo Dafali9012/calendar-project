@@ -70,13 +70,14 @@ module.exports = class RestApi {
               "SELECT * FROM " + table + " WHERE author = $id",
               { id: req.params.id }
             );
-            result = [...result , ...this.getAttendingEvents(req.params.id)]
+             result = [...result, ...this.getAttendingEvents(req.params.id)];
             res.json(result);
           } else {
+            
             res.status(403).send({ error: "Forbidden" });
           }
         });
-        
+
         break;
 
       case "user_event":
@@ -101,19 +102,19 @@ module.exports = class RestApi {
   }
 
   getAttendingEvents(id) {
-    let attendingEvents = [];
-
     let attendingEventId = this.database.select(
-      `SELECT eventId FROM user_event WHERE userId == ${id} AND attending = true`
+      `SELECT eventId FROM user_event WHERE userId == ${id} AND attending = 1`
     );
 
+    let eventList = [];
+    let count = 0;
     attendingEventId.forEach((id) => {
-      let event = this.database.select(`SELECT * FROM event WHERE id == id `, {
-        id: Object.values(id),
-      });
-      attendingEvents.push(event[0]);
+      let event = this.database.select(
+        `SELECT * FROM event WHERE id = ${Object.values(id)}`
+      );
+      eventList.push(event[0]);
     });
-    return attendingEvents;
+    return eventList;
   }
 
   getAllTables() {
