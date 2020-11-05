@@ -191,12 +191,13 @@ export default function CreateEvent() {
     };
 
     return (
+        <div className="container">
         <div className="row pt-4 justify-content-center">
             <div hidden={hidden} className="mod-date h-100 w-100">
                 <div className="row h-100 justify-content-center align-items-center" onClick={hideModal}>
                     <div className="col-md-6 col-12 mod-date-content justify-content-center">
-                        <h4 className="row text-light unselectable">Select End Date</h4>
-                        <div className="col-md-4 col-12 h-100 justify-content-center align-items-center">
+                        <h4 className="row text-light unselectable justify-content-center align-items-center">Select End Date</h4>
+                        <div className="col-12 col-md-6 mx-auto h-100">
                             {[...Array(8).keys()].map(num => {
                                 let fromDate = new Date(formData.fromYear+'-'+(formData.fromMonth)+'-'+formData.fromDay);
                                 let toDate = new Date(fromDate);
@@ -278,6 +279,7 @@ export default function CreateEvent() {
                     <button className="btn btn-danger" type="button" onClick={cancel}>Cancel</button>
                 </div>
             </form>
+        </div>
         </div>
     );
 }

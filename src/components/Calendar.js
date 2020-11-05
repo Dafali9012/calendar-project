@@ -157,8 +157,9 @@ export default function Calendar(){
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
 
                 <div className="row align-items-center mt-md-4 mt-1">
-                    <button className="col-md-1 col-6 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
-                    <button className="col-md-1 col-6 btn-sm btn-info" onClick={setToday}>Today</button>
+                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
+                    <div className="d-md-none col-4"></div>
+                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={setToday}>Today</button>
                     <div className="col-md-2 col-1"/>
                     <button className="col-md-1 col-2 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="col-md-2 col-6 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
@@ -198,7 +199,7 @@ export default function Calendar(){
                     </div>
                 })}
             </div>
-            <div className="flex-shrink-0 my-5">
+            <div className="container">
                 <div className="row justify-content-center align-items-center"><strong>Fun fact of the day:</strong></div>
                 <div className="row justify-content-center align-items-center">{funFact}</div>
             </div>
