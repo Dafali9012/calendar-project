@@ -57,8 +57,16 @@ export default function Header() {
     );
   }
 
-  function dropIt(){
-    return(
+  return (
+    <header className="header-of-page">
+      <div className="col-md-3 col-4 nav-menu">
+        <Link className="text-decoration-none" to="/">
+          <h1 className="link logo pl-5">
+            <strong>iCalendar</strong>
+          </h1>
+        </Link>
+      </div>
+
       <div className="header-user col-md-3 col-6">
         <UncontrolledDropdown>
           <DropdownToggle>
@@ -103,19 +111,6 @@ export default function Header() {
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>
-    )
-  }
-
-  return (
-    <header className="header-of-page">
-      <div className="col-md-3 col-4 nav-menu">
-        <Link className="text-decoration-none" to="/">
-          <h1 className="link logo pl-5">
-            <strong>iCalendar</strong>
-          </h1>
-        </Link>
-      </div>
-      {user == null ? "" : dropIt()}
     </header>
   );
 }
