@@ -74,31 +74,32 @@ export default function Event(props) {
 
   return (
     <div className="row">
-      <div className="pt-4 col-12 d-flex flex-column padx-20">
+      <div className="container pt-4">
         <h3 className="text-center">
           <strong>
             <u>{event.title}</u>
           </strong>
         </h3>
-        <div className="d-flex justify-content-center mt-4">
-          <div className="d-flex flex-column justify-content-center">
-            <h5 className="text-center mx-5">
+        <div className="row justify-content-center mt-4">
+            <div className="col-4 justify-content-center">
+            <h6 className="text-center">
               {dateFrom[0]}-{dateFrom[1]}-{dateFrom[2]}
-            </h5>
-            <h5 className="text-center mx-5">
+            </h6>
+            <h6 className="text-center">
               {dateFrom[3]}:{dateFrom[4]}
-            </h5>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
+            </h6>
+            </div>
+      
+          <div className="col-4 col-md-1 d-flex justify-content-center align-items-center">
             <FontAwesomeIcon icon={faArrowRight} />
           </div>
-          <div className="d-flex flex-column justify-content-center">
-            <h5 className="text-center mx-5">
+          <div className="col-4 justify-content-center">
+            <h6 className="text-center">
               {dateTo[0]}-{dateTo[1]}-{dateTo[2]}
-            </h5>
-            <h5 className="text-center mx-5">
+            </h6>
+            <h6 className="text-center">
               {dateTo[3]}:{dateTo[4]}
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
@@ -132,7 +133,7 @@ export default function Event(props) {
           Invite
         </Button>
       </div>
-      <div className="col-12 mt-4 d-flex justify-content-center">
+      <div className="container pt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
@@ -153,11 +154,11 @@ export default function Event(props) {
             })
           : ""}
       </div>
-      <div className="pt-4 col-12 d-flex flex-column padx-20">
+      <div className="container">
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>
       </div>
-      <div className="col-12 d-flex flex-column mt-4 padx-15">
+      <div className="container">
         <h4>Attendees</h4>
         <div className="row">
           <p className="col-4 mar-0">
