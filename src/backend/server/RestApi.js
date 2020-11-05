@@ -77,13 +77,14 @@ module.exports = class RestApi {
         });
 
         this.expressApp.get(`${this.routePrefix}/${table}/user/:id`, (req, res) => {
-          let result = {events:[],invites:[]};
-          let userEvents = this.database.select(
-            "SELECT * FROM user_event WHERE userId = $id",
-            { id: req.params.id }
-          );
-          for(let userEvent of userEvents) {
-            let event = this.database.select(
+          if(req.session.user) {
+            let result = {events:[],invites:[]};
+            let userEvents = this.database.select(
+              "SELECT * FROM user_event WHERE userId = $id",
+              { id: req.params.id }
+            );
+            for(let userEvent of userEvents) {
+              let event = this.database.select(
               "SELECT * FROM "+table+" WHERE id = "+userEvent.eventId
             )
             if(!(event[0].author != req.params.id && userEvent.attending=="false")) {
@@ -95,6 +96,7 @@ module.exports = class RestApi {
             }
           }
           res.json(result);
+          }
         });
         break;
 
@@ -112,6 +114,18 @@ module.exports = class RestApi {
         this.expressApp.get(`${this.routePrefix}/${table}`, (req, res) => {
           if (req.session.user) {
             let result = this.database.select("select email, id from " + table);
+            res.json(result);
+          }
+        });
+
+        this.expressApp.get(`${this.routePrefix}/${table}/event/:id`, (req, res) => {
+          if (req.session.user) {
+            let result = this.database.select(
+              `SELECT * FROM user_event 
+              INNER JOIN user ON user_event.userId = user.id 
+              WHERE eventId = $id`, 
+              { id: req.params.id }
+            );
             res.json(result);
           }
         });
