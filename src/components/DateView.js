@@ -58,14 +58,14 @@ export default function DateView(){
     }
 
     return (
-        <div className="mt-4 padx-20">
-            <section className="d-flex justify-content-center align-items-center">
+        <div className="mt-4 container">
+            <section className="row d-flex justify-content-center align-items-center">
                 
-                <button className="btn-sm btn-primary" onClick={previous}>Previous</button>
+                <button className="col-2 btn-sm btn-primary" onClick={previous}>Previous</button>
 
-                <h4 className="text-center mx-5"> {dateSplit.join("-")} </h4>
+                <h4 className="col-8 col-md-6 text-center"> {dateSplit.join("-")} </h4>
 
-                <button className="btn-sm btn-primary" onClick={next}>Next</button>
+                <button className="col-2 btn-sm btn-primary" onClick={next}>Next</button>
             </section>
             { viewDate.valueOf()>=dateToday.valueOf()?
             <div className="d-flex flex-column align-items-center mt-4">
