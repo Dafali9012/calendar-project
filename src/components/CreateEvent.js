@@ -154,7 +154,6 @@ export default function CreateEvent(props) {
     async function updateEvents(id) {
         let result = await(await fetch("/api/event/user/"+id)).json();
         if(!result.error) {
-          console.log(result);
           setEventList(result.events);
           setInviteList(result.invites);
         }

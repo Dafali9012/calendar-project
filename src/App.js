@@ -23,7 +23,6 @@ export default function App() {
   let loc = useLocation();
 
   useEffect(()=>{
-    console.log("mounted app");
     if(user == null){
       fetchUser();
     }

@@ -44,10 +44,8 @@ export default function Login(props) {
   }
 
   async function updateEvents(id) {
-    console.log("updating events from login")
     let result = await(await fetch("/api/event/user/"+id)).json();
     if(!result.error) {
-      console.log(result);
       setEventList(result.events);
       setInviteList(result.invites);
     }

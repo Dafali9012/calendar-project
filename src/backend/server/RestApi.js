@@ -156,13 +156,11 @@ module.exports = class RestApi {
           req.body
         );
         if(event[0].author === req.body.userId) {
-          console.log("deleting event")
           this.database.run(
             `DELETE FROM event WHERE id = ${req.body.eventId}`,
             req.body
           );
         } else {
-          console.log("deleting user_event")
           this.database.run(
             `DELETE FROM user_event WHERE userId = ${req.body.userId} AND eventId = ${req.body.eventId}`,
             req.body
