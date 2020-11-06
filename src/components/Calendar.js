@@ -163,9 +163,9 @@ export default function Calendar(props){
                 </div>
                 <div className="row my-2 border">
                     <h6 className="col-grid-7 h-25 text-center">Mon</h6>
+                    <h6 className="col-grid-7 h-25 text-center">Tue</h6>
                     <h6 className="col-grid-7 h-25 text-center">Wed</h6>
                     <h6 className="col-grid-7 h-25 text-center">Thu</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Tue</h6>
                     <h6 className="col-grid-7 h-25 text-center">Fri</h6>
                     <h6 className="col-grid-7 h-25 text-center">Sat</h6>
                     <h6 className="col-grid-7 h-25 text-center">Sun</h6>
