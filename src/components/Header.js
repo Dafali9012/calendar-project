@@ -7,22 +7,20 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import { UserContext, InviteContext } from "../Store";
 
 export default function Header(props) {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
-  console.log("notification ", notifications);
 
   function logout() {
     return (
-      <Link className="text-decoration-none" to="/">
-        <h5 onClick={deleteSession} className="link">
+      <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={deleteSession}>
+        <h5 className="link">
           Log me out
         </h5>
-      </Link>
+      </div>
     );
   }
 
@@ -86,10 +84,10 @@ export default function Header(props) {
 
   return (
     <header className="header-of-page">
-      <div className="col-md-3 col-4 nav-menu">
+      <div className="col-md-3 col-5 nav-menu pl-2">
         <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
-          <h1 className="link logo pl-5 d-flex flex-row">
-            <FontAwesomeIcon icon={faApple} /><strong>iCalendar</strong>
+          <h1 className="link logo">
+            <FontAwesomeIcon icon={faApple}/>iCalendar
           </h1>
         </div>
       </div>
