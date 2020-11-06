@@ -22,7 +22,7 @@ module.exports = class LoginHandler {
           secure: "auto",
           sameSite: "strict"
         },
-        store: store({  dbPath: 'src/backend/database/calendarDB.db'})
+        store: store({  dbPath: 'database/calendarDB.db'})
       })
     );
   }
