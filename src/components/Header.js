@@ -13,7 +13,6 @@ export default function Header(props) {
   const [user, setUser] = useContext(UserContext);
   //eslint-disable-next-line
   const [notifications, setNotifications] = useContext(InviteContext);
-  console.log("notification ", notifications);
 
   function logout() {
     return (
@@ -85,7 +84,6 @@ export default function Header(props) {
 
   return (
     <header className="header-of-page">
-
       <div className="col-md-3 col-5 nav-menu pl-2">
         <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
           <h1 className="link logo">

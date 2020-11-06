@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {UserContext, EventListContext} from '../Store';
+import { EventListContext } from '../Store';
 
 export default function DateView(props){
 
     const params = useParams();
-    // eslint-disable-next-line
-    const [user, setUser] = useContext(UserContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
     // eslint-disable-next-line

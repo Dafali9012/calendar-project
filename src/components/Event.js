@@ -131,6 +131,8 @@ export default function Event(props) {
     }
   }
 
+  console.log(usersAttending);
+
   return (
     <div className="row">
       <div className="container pt-4">

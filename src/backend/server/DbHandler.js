@@ -24,7 +24,6 @@ module.exports = class DbHandler {
     let statement = this.db.prepare(sql);
     return parameters ? statement.run(parameters) : statement.run();
   }
-
 };
 
 const db = sqlite3("src/backend/database/calendarDB.db");
