@@ -1,4 +1,4 @@
-Project by: Anton, Daniel, David, Peter, Omar
+Project by: Anton(antonohlin), Daniel(Dafali9012), David(kitqeb), Peter(razvan22), Omar(Omanas98)
 Trello: https://trello.com/b/3ODIgDiV/kalender
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
