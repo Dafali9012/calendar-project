@@ -30,7 +30,6 @@ export default function Event(props) {
   function invite(){
     //let userInviteList = [];
     for(let emailObject of selectedEmails) {
-      console.log(emailObject);
       postToUser_Event({
         eventId: event.id,
         userID: emailObject.id,
@@ -46,10 +45,8 @@ export default function Event(props) {
   }
 
   async function updateEvents(id) {
-    console.log("updating events from login")
     let result = await(await fetch("/api/event/user/"+id)).json();
     if(!result.error) {
-      console.log(result);
       setEventList(result.events);
       setInviteList(result.invites);
     }
@@ -89,7 +86,6 @@ export default function Event(props) {
   }
 
   async function getEmailList() {
-    console.log("fetch")
     let result = await (
       await fetch(`/api/user`, {
         method: "GET",
@@ -131,7 +127,6 @@ export default function Event(props) {
     }
   }
 
-  console.log(usersAttending);
 
   return (
     <div className="row">
