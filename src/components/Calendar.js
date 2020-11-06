@@ -151,15 +151,27 @@ export default function Calendar(props){
             <div className="flex-shrink-0">
                 <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
                 {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
-
+                {/*
                 <div className="row align-items-center mt-md-4 mt-1">
-                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={changeView}>{"view:"+view}</button>
+                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={changeView}>switch view</button>
                     <div className="d-md-none col-4"></div>
                     <button className="col-md-1 col-4 btn-sm btn-info" onClick={setToday}>Today</button>
                     <div className="col-md-2 col-1"/>
                     <button className="col-md-1 col-2 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="col-md-2 col-6 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
                     <button className="col-md-1 col-2 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
+                </div>
+                */}
+                <div className="row align-items-center mt-md-4 mt-1">
+                    <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start">
+                        <button className="btn-sm btn-info mr-2" onClick={changeView}>switch view</button>
+                        <button className="btn-sm btn-info ml-2" onClick={setToday}>Today</button>
+                    </div>
+                    <div className="col-12 col-md-4 d-flex flex-row justify-content-center">
+                        <button className="btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                        <h4 className="text-center mx-4">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
+                        <button className="btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
+                    </div>
                 </div>
                 <div className="row my-2 border">
                     <h6 className="col-grid-7 h-25 text-center">Mon</h6>
@@ -195,7 +207,7 @@ export default function Calendar(props){
                     </div>
                 })}
             </div>
-            <div className="container">
+            <div>
                 <div className="row justify-content-center align-items-center"><strong>Fun fact of the day:</strong></div>
                 <div className="row justify-content-center align-items-center">{funFact}</div>
             </div>

@@ -53,7 +53,7 @@ export default function DateView(props){
     }
 
     return (
-        <div className="mt-4 container">
+        <div className="mt-4">
             <section className="row d-flex justify-content-center align-items-center">
                 
                 <button className="col-2 btn-sm btn-primary" onClick={previous}>Previous</button>
@@ -83,7 +83,7 @@ export default function DateView(props){
                     return null;
                 })}
             </div>
-            <div className="container">
+            <div>
                 <div className="row justify-content-center align-items-center mt-5 ml-1"><strong>This date in history:</strong></div>
                 <div className="row justify-content-center align-items-center text-center">{dateFact}</div>
             </div>

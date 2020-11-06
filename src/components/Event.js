@@ -130,21 +130,21 @@ export default function Event(props) {
 
   return (
     <div className="row">
-      <div className="container pt-4">
+      <div className="col-12 pt-4">
         <h3 className="text-center">
           <strong>
             <u>{event.title}</u>
           </strong>
         </h3>
         <div className="row justify-content-center mt-4">
-            <div className="col-4 justify-content-center">
+          <div className="col-4 justify-content-center">
             <h6 className="text-center">
               {dateFrom[0]}-{dateFrom[1]}-{dateFrom[2]}
             </h6>
             <h6 className="text-center">
               {dateFrom[3]}:{dateFrom[4]}
             </h6>
-            </div>
+          </div>
       
           <div className="col-4 col-md-1 d-flex justify-content-center align-items-center">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -199,14 +199,14 @@ export default function Event(props) {
           Invite
         </Button>
       </div>:null}
-      <div className="container pt-2">
+      <div className="col-12 pt-2">
         {selectedEmails
           ? selectedEmails.map((selected) => {
               return (
                 <button
                   type="button"
                   key={selected.id}
-                  className="col-sm-12 col-lg-3 btn m-1 btn-outline-info nohover"
+                  className="col-12 col-md-4 btn btn-outline-info nohover"
                 >
                   {selected.email}
                   <span
@@ -220,11 +220,11 @@ export default function Event(props) {
             })
           : ""}
       </div>
-      <div className="container">
+      <div>
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>
       </div>
-      <div className="container">
+      <div className="col-12">
         <h4>Attendees</h4>
         <div className="row">
           {usersAttending.map((x,i)=>{

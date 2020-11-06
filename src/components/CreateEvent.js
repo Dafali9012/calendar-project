@@ -187,7 +187,6 @@ export default function CreateEvent(props) {
     };
 
     return (
-        <div className="container">
         <div className="row pt-4 justify-content-center">
             <div hidden={hidden} className="mod-date h-100 w-100">
                 <div className="row h-100 justify-content-center align-items-center" onClick={hideModal}>
@@ -275,7 +274,6 @@ export default function CreateEvent(props) {
                     <button className="btn btn-danger" type="button" onClick={cancel}>Cancel</button>
                 </div>
             </form>
-        </div>
         </div>
     );
 }
