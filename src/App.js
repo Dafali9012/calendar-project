@@ -18,7 +18,7 @@ export default function App() {
   // eslint-disable-next-line
   const [eventList, setEventList] = useContext(EventListContext);
 
-  const [redirect, setRedirect] = useState({path:null});
+  const [redirect, setRedirect] = useState({pathname:null});
 
   let loc = useLocation();
 
@@ -47,20 +47,17 @@ export default function App() {
   async function updateEvents(id) {
     let result = await(await fetch("/api/event/user/"+id)).json();
     if(!result.error) {
-      console.log(result);
       setEventList(result.events);
       setInviteList(result.invites);
     }
   }
-
-  console.log(redirect.pathname, loc.pathname)
 
   return (
     <div className="App d-flex flex-column">
       <Header className="flex-shrink-0" redirectCallback={(to)=>setRedirect(to)} />
       <div className="container flex-grow-1">
         <Switch>
-          {(redirect.pathname!=null && redirect.pathname !== loc.pathname)?<Redirect push to={redirect}/>:null}
+          {(redirect.pathname!=null && redirect.pathname !== loc.pathname)?<Redirect to={redirect}/>:null}
           <Route exact path="/" render={()=> {
             if(user!=null)return<Calendar redirectCallback={(to)=>setRedirect(to)} />;
             else setRedirect({pathname:"/login"})}}
