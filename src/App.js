@@ -11,7 +11,6 @@ import Event from "./components/Event";
 import DateView from "./components/DateView";
 
 export default function App() {
-    // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [inviteList, setInviteList] = useContext(InviteContext);
@@ -23,7 +22,7 @@ export default function App() {
   let loc = useLocation();
 
   useEffect(()=>{
-    if(user == null){
+    if(user === null){
       fetchUser();
     }
   // eslint-disable-next-line

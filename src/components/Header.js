@@ -86,8 +86,8 @@ export default function Header(props) {
     <header className="header-of-page">
       <div className="col-md-3 col-5 nav-menu pl-2">
         <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
-          <h1 className="link logo">
-            <FontAwesomeIcon icon={faApple}/>iCalendar
+          <h1 className="link logo d-flex flex-row mar-0 align-items-center text-center">
+            <FontAwesomeIcon icon={faApple}/><p className="mar-0 ml-3">iCalendar</p>
           </h1>
         </div>
       </div>
