@@ -11,7 +11,7 @@ export default function Calendar(props){
     const [inviteList, setInviteList] = useContext(InviteContext);
     // eslint-disable-next-line
     const [eventList, setEventList] = useContext(EventListContext);
-    const [view, setView] = useState("Month");
+    const [view, setView] = useState("month");
     const [funFact, setFunFact] = useState();
     const [viewDate, setViewDate] = useState(new Date());
     let dateNow = new Date();
@@ -36,7 +36,7 @@ export default function Calendar(props){
         let a = new Date(date.getTime());
         let firstMonth;
         let secondMonth;
-        if(view==="Week") {
+        if(view==="week") {
             while(a.getDay()!==1) {
                 a.setDate(a.getDate()-1);
             }
@@ -53,7 +53,7 @@ export default function Calendar(props){
         let a = new Date(date.getTime());
         let firstYear;
         let secondYear;
-        if(view==="Week") {
+        if(view==="week") {
             while(a.getDay()!==1) {
                 a.setDate(a.getDate()-1);
             }
@@ -88,39 +88,30 @@ export default function Calendar(props){
         }
     }
 
-    function nextMonth() {
+    function modifyDate(operator="+", measure="month", amount=1) {
         let a = new Date(viewDate.getTime());
-        if(view==="Month") {
-            a.setMonth(a.getMonth()+1);
-            a.setDate(1);
-        } else if(view==="Week") {
-            a.setDate(a.getDate()+7);
+        if(operator==="+") {
+            if(measure==="year") {
+                a.setFullYear(a.getFullYear()+amount);
+                a.setDate(1);
+            } else if(measure==="month") {
+                a.setMonth(a.getMonth()+amount);
+                a.setDate(1);
+            } else if(measure==="week") {
+                a.setDate(a.getDate()+7*amount);
+            }
+        } else if(operator==="-") {
+            if(measure==="year") {
+                a.setFullYear(a.getFullYear()-amount);
+                a.setDate(1);
+            } else if(measure==="month") {
+                a.setMonth(a.getMonth()-amount);
+                a.setDate(1);
+            } else if(measure==="week") {
+                a.setDate(a.getDate()-7*amount);
+            }
         }
-        setViewDate(new Date(a.getTime()));
-    }
-
-    function prevMonth() {
-        let a = new Date(viewDate.getTime());
-        if(view==="Month") {
-            a.setMonth(a.getMonth()-1);
-            a.setDate(1);
-        } else if(view==="Week") {
-            a.setDate(a.getDate()-7);
-        }
-        setViewDate(new Date(a.getTime()));
-    }
-
-    function nextYear() {
-        let a = new Date(viewDate.getTime());
-        a.setFullYear(a.getFullYear()+1);
-        a.setDate(1);
-        setViewDate(new Date(a.getTime()));
-    }
-
-    function prevYear() {
-        let a = new Date(viewDate.getTime());
-        a.setFullYear(a.getFullYear()-1);
-        a.setDate(1);
+        
         setViewDate(new Date(a.getTime()));
     }
 
@@ -129,8 +120,8 @@ export default function Calendar(props){
     }
 
     function changeView() {
-        if(view==="Month") setView("Week");
-        else if(view==="Week") setView("Month");
+        if(view==="month") setView("week");
+        else if(view==="week") setView("month");
     }
 
     function joinClasses(classes) {
@@ -156,27 +147,38 @@ export default function Calendar(props){
         return [d.getUTCFullYear(), weekNo];
     }
 
-    if(view==="Month") buildMonth();
-    else if(view==="Week") buildWeek();
+    if(view==="month") buildMonth();
+    else if(view==="week") buildWeek();
 
     return (
         <div className="d-flex flex-column pt-4">
-            <div className="d-flex flex-row justify-content-center">
-                <button className="btn-sm btn-info" onClick={prevYear}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                <h3 className="text-center mar-0 mx-4">{yearName(viewDate)}</h3>
-                <button className="btn-sm btn-info" onClick={nextYear}><FontAwesomeIcon icon={faArrowRight}/></button>
-            </div>
-            {view==="Week"?<h4 className="row justify-content-center align-items-center mt-2 mt-mb-4">{monthName(viewDate)}</h4>:null}
-            <div className="row align-items-center mt-2 mt-mb-4">
-                <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+            
+            <div className="d-flex flex-column align-items-center mt-2 mt-mb-4">
+                <div className="d-flex flex-row justify-content-between" style={{minWidth:"35%"}}>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "year", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <h3 className="text-center mb-0 mx-4">{yearName(viewDate)}</h3>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "year", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
+                </div>
+
+                <div className="d-flex flex-row justify-content-between mt-2" style={{minWidth:"35%"}}>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "month", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <h4 className="text-center mb-0 mx-4">{monthName(viewDate)}</h4>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "month", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
+                </div>
+                
+                {view==="week"?
+                <div className="d-flex flex-row justify-content-between mt-2" style={{minWidth:"35%"}}>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "week", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <h4 className="text-center mb-0 mx-4">{"Week "+getWeekNumber(viewDate)[1]}</h4>
+                    <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "week", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
+                </div>
+                :null}
+
+                <div className="d-flex justify-content-center mt-4">
                     <button className="btn-sm btn-info mr-2" onClick={changeView}>switch view</button>
                     <button className="btn-sm btn-info ml-2" onClick={setToday}>Today</button>
                 </div>
-                <div className="col-12 col-md-4 d-flex flex-row justify-content-center">
-                    <button className="btn-sm btn-info" onClick={prevMonth}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                    <h4 className="text-center mar-0 mx-4">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="btn-sm btn-info" onClick={nextMonth}><FontAwesomeIcon icon={faArrowRight}/></button>
-                </div>
+
             </div>
             <div className="row my-2 border">
                 <h6 className="col-grid-7 h-25 text-center">Mon</h6>
@@ -203,7 +205,7 @@ export default function Calendar(props){
                     }
                     let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light", cssClass:"dateBox"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
-                    if(view!=="Week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
+                    if(view!=="week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
                     return <div className={joinClasses(classes)} key={i}
                     onClick={()=>props.redirectCallback({pathname:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>
                         {x.getDate()}
@@ -211,7 +213,7 @@ export default function Calendar(props){
                     </div>
                 })}
             </div>
-            <div>
+            <div className="mt-4">
                 <div className="row justify-content-center align-items-center"><strong>Fun fact of the day:</strong></div>
                 <div className="row justify-content-center align-items-center">{funFact}</div>
             </div>
