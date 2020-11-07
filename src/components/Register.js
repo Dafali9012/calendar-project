@@ -45,6 +45,7 @@ export default function Register(props) {
 
   async function registerNewUser() {
     delete state.passwordConfirm;
+    setState({...state, email:state.email.toLowerCase()})
     let add = await (
       await fetch("/api/user/", {
         method: "POST",

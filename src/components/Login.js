@@ -21,7 +21,7 @@ export default function Login(props) {
     e.preventDefault();
 
     if ((state.email && state.password) !== null) {
-      const details = { email: state.email, password: state.password };
+      const details = { email: state.email.toLowerCase(), password: state.password };
 
       let login = await (
         await fetch("/api/login", {
