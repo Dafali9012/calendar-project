@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { EventListContext, InviteContext, UserContext } from "../Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function Calendar(props){
 
@@ -89,7 +88,7 @@ export default function Calendar(props){
         }
     }
 
-    function next() {
+    function nextMonth() {
         let a = new Date(viewDate.getTime());
         if(view==="Month") {
             a.setMonth(a.getMonth()+1);
@@ -100,7 +99,7 @@ export default function Calendar(props){
         setViewDate(new Date(a.getTime()));
     }
 
-    function prev() {
+    function prevMonth() {
         let a = new Date(viewDate.getTime());
         if(view==="Month") {
             a.setMonth(a.getMonth()-1);
@@ -108,6 +107,20 @@ export default function Calendar(props){
         } else if(view==="Week") {
             a.setDate(a.getDate()-7);
         }
+        setViewDate(new Date(a.getTime()));
+    }
+
+    function nextYear() {
+        let a = new Date(viewDate.getTime());
+        a.setFullYear(a.getFullYear()+1);
+        a.setDate(1);
+        setViewDate(new Date(a.getTime()));
+    }
+
+    function prevYear() {
+        let a = new Date(viewDate.getTime());
+        a.setFullYear(a.getFullYear()-1);
+        a.setDate(1);
         setViewDate(new Date(a.getTime()));
     }
 
@@ -147,41 +160,32 @@ export default function Calendar(props){
     else if(view==="Week") buildWeek();
 
     return (
-        <div className="d-flex flex-column pt-md-4">
-            <div className="flex-shrink-0">
-                <h3 className="row justify-content-center align-items-center">{yearName(viewDate)}</h3>
-                {view==="Week"?<h4 className="row justify-content-center align-items-center mt-4">{monthName(viewDate)}</h4>:null}
-                {/*
-                <div className="row align-items-center mt-md-4 mt-1">
-                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={changeView}>switch view</button>
-                    <div className="d-md-none col-4"></div>
-                    <button className="col-md-1 col-4 btn-sm btn-info" onClick={setToday}>Today</button>
-                    <div className="col-md-2 col-1"/>
-                    <button className="col-md-1 col-2 btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                    <h4 className="col-md-2 col-6 text-center">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                    <button className="col-md-1 col-2 btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
+        <div className="d-flex flex-column pt-4">
+            <div className="d-flex flex-row justify-content-center">
+                <button className="btn-sm btn-info" onClick={prevYear}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                <h3 className="text-center mar-0 mx-4">{yearName(viewDate)}</h3>
+                <button className="btn-sm btn-info" onClick={nextYear}><FontAwesomeIcon icon={faArrowRight}/></button>
+            </div>
+            {view==="Week"?<h4 className="row justify-content-center align-items-center mt-2 mt-mb-4">{monthName(viewDate)}</h4>:null}
+            <div className="row align-items-center mt-2 mt-mb-4">
+                <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+                    <button className="btn-sm btn-info mr-2" onClick={changeView}>switch view</button>
+                    <button className="btn-sm btn-info ml-2" onClick={setToday}>Today</button>
                 </div>
-                */}
-                <div className="row align-items-center mt-md-4 mt-1">
-                    <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start">
-                        <button className="btn-sm btn-info mr-2" onClick={changeView}>switch view</button>
-                        <button className="btn-sm btn-info ml-2" onClick={setToday}>Today</button>
-                    </div>
-                    <div className="col-12 col-md-4 d-flex flex-row justify-content-center">
-                        <button className="btn-sm btn-info" onClick={prev}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                        <h4 className="text-center mx-4">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
-                        <button className="btn-sm btn-info" onClick={next}><FontAwesomeIcon icon={faArrowRight}/></button>
-                    </div>
+                <div className="col-12 col-md-4 d-flex flex-row justify-content-center">
+                    <button className="btn-sm btn-info" onClick={prevMonth}><FontAwesomeIcon icon={faArrowLeft}/></button>
+                    <h4 className="text-center mar-0 mx-4">{view==="Month"?monthName(viewDate):"Week "+getWeekNumber(viewDate)[1]}</h4>
+                    <button className="btn-sm btn-info" onClick={nextMonth}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
-                <div className="row my-2 border">
-                    <h6 className="col-grid-7 h-25 text-center">Mon</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Tue</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Wed</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Thu</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Fri</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Sat</h6>
-                    <h6 className="col-grid-7 h-25 text-center">Sun</h6>
-                </div>
+            </div>
+            <div className="row my-2 border">
+                <h6 className="col-grid-7 h-25 text-center">Mon</h6>
+                <h6 className="col-grid-7 h-25 text-center">Tue</h6>
+                <h6 className="col-grid-7 h-25 text-center">Wed</h6>
+                <h6 className="col-grid-7 h-25 text-center">Thu</h6>
+                <h6 className="col-grid-7 h-25 text-center">Fri</h6>
+                <h6 className="col-grid-7 h-25 text-center">Sat</h6>
+                <h6 className="col-grid-7 h-25 text-center">Sun</h6>
             </div>
             <div className="row">    
                 {calendarData.map((x,i)=>{

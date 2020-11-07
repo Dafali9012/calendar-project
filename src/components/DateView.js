@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { EventListContext } from '../Store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function DateView(props){
 
@@ -54,13 +56,10 @@ export default function DateView(props){
 
     return (
         <div className="mt-4">
-            <section className="row d-flex justify-content-center align-items-center">
-                
-                <button className="col-2 btn-sm btn-primary" onClick={previous}>Previous</button>
-
-                <h4 className="col-8 col-md-6 text-center"> {dateSplit.join("-")} </h4>
-
-                <button className="col-2 btn-sm btn-primary" onClick={next}>Next</button>
+            <section className="d-flex d-row justify-content-center align-items-center">
+                <button className="btn-sm btn-primary" onClick={previous}><FontAwesomeIcon icon={faArrowLeft} /></button>
+                <h4 className="text-center mar-0 mx-4"> {dateSplit.join("-")} </h4>
+                <button className="btn-sm btn-primary" onClick={next}><FontAwesomeIcon icon={faArrowRight} /></button>
             </section>
             { viewDate.valueOf()>=dateToday.valueOf()?
             <div className="d-flex flex-column align-items-center mt-4">
