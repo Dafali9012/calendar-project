@@ -27,6 +27,10 @@ export default function App() {
     }
   // eslint-disable-next-line
   },[]);
+
+  function executeRedirect(to) {
+    setRedirect(to);
+  }
   
   async function fetchUser() {
     let result = await (
@@ -50,35 +54,43 @@ export default function App() {
     }
   }
 
+  function addRedirect() {
+    if(redirect.pathname!=null && redirect.pathname !== loc.pathname) {
+      return <Redirect push to={redirect}/>
+    }
+    if(redirect.pathname === loc.pathname) setRedirect({pathname:null});
+    return null;
+  }
+
   return (
     <div className="App d-flex flex-column">
-      <Header className="flex-shrink-0" redirectCallback={(to)=>setRedirect(to)} />
+      <Header className="flex-shrink-0" redirectCallback={(to)=>executeRedirect(to)} />
       <div className="container flex-grow-1">
         <Switch>
-          {(redirect.pathname!=null && redirect.pathname !== loc.pathname)?<Redirect to={redirect}/>:null}
+          {addRedirect()}
           <Route exact path="/" render={()=> {
-            if(user!=null)return<Calendar redirectCallback={(to)=>setRedirect(to)} />;
-            else setRedirect({pathname:"/login"})}}
+            if(user!=null)return<Calendar redirectCallback={(to)=>executeRedirect(to)} />;
+            else return <Redirect to="/login" />}}
           />
           <Route exact path="/login" render={()=> {
-            if(user==null)return<Login redirectCallback={(to)=>setRedirect(to)}/>
-            else setRedirect({pathname:"/"})}}
+            if(user==null)return<Login redirectCallback={(to)=>executeRedirect(to)}/>
+            else return <Redirect to="/" />}}
           />
           <Route exact path="/register" render={()=> {
-            if(user==null)return<Register redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/"})}}
+            if(user==null)return<Register redirectCallback={(to)=>executeRedirect(to)}/>;
+            else return <Redirect to="/" />}}
           />
           <Route exact path={["/date/:date", "/date"]} render={() => {
-            if(user!=null)return<DateView locationPathname={loc.pathname} redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/login"})}}
+            if(user!=null)return<DateView locationPathname={loc.pathname} redirectCallback={(to)=>executeRedirect(to)}/>;
+            else return <Redirect to="/login" />}}
           />
           <Route exact path="/date/:date/create-event" render={()=> {
-            if(user!=null)return<CreateEvent redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/login"})}}
+            if(user!=null)return<CreateEvent redirectCallback={(to)=>executeRedirect(to)}/>;
+            else return <Redirect to="/login" />}}
           />
           <Route exact path="/event" render={(props) => {
-            if(user!=null)return<Event {...props} redirectCallback={(to)=>setRedirect(to)} />;
-            else setRedirect({pathname:"/login"})}}
+            if(user!=null)return<Event {...props} redirectCallback={(to)=>executeRedirect(to)} />;
+            else return <Redirect to="/login" />}}
           />
         </Switch>
       </div>
