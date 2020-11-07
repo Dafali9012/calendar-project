@@ -58,9 +58,9 @@ export default function Header(props) {
               {user == null ? "I want to: " : user.email}
             </DropdownItem>
 
-            {notifications.map((notif) => {
+            {notifications.map((notif,i) => {
               return (
-                <DropdownItem onClick={()=>props.redirectCallback({pathname:"/event", state:{event:notif}})}>
+                <DropdownItem key={i} onClick={()=>props.redirectCallback({pathname:"/event", state:{event:notif}})}>
                   {notif.title}
                   <DropdownItem divider />
                 </DropdownItem>

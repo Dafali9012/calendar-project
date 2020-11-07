@@ -24,6 +24,7 @@ export default function Event(props) {
 
   useEffect(()=>{
     fetchUsersAttending();
+    setSelectedEmail([]);
     // eslint-disable-next-line
   },[]);
 
@@ -165,14 +166,17 @@ export default function Event(props) {
       </div>
       {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
-          <Dropdown.Toggle 
-          variant="primary" id="dropdown-basic"  >
-            Select
-          </Dropdown.Toggle>
-          <Dropdown.Menu >
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">Invite</Dropdown.Toggle>
+          <Dropdown.Menu>
             {emailList.map((email) => {
               let additem = true;
               for(let x of usersAttending) {
+                if(x.id === email.id) {
+                  additem = false;
+                  break;
+                }
+              }
+              for(let x of selectedEmails) {
                 if(x.id === email.id) {
                   additem = false;
                   break;
@@ -192,15 +196,9 @@ export default function Event(props) {
             })}
           </Dropdown.Menu>
         </Dropdown>
-        <Button 
-        onClick={invite}
-        className="ml-5" 
-        variant="success">
-          Invite
-        </Button>
       </div>:null}
-      <div className="col-12 pt-2">
-        {selectedEmails
+      <div className="col-12 mt-2">
+        {selectedEmails.length!==0
           ? selectedEmails.map((selected) => {
               return (
                 <button
@@ -218,9 +216,17 @@ export default function Event(props) {
                 </button>
               );
             })
-          : ""}
+          : null}
       </div>
-      <div>
+      {selectedEmails.length!==0?
+        <Button 
+        onClick={invite}
+        className="col-2 offset-5 mt-2" 
+        variant="success">
+          Send Invites
+        </Button>
+      :null}
+      <div className="col-12">
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>
       </div>
@@ -244,8 +250,8 @@ export default function Event(props) {
           })}
         </div>
       </div>
-      <div className="col-12 d-flex mt-4 justify-content-center">
-        <button className="btn-sm btn-danger mr-4" onClick={deleteEvent}>Delete Event</button>
+      <div className="col-12 d-flex flex-row mt-4 justify-content-center">
+        <button className="btn-sm btn-danger" onClick={deleteEvent}>Delete Event</button>
       </div>
     </div>
 
