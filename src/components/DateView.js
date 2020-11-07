@@ -76,7 +76,7 @@ export default function DateView(props){
                     startDate.setHours(0,0,0,0);
                     endDate.setHours(0,0,0,0);
                     if(viewDate.valueOf() >= startDate.valueOf() && viewDate.valueOf() <= endDate.valueOf()) {
-                        return <div className="card my-2 text-center marx-20 py-2 scheduled" key={i} 
+                        return <div className="card my-2 text-center marx-20 py-2 scheduled unselectable" key={i} 
                         onClick={()=>props.redirectCallback({pathname:"/event", state:{event:x}})}>{x.title}</div>
                     }
                     return null;

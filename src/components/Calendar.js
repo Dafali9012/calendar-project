@@ -203,10 +203,10 @@ export default function Calendar(props){
                             numEvents++;
                         }
                     }
-                    let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light", cssClass:"dateBox"};
+                    let classes = {col:"col-grid-7", background:"bg-secondary", text:"text-light", selectable:"unselectable", cssClass:"dateBox"};
                     if(x.valueOf()===dateNow.valueOf()) classes = {...classes, background:"bg-info", text:"text-light"}
                     if(view!=="week" && x.getMonth()!==viewDate.getMonth()) classes = {...classes, background:"bg-light", text:"text-muted"}
-                    return <div className={joinClasses(classes)} key={i}
+                    return <div className={joinClasses(classes)} key={i} style={{cursor:"pointer"}}
                     onClick={()=>props.redirectCallback({pathname:"/date/"+x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate()})}>
                         {x.getDate()}
                         {numEvents>0?<div className="event-marker text-light mt-3 ml-1">{numEvents>9?"9+":numEvents}</div>:null}

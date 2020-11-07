@@ -38,22 +38,20 @@ export default function Header(props) {
     return (
       <div className="header-user">
         <UncontrolledDropdown>
-          <DropdownToggle>
-            <div className="row">
-              <div className="col-md col-6 my-auto">
-                <h5 className="userName">
-                  <span role="img" aria-label="user"></span>
+          <DropdownToggle className="d-flex flex-row">
+              <div className="d-flex justify-content-center align-items-center">
+                <h5 className="userName text-center mb-0">
                   {user.name}
                 </h5>
               </div>
-              <div className="col-md col-6 my-auto pl-md-0 d-flex justify-content-center">
-                {notifications.length > 0 ? (
-                  <div className="event-marker text-light my-0">
-                    {notifications.length > 9 ? "9+" : notifications.length}
-                  </div>
-                ) : null}
+              <div className="d-flex justify-content-center align-items-center">
+                {notifications.length > 0 ?
+                <div className="event-marker text-light ml-2">
+                  {notifications.length > 9 ? "9+" : notifications.length}
+                </div>
+                : null}
               </div>
-            </div>
+
           </DropdownToggle>
           <DropdownMenu className="drop">
             <DropdownItem header>
@@ -78,9 +76,9 @@ export default function Header(props) {
 
   return (
     <header className="d-flex flex-row justify-content-around align-items-center bg-primary text-light py-2">
-      <h1 className="d-flex flex-row mar-0 align-items-center text-center unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
+      <h2 className="d-flex flex-row mar-0 align-items-center text-center unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
         <FontAwesomeIcon icon={faApple}/><p className="mar-0 ml-mb-3">iCalendar</p>
-      </h1>
+      </h2>
       {user == null ? "" : dropIt()}
     </header>
   );
