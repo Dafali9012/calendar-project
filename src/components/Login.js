@@ -36,9 +36,9 @@ export default function Login(props) {
         setUser(null);
         setShowAlert(true);
       } else {
+        setState({ email: "", password: ""});
         setUser(login);
         updateEvents(login.id);
-        setState({ email: "", password: ""});
       }
     }
   }
