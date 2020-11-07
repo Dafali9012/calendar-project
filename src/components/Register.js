@@ -58,7 +58,6 @@ export default function Register(props) {
       setShowAlert(true);
     } else {
       autoLogin();
-      clearFields();
     }
   }
 
@@ -76,10 +75,10 @@ export default function Register(props) {
       })
     ).json();
     if(!login.error) {
+      clearFields();
       setUser(login);
       updateEvents(login.id);
     }
-    clearFields();
   }
 
   async function updateEvents(id) {
