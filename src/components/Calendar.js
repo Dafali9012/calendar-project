@@ -154,20 +154,20 @@ export default function Calendar(props){
         <div className="d-flex flex-column pt-4">
             
             <div className="d-flex flex-column align-items-center mt-2 mt-mb-4">
-                <div className="d-flex flex-row justify-content-between" style={{minWidth:"35%"}}>
+                <div className="d-flex flex-row justify-content-between w-100 w-md-45 w-lg-35">
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "year", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h3 className="text-center mb-0 mx-4">{yearName(viewDate)}</h3>
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "year", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
 
-                <div className="d-flex flex-row justify-content-between mt-2" style={{minWidth:"35%"}}>
+                <div className="d-flex flex-row justify-content-between mt-2 w-100 w-md-50 w-lg-40">
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "month", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="text-center mb-0 mx-4">{monthName(viewDate)}</h4>
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "month", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
                 
                 {view==="week"?
-                <div className="d-flex flex-row justify-content-between mt-2" style={{minWidth:"35%"}}>
+                <div className="d-flex flex-row justify-content-between mt-2 w-100 w-md-45 w-lg-35">
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "week", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
                     <h4 className="text-center mb-0 mx-4">{"Week "+getWeekNumber(viewDate)[1]}</h4>
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "week", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
