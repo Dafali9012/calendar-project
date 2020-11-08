@@ -18,15 +18,24 @@ export default function Event(props) {
   const [emailList, setEmailList] = useContext(EmailContext);
   const [selectedEmails, setSelectedEmail] = useState([]);
   const [usersAttending, setUsersAttending] = useState([]);
-  let event = props.location.state.event;
+
+  let event = props.location.state?props.location.state.event:null
   let dateFrom = [];
   let dateTo = [];
 
   useEffect(()=>{
-    fetchUsersAttending();
-    setSelectedEmail([]);
+    if(event!== null) {
+      fetchUsersAttending();
+      setSelectedEmail([]);
+    }
     // eslint-disable-next-line
   },[]);
+
+  if(event===null) return (
+    <div className="d-flex justify-content-center align-items-center h-100 padb-10">
+      <h2 className="mb-0 text-center">Please select an event from the calendar to view this page properly</h2>
+    </div>
+  );
 
   function invite(){
     //let userInviteList = [];
