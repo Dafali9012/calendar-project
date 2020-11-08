@@ -18,14 +18,24 @@ export default function Event(props) {
   const [emailList, setEmailList] = useContext(EmailContext);
   const [selectedEmails, setSelectedEmail] = useState([]);
   const [usersAttending, setUsersAttending] = useState([]);
-  let event = props.location.state.event;
+
+  let event = props.location.state?props.location.state.event:null
   let dateFrom = [];
   let dateTo = [];
 
   useEffect(()=>{
-    fetchUsersAttending();
+    if(event!== null) {
+      fetchUsersAttending();
+      setSelectedEmail([]);
+    }
     // eslint-disable-next-line
   },[]);
+
+  if(event===null) return (
+    <div className="d-flex justify-content-center align-items-center h-100 padb-10">
+      <h2 className="mb-0 text-center">Please select an event from the calendar to view this page properly</h2>
+    </div>
+  );
 
   function invite(){
     //let userInviteList = [];
@@ -106,7 +116,7 @@ export default function Event(props) {
     })).json();
     if(!result.error) {
       updateEvents(user.id);
-      props.redirectCallback({pathname:"/"})
+      props.redirectCallback({pathname:"/calendar"})
     };
   }
 
@@ -130,21 +140,21 @@ export default function Event(props) {
 
   return (
     <div className="row">
-      <div className="container pt-4">
+      <div className="col-12 pt-4">
         <h3 className="text-center">
           <strong>
             <u>{event.title}</u>
           </strong>
         </h3>
         <div className="row justify-content-center mt-4">
-            <div className="col-4 justify-content-center">
+          <div className="col-4 justify-content-center">
             <h6 className="text-center">
               {dateFrom[0]}-{dateFrom[1]}-{dateFrom[2]}
             </h6>
             <h6 className="text-center">
               {dateFrom[3]}:{dateFrom[4]}
             </h6>
-            </div>
+          </div>
       
           <div className="col-4 col-md-1 d-flex justify-content-center align-items-center">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -165,14 +175,17 @@ export default function Event(props) {
       </div>
       {event.author===user.id?<div className="col-12 mt-4 d-flex justify-content-center">
         <Dropdown onClick={getEmailList}>
-          <Dropdown.Toggle 
-          variant="primary" id="dropdown-basic"  >
-            Select
-          </Dropdown.Toggle>
-          <Dropdown.Menu >
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">Invite</Dropdown.Toggle>
+          <Dropdown.Menu>
             {emailList.map((email) => {
               let additem = true;
               for(let x of usersAttending) {
+                if(x.id === email.id) {
+                  additem = false;
+                  break;
+                }
+              }
+              for(let x of selectedEmails) {
                 if(x.id === email.id) {
                   additem = false;
                   break;
@@ -192,21 +205,15 @@ export default function Event(props) {
             })}
           </Dropdown.Menu>
         </Dropdown>
-        <Button 
-        onClick={invite}
-        className="ml-5" 
-        variant="success">
-          Invite
-        </Button>
       </div>:null}
-      <div className="container pt-2">
-        {selectedEmails
+      <div className="col-12 mt-2">
+        {selectedEmails.length!==0
           ? selectedEmails.map((selected) => {
               return (
                 <button
                   type="button"
                   key={selected.id}
-                  className="col-sm-12 col-lg-3 btn m-1 btn-outline-info nohover"
+                  className="col-12 col-md-4 btn btn-outline-info nohover"
                 >
                   {selected.email}
                   <span
@@ -218,13 +225,21 @@ export default function Event(props) {
                 </button>
               );
             })
-          : ""}
+          : null}
       </div>
-      <div className="container">
+      {selectedEmails.length!==0?
+        <Button 
+        onClick={invite}
+        className="col-2 offset-5 mt-2" 
+        variant="success">
+          Send Invites
+        </Button>
+      :null}
+      <div className="col-12">
         <h4 className="mt-4">Description</h4>
         <p>{event.description}</p>
       </div>
-      <div className="container">
+      <div className="col-12">
         <h4>Attendees</h4>
         <div className="row">
           {usersAttending.map((x,i)=>{
@@ -244,8 +259,8 @@ export default function Event(props) {
           })}
         </div>
       </div>
-      <div className="col-12 d-flex mt-4 justify-content-center">
-        <button className="btn-sm btn-danger mr-4" onClick={deleteEvent}>Delete Event</button>
+      <div className="col-12 d-flex flex-row mt-4 justify-content-center">
+        <button className="btn-sm btn-danger" onClick={deleteEvent}>Delete Event</button>
       </div>
     </div>
 

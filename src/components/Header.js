@@ -36,39 +36,31 @@ export default function Header(props) {
 
   function dropIt() {
     return (
-      <div className="header-user col-md-3 col-6">
+      <div className="header-user">
         <UncontrolledDropdown>
-          <DropdownToggle>
-            <div className="row">
-              <div className="col-md col-6 my-auto">
-                {user == null ? (
-                  <h4 className="button-title userName">Menu</h4>
-                ) : (
-                    <h5 className="userName">
-                      <span role="img" aria-label="user"></span>
-                      {user.name}
-                    </h5>
-                  )}
+          <DropdownToggle className="d-flex flex-row">
+              <div className="d-flex justify-content-center align-items-center">
+                <h5 className="userName text-center mb-0">
+                  {user.name}
+                </h5>
               </div>
-              {user != null ? (
-                <div className="col-md col-6 my-auto pl-md-0 d-flex justify-content-center">
-                  {notifications.length > 0 ? (
-                    <div className="event-marker text-light my-0">
-                      {notifications.length > 9 ? "9+" : notifications.length}
-                    </div>
-                  ) : null}
+              <div className="d-flex justify-content-center align-items-center">
+                {notifications.length > 0 ?
+                <div className="event-marker text-light ml-2">
+                  {notifications.length > 9 ? "9+" : notifications.length}
                 </div>
-              ) : null}
-            </div>
+                : null}
+              </div>
+
           </DropdownToggle>
           <DropdownMenu className="drop">
             <DropdownItem header>
               {user == null ? "I want to: " : user.email}
             </DropdownItem>
 
-            {notifications.map((notif) => {
+            {notifications.map((notif,i) => {
               return (
-                <DropdownItem onClick={()=>props.redirectCallback({pathname:"/event", state:{event:notif}})}>
+                <DropdownItem key={i} onClick={()=>props.redirectCallback({pathname:"/event", state:{event:notif}})}>
                   {notif.title}
                   <DropdownItem divider />
                 </DropdownItem>
@@ -83,14 +75,10 @@ export default function Header(props) {
   }
 
   return (
-    <header className="header-of-page">
-      <div className="col-md-3 col-5 nav-menu pl-2">
-        <div className="text-decoration-none unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
-          <h1 className="link logo">
-            <FontAwesomeIcon icon={faApple}/>iCalendar
-          </h1>
-        </div>
-      </div>
+    <header className="d-flex flex-row justify-content-around align-items-center bg-primary text-light py-2">
+      <h2 className="d-flex flex-row mar-0 align-items-center text-center unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/calendar"})}>
+        <FontAwesomeIcon icon={faApple}/><p className="mar-0 ml-mb-3">iCalendar</p>
+      </h2>
       {user == null ? "" : dropIt()}
     </header>
   );

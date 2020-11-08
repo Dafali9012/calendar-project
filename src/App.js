@@ -9,9 +9,11 @@ import CreateEvent from "./components/CreateEvent";
 import Calendar from "./components/Calendar";
 import Event from "./components/Event";
 import DateView from "./components/DateView";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
-    // eslint-disable-next-line
+  window.userFetch = window.userFetch || false;
+  // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   // eslint-disable-next-line
   const [inviteList, setInviteList] = useContext(InviteContext);
@@ -23,11 +25,13 @@ export default function App() {
   let loc = useLocation();
 
   useEffect(()=>{
-    if(user == null){
-      fetchUser();
-    }
+    fetchUser();
   // eslint-disable-next-line
   },[]);
+
+  function executeRedirect(to) {
+    setRedirect(to);
+  }
   
   async function fetchUser() {
     let result = await (
@@ -37,9 +41,13 @@ export default function App() {
       })
     ).json();
 
+    window.userFetch = true;
+
     if (!result.error) {
       setUser(result);
       updateEvents(result.id);
+    } else {
+      setUser(null);
     }
   }
 
@@ -51,37 +59,71 @@ export default function App() {
     }
   }
 
+  function addRedirect() {
+    if(redirect.pathname!=null && redirect.pathname !== loc.pathname) {
+      return <Redirect push to={redirect}/>
+    }
+    if(redirect.pathname === loc.pathname) setRedirect({pathname:null});
+    return null;
+  }
+
   return (
     <div className="App d-flex flex-column">
-      <Header className="flex-shrink-0" redirectCallback={(to)=>setRedirect(to)} />
+      <Header className="flex-shrink-0" redirectCallback={(to)=>executeRedirect(to)} />
       <div className="container flex-grow-1">
+        {window.userFetch===true?
         <Switch>
-          {(redirect.pathname!=null && redirect.pathname !== loc.pathname)?<Redirect to={redirect}/>:null}
-          <Route exact path="/" render={()=> {
-            if(user!=null)return<Calendar redirectCallback={(to)=>setRedirect(to)} />;
-            else setRedirect({pathname:"/login"})}}
-          />
-          <Route exact path="/login" render={()=> {
-            if(user==null)return<Login redirectCallback={(to)=>setRedirect(to)}/>
-            else setRedirect({pathname:"/"})}}
-          />
-          <Route exact path="/register" render={()=> {
-            if(user==null)return<Register redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/"})}}
-          />
-          <Route exact path={["/date/:date", "/date"]} render={() => {
-            if(user!=null)return<DateView locationPathname={loc.pathname} redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/login"})}}
-          />
-          <Route exact path="/date/:date/create-event" render={()=> {
-            if(user!=null)return<CreateEvent redirectCallback={(to)=>setRedirect(to)}/>;
-            else setRedirect({pathname:"/login"})}}
-          />
-          <Route exact path="/event" render={(props) => {
-            if(user!=null)return<Event {...props} redirectCallback={(to)=>setRedirect(to)} />;
-            else setRedirect({pathname:"/login"})}}
-          />
-        </Switch>
+          {addRedirect()}
+          <Route exact path="/" render={()=><Redirect to="/calendar" />}/>
+
+          <ProtectedRoute exact path="/login"
+          component={Login}
+          whenLoggedOut
+          fallbackPath="/calendar"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <ProtectedRoute exact path="/register"
+          component={Register}
+          whenLoggedOut
+          fallbackPath="/calendar"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <ProtectedRoute exact path={["/calendar/:yearmonth", "/calendar"]}
+          component={Calendar}
+          whenLoggedIn
+          fallbackPath="/login"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <ProtectedRoute exact path={["/date/:date", "/date"]}
+          component={DateView}
+          whenLoggedIn
+          fallbackPath="/login"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <ProtectedRoute exact path="/date/:date/create-event"
+          component={CreateEvent}
+          whenLoggedIn
+          fallbackPath="/login"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <ProtectedRoute exact path="/event"
+          component={Event}
+          whenLoggedIn
+          fallbackPath="/login"
+          locationPathname={loc.pathname}
+          redirectCallback={(to)=>executeRedirect(to)} />
+
+          <Route path="*">
+            <div className="d-flex justify-content-center align-items-center h-100 padb-10">
+              <h1 className="mb-0 text-center">404 Page not found</h1>
+            </div>
+          </Route>
+        </Switch>:null}
       </div>
     </div>
   );

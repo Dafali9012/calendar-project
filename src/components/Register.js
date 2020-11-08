@@ -44,11 +44,13 @@ export default function Register(props) {
   };
 
   async function registerNewUser() {
-    delete state.passwordConfirm;
     let add = await (
       await fetch("/api/user/", {
         method: "POST",
-        body: JSON.stringify(state),
+        body: JSON.stringify({
+          email:state.email.toLowerCase(),
+          password:state.password,
+          name:state.name}),
         headers: { "Content-Type": "application/json" },
       })
     ).json();
@@ -56,7 +58,6 @@ export default function Register(props) {
       setShowAlert(true);
     } else {
       autoLogin();
-      clearFields();
     }
   }
 
@@ -65,7 +66,7 @@ export default function Register(props) {
   }
 
   async function autoLogin() {
-    const details = { email: state.email, password: state.password };
+    const details = { email: state.email.toLowerCase(), password: state.password };
     let login = await (
       await fetch("/api/login", {
         method: "POST",
@@ -73,10 +74,11 @@ export default function Register(props) {
         headers: { "Content-Type": "application/json" },
       })
     ).json();
-
-    setUser(login);
-    updateEvents(login.id);
-    clearFields();
+    if(!login.error) {
+      clearFields();
+      setUser(login);
+      updateEvents(login.id);
+    }
   }
 
   async function updateEvents(id) {
