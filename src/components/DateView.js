@@ -35,7 +35,7 @@ export default function DateView(props){
     dateToday.setHours(0,0,0,0);
     viewDate.setHours(0,0,0,0);
 
-    if(isNaN(viewDate.getDate())) props.redirectCallback({pathname:"/"});
+    if(isNaN(viewDate.getDate())) props.redirectCallback({pathname:"/calendar"});
 
     let dateSplit = [viewDate.getFullYear(), (viewDate.getMonth()+1), viewDate.getDate()];
 

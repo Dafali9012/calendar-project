@@ -76,7 +76,7 @@ export default function Header(props) {
 
   return (
     <header className="d-flex flex-row justify-content-around align-items-center bg-primary text-light py-2">
-      <h2 className="d-flex flex-row mar-0 align-items-center text-center unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/"})}>
+      <h2 className="d-flex flex-row mar-0 align-items-center text-center unselectable" style={{cursor:"pointer"}} onClick={()=>props.redirectCallback({pathname:"/calendar"})}>
         <FontAwesomeIcon icon={faApple}/><p className="mar-0 ml-mb-3">iCalendar</p>
       </h2>
       {user == null ? "" : dropIt()}

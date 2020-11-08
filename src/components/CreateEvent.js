@@ -43,7 +43,7 @@ export default function CreateEvent(props) {
     
     let date = new Date();
     date = new Date(params.date);
-    if(isNaN(date.getDate())) props.redirectCallback({pathname:"/"});
+    if(isNaN(date.getDate())) props.redirectCallback({pathname:"/calendar"});
 
     async function saveEvent(e) {
         e.preventDefault();

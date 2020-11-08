@@ -6,7 +6,7 @@ export const EmailContext = React.createContext();
 export const InviteContext = React.createContext();
 
 function Store({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const [emailList, setEmailList] = useState([]);
   const [eventList, setEventList] = useState([]);
   const [inviteList, setInviteList] = useState([]);

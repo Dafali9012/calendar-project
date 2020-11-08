@@ -107,7 +107,7 @@ export default function Event(props) {
     })).json();
     if(!result.error) {
       updateEvents(user.id);
-      props.redirectCallback({pathname:"/"})
+      props.redirectCallback({pathname:"/calendar"})
     };
   }
 

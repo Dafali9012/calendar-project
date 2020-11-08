@@ -23,7 +23,7 @@ export default function Calendar(props){
     useEffect(()=>{
         fetchFunFact()
         // eslint-disable-next-line
-    },[])
+    },[]);
 
     const fetchFunFact = async () =>{
         //'random' = new fact each request, 'today' = Updates every 24 hours
