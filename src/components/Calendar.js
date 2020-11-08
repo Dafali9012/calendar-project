@@ -133,18 +133,15 @@ export default function Calendar(props){
         return result;
     }
 
-    function getWeekNumber(d) {
-        // Copy date so don't modify original
-        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        // Set to nearest Thursday: current date + 4 - current day number
-        // Make Sunday's day number 7
-        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-        // Get first day of year
-        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-        // Calculate full weeks to nearest Thursday
-        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        // Return array of year and week number
-        return [d.getUTCFullYear(), weekNo];
+    function getWeekNumber() {
+        let a = new Date(viewDate.getTime());
+        a.setHours(0,0,0,0);
+        a.setDate(a.getDate() + 3 - (a.getDay() + 6) % 7);
+        let b = new Date(a.getFullYear(), 0, 4);
+        b.setHours(0,0,0,0);
+        b.setDate(b.getDate() + 3 - (b.getDay() + 6) % 7);
+        let weekInMs = 7 * 24 * 60 * 60 * 1000;
+        return Math.round(1+(a.getTime()-b.getTime())/weekInMs);
     }
 
     if(view==="month") buildMonth();
@@ -169,7 +166,7 @@ export default function Calendar(props){
                 {view==="week"?
                 <div className="d-flex flex-row justify-content-between mt-2 w-100 w-md-45 w-lg-35">
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("-", "week", 1)}><FontAwesomeIcon icon={faArrowLeft}/></button>
-                    <h4 className="text-center mb-0 mx-4">{"Week "+getWeekNumber(viewDate)[1]}</h4>
+                    <h4 className="text-center mb-0 mx-4">{"Week "+getWeekNumber()}</h4>
                     <button className="btn-sm btn-info" onClick={()=>modifyDate("+", "week", 1)}><FontAwesomeIcon icon={faArrowRight}/></button>
                 </div>
                 :null}
