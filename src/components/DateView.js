@@ -12,9 +12,19 @@ export default function DateView(props){
     // eslint-disable-next-line
     const [dateFact, setDateFact] = useState();
 
+    let dateToday = new Date();
+    let viewDate = new Date();
+    if(params.date) {
+        viewDate = new Date(params.date);
+    }
+
+    dateToday.setHours(0,0,0,0);
+    viewDate.setHours(0,0,0,0);
+
     const fetchDateFact = async () =>{
         const baseURL = 'http://numbersapi.com/';
-        const date = props.locationPathname.split("/").pop().split("-")[1]+'/'+props.locationPathname.split("/").pop().split("-")[2];
+        const date = !params.date?(dateToday.getMonth()+1)+"/"+dateToday.getDate()
+        :props.locationPathname.split("/").pop().split("-")[1]+'/'+props.locationPathname.split("/").pop().split("-")[2];
         const extension ='/date';
         const resp = await fetch(baseURL+date+extension);
         const data = await resp.text();
@@ -25,15 +35,6 @@ export default function DateView(props){
         fetchDateFact();
         // eslint-disable-next-line
     },[]);
-
-    let dateToday = new Date();
-    let viewDate = new Date();
-    if(params.date) {
-        viewDate = new Date(params.date);
-    }
-
-    dateToday.setHours(0,0,0,0);
-    viewDate.setHours(0,0,0,0);
 
     if(isNaN(viewDate.getDate())) props.redirectCallback({pathname:"/calendar"});
 
